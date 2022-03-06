@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "846791184477",
+    "firebase_url": "https://used-goods-market-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "used-goods-market",
+    "storage_bucket": "used-goods-market.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846791184477:android:7fab918fcc27097acdbdb4",
+        "android_client_info": {
+          "package_name": "com.lastproject.used_item_market"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846791184477-9hbclrf7hhrp19v35s9vm0sn941q605u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNuDS3UoV7tii91Cw10lHxiUFeOWyzOiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846791184477-9hbclrf7hhrp19v35s9vm0sn941q605u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
