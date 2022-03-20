@@ -25,8 +25,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
@@ -52,15 +55,18 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     EditText et_email;
     EditText et_password;
 
-    //DB 관련
+    //서버 관련
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    public User userinfo;           //서버에 저장될 사용자의 정보
 
     //텍스트로 정보를 가져옴
     private String semail = "";
     private String spassword = "";
+    private String mykey = "";
 
-    private boolean trigger = false;            //true가 된 경우만 로그인에 성공한 것이다.
+    private boolean email_trigger = false;            //true가 되면 아이디 존재
+    private boolean password_trigger = false;            //true가 되면 비밀번호 일치
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +127,54 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                 try{
 
+                    myRef.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            //아이디가 존재하는지 찾는다.
+                            for(DataSnapshot ds1: snapshot.getChildren()){
+
+                                userinfo = ds1.getValue(User.class);        //한 개씩 가져와서 비교한다.
+                                if(userinfo.google_email.equals(semail)){   //아이디가 일치하는 경우
+                                    email_trigger = true;
+
+                                    if(userinfo.password.equals(spassword)){ //비밀번호가 일치할 경우
+
+                                        Intent login_intent = new Intent(Login.this, MainActivity.class);
+                                        login_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        login_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        login_intent.putExtra("email", email);
+                                        login_intent.putExtra("mykey", mykey);
+                                        startActivity(login_intent);
+                                        finish();
+
+                                    }
+                                }
+                            }
 
 
+                            if(email_trigger == true){      //아이디는 일치하지만 비밀번호는 일치하지 않는경우이다.
+
+                                email_trigger = false;
+                                et_password.setText("");
+                                et_password.setHint("비밀번호가 일치하지 않습니다.");
+
+                            }else{                          //일치하는 아이디가 없는 경우
+
+                                et_email.setText("");
+                                et_email.setHint("일치하는 아이디가 없습니다.");
+                                et_password.setText("");
+
+                            }
 
 
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
 
                 }catch (Exception e){       //중간에 오류가 발생하여 로그인에 실패하였을 경우
@@ -132,9 +182,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     //다시 기본 세팅들 초기화
                     semail = "";
                     spassword = "";
-                    //e
-
-
+                    //화면도 초기화
+                    et_email.setText("");
+                    et_password.setText("");
+                    Toast.makeText(Login.this, "로그인 오류", Toast.LENGTH_SHORT).show();
                 }
 
             }
