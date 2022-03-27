@@ -187,7 +187,6 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                sname = et_name.getText().toString();           //닉네임을 가져온다.
                 if(password_trigger == false){          //비밀번호가 일치하지 않을 경우
 
                     Toast.makeText(SignUp.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
@@ -199,6 +198,8 @@ public class SignUp extends AppCompatActivity {
                 myRef.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        sname = et_name.getText().toString();           //닉네임을 가져온다.
 
                         for(DataSnapshot ds1 : snapshot.getChildren()){     //닉네임 검사
 
@@ -226,6 +227,7 @@ public class SignUp extends AppCompatActivity {
                             finish();
 
                         }
+                        nickname_trigger = false;
 
                     }
 
