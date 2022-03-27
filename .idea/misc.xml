@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/activity_main.xml" value="0.284375" />
+        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/login.xml" value="0.2658514492753623" />
+        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/set_in_fo.xml" value="0.31614583333333335" />
+        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/sign_up.xml" value="0.2658514492753623" />
+        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/sign_up_map.xml" value="0.25" />
         <entry key="app/src/main/res/drawable-v24/bt_tumyeong_sty.xml" value="0.1" />
         <entry key="app/src/main/res/layout/login.xml" value="0.28281860351562516" />
         <entry key="app/src/main/res/layout/sign_up.xml" value="0.22056159420289856" />

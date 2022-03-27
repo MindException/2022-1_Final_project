@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpMap"
+    android:background="#745641"
+    android:weightSum="10"
+    >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="10">
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/start_edit_keyword"
+            android:hint="출발지를 검색하세요"
+            android:layout_weight="7" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Search"
+            android:id="@+id/start_btn_search"
+            android:layout_weight="1.5"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Search"
+            android:layout_weight= "0.1"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="next"
+            android:id="@+id/next_btn_search"
+            android:layout_weight="1.5"/>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9">
+
+        <com.skt.Tmap.TMapView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/start_map_view" >
+
+
+
+        </com.skt.Tmap.TMapView>
+
+        <ListView
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:id="@+id/start_listView"
+            android:layout_gravity="left|top"
+            android:background="#2A5237"/>
+    </FrameLayout>
+
+</LinearLayout>

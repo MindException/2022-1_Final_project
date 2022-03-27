@@ -11,11 +11,12 @@ public class User {         //사용자 테이블이다.
 
     User(){}        //기본 생성자
 
-    User(String google_email, String password, String nickname){
+    User(String google_email, String password, String nickname, String univetsity){
 
         this.google_email = google_email;
         this.password = password;
         this.nickname = nickname;
+        this.univetsity = univetsity;
 
     }
 

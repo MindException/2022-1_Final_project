@@ -218,11 +218,12 @@ public class SignUp extends AppCompatActivity {
 
                         if(nickname_trigger == false){       //존재하는 닉네임이 아닐 경우
 
-
-                            put_UserINFO();
-                            Intent signUp_intent = new Intent(SignUp.this, Login.class);
+                            Intent signUp_intent = new Intent(SignUp.this, SignUpMap.class);
                             signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            signUp_intent.putExtra("email", email);
+                            signUp_intent.putExtra("password",spassword1);
+                            signUp_intent.putExtra("nickname",sname);
                             startActivity(signUp_intent);
                             finish();
 
@@ -243,16 +244,6 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-
-    //실제 서버에 저장(이건 t-map 구현되면 옮긴다.)
-    void put_UserINFO(){
-
-        userinfo = new User(email, spassword1, sname);
-        myRef.child("User").push().setValue(userinfo);      //서버에 저장
-        Toast.makeText(SignUp.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
-
-
-    }
 
 
 }
