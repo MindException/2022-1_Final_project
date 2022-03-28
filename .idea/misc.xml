@@ -3,11 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/activity_main.xml" value="0.284375" />
-        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/login.xml" value="0.2658514492753623" />
-        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/set_in_fo.xml" value="0.31614583333333335" />
-        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/sign_up.xml" value="0.2658514492753623" />
-        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/sign_up_map.xml" value="0.25" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/drawable/shape.xml" value="0.221" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/drawable/shapepicture.xml" value="0.221" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/activity_all_page.xml" value="0.21965579710144928" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/activity_buy_page.xml" value="0.21965579710144928" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/activity_main.xml" value="0.17617753623188406" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/activity_post_page.xml" value="0.21965579710144928" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/activity_sell_page.xml" value="0.21965579710144928" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/activity_setting_page.xml" value="0.21965579710144928" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/activity_share_page.xml" value="0.21965579710144928" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/login.xml" value="0.17617753623188406" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/set_in_fo.xml" value="0.2128623188405797" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/sign_up.xml" value="0.17617753623188406" />
+        <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/sign_up_map.xml" value="0.2128623188405797" />
         <entry key="app/src/main/res/drawable-v24/bt_tumyeong_sty.xml" value="0.1" />
         <entry key="app/src/main/res/layout/login.xml" value="0.28281860351562516" />
         <entry key="app/src/main/res/layout/sign_up.xml" value="0.22056159420289856" />

@@ -1,18 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#745641"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="45px"
+        android:background="#2A5237"
+        android:weightSum="10">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/addbtn"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:background="@drawable/postadd"
+                android:layout_weight="0.5"
+                >
+            </ImageButton>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+            </TextView>
+
+            <ImageButton
+                android:id="@+id/setbtn"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:background="@drawable/setting"
+                android:layout_weight="0.5"
+                >
+            </ImageButton>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Recommend"
+                android:textSize="50dp">
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="2.5"
+            android:weightSum="10"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5">
+            </TextView>
+
+            <Button
+                android:id="@+id/Sell"
+                android:background="@drawable/shape"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4.25"
+                android:text="SELL"
+                android:textSize="45dp"
+                android:textColor="@color/black">
+
+            </Button>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5">
+            </TextView>
+            <Button
+                android:id="@+id/Buy"
+                android:background="@drawable/shape"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4.25"
+                android:text="Buy"
+                android:textSize="50dp"
+                android:textColor="@color/black">
+
+            </Button>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25">
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="2.5"
+            android:weightSum="10">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5">
+            </TextView>
+            <Button
+                android:id="@+id/Share"
+                android:background="@drawable/shape"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4.25"
+                android:text="SHARE"
+                android:textSize="35dp"
+                android:textColor="@color/black">
+
+            </Button>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5">
+            </TextView>
+            <Button
+                android:id="@+id/Show"
+                android:background="@drawable/shape"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4.25"
+                android:text="Show All"
+                android:textSize="35dp"
+                android:textColor="@color/black">
+
+            </Button>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.25">
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1.5"
+            android:weightSum="10">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewpager2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.viewpager2.widget.ViewPager2>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
