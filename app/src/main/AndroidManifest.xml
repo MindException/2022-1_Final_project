@@ -13,11 +13,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Used_item_market">
         <activity
+            android:name=".SettingPage"
+            android:exported="false" />
+        <activity
+            android:name=".PostPage"
+            android:exported="false" />
+        <activity
+            android:name=".AllPage"
+            android:exported="false" />
+        <activity
+            android:name=".SharePage"
+            android:exported="false" />
+        <activity
+            android:name=".SellPage"
+            android:exported="false" />
+        <activity
+            android:name=".BuyPage"
+            android:exported="false" />
+        <activity
             android:name=".SetInFo"
             android:exported="false" />
         <activity
             android:name=".SignUpMap"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".SignUp"
             android:exported="true" />
