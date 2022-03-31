@@ -42,6 +42,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:20.1.0'
     implementation 'com.google.firebase:firebase-auth:21.0.2'        //파이어베이스 인증
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'           //파이어베이스 인증2
+    implementation "androidx.viewpager2:viewpager2:1.0.0"           //view_pager2사용 화면 슥슥 넘어가는거
+    implementation 'de.hdodenhof:circleimageview:3.1.0'             //둥근 이미지 뷰
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:29.0.0'              //카드 뷰
 
     //url 관련 gradle
     //implementation 'com.github.bumptech.glide:glide:4.9.0'           //글라이드 이미지 로딩
