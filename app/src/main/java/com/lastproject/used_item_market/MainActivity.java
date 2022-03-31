@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.lobby);
 
         Sell();
         Buy();
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void Sell(){ //판매 버튼 클릭 시 화면 이동
-        Button sell = (Button)findViewById(R.id.Sell);
+        ImageButton sell = (ImageButton)findViewById(R.id.Sell);
 
         sell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     void Buy(){ //구매 버튼 클릭 시 화면 이동
-        Button buy = (Button)findViewById(R.id.Buy);
+        ImageButton buy = (ImageButton)findViewById(R.id.Buy);
 
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     void Share(){ //무료나눔 버튼 클릭 시 화면 이동
-        Button share = (Button)findViewById(R.id.Share);
+        ImageButton share = (ImageButton)findViewById(R.id.Share);
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     void All(){ //모두보기 버튼 클릭 시 화면 이동
-        Button all = (Button)findViewById(R.id.Show);
+        ImageButton all = (ImageButton)findViewById(R.id.Show);
 
         all.setOnClickListener(new View.OnClickListener() {
             @Override
