@@ -317,6 +317,7 @@ public class SignUpMap extends AppCompatActivity {
             if (isInitialized) {
                 moveMap(location.getLatitude(), location.getLongitude());
                 setMyLocation(location.getLatitude(), location.getLongitude());
+                findAroundUniv(location.getLatitude(), location.getLongitude());
             } else {
                 cacheLocation = location;
             }
@@ -400,5 +401,26 @@ public class SignUpMap extends AppCompatActivity {
 
     }
 
+    //주변대학 검색
+    public void findAroundUniv(double lat, double lng){
+        TMapData tmapdata = new TMapData();
+        TMapPoint point = new TMapPoint(lat, lng);
+        tmapdata.findAroundNamePOI(point,"대학교",3,99,new TMapData.FindAroundNamePOIListenerCallback(){  // (위치, 카테고리, 반경거리, 검색개수)
+            @Override
+            public void onFindAroundNamePOI(ArrayList<TMapPOIItem> arrayList) {
+                ArrayList<String> arrList = new ArrayList<String>(); //대학Array 리스트 생성
+                ArrayList<Double> doubles = new ArrayList<Double>(); //거리Array 리스트 생성
+                for (int i = 0; i < arrayList.size(); i++) {
+                    doubles.add(arrayList.get(i).getDistance(point)); // 받아온 주소 리스트 사이즈 만큼의 대학까지의 거리를 배열에 추가
+                    // 주차장 단어가 포함되어 있지 않은 대학교 검색
+                    if(arrayList.get(i).getPOIName().contains("주차장")){
+
+                    }else{
+                        arrList.add(arrayList.get(i).getPOIName());  //받아온 주소 리스트 사이즈 만큼의 대학 이름을 배열에 추가
+                    }
+                }
+            }
+        });
+    }
 
 }
