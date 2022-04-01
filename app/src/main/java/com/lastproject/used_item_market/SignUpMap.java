@@ -35,6 +35,7 @@ import com.skt.Tmap.TMapView;
 import com.skt.Tmap.poi_item.TMapPOIItem;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class SignUpMap extends AppCompatActivity {
 
@@ -419,7 +420,54 @@ public class SignUpMap extends AppCompatActivity {
                         arrList.add(arrayList.get(i).getPOIName());  //받아온 주소 리스트 사이즈 만큼의 대학 이름을 배열에 추가
                     }
                 }
-            }
+
+
+                //공기계에서 접근권한 허용했는데 위치가 안변한다.(0401)
+
+                //여기서 만든 대학 리스트를 정렬하여 출력한다.
+                ArrayList<University> univlist = new ArrayList<University>();
+                for(int k = 0; k < arrList.size(); k++){            //대학정보를 만들어서 넣어준다.
+
+                    University uv = new University();
+                    uv.university = arrList.get(k);
+                    uv.distance = doubles.get(k);
+                    univlist.add(uv);
+
+                }
+
+                univlist.sort(new CompareUnivDistance<University>());     //이걸로 하면 최소거리부터 정렬된다.
+                ArrayList<University> stackUniv = new ArrayList<University>();      //순서대로 되었으니 대학만 받을 것이다.
+                int trigger = 0;            //1이 되면 저장한적이 있음으로 저장을 안한다.
+                for(int i = 0; i < univlist.size(); i++){
+
+                    int endIndex = 0;       //대학교라는 글자의 시작 인덱스를 가져온다.
+                    endIndex = univlist.get(i).university.indexOf("대학교");       //대학교에서 대의 시작 인덱스를 가져온다.
+                    univlist.get(i).university = univlist.get(i).university.substring(0,endIndex+3);  //이렇게 하면 대학교까지의 이름만 가져온다.
+                    if(stackUniv.size() == 0){       //아무것도 없을 경우인 처음에는 그냥 넣는다.
+                        stackUniv.add(univlist.get(i));
+                    }else{
+                        for(int j = 0; j < stackUniv.size(); j++){
+
+                            if(univlist.get(i).university.equals(stackUniv.get(j).university)){     //서로 대학이 같지 않을 경우만 추가
+                                trigger = 1;        //저장한 적이 있다.
+                            }
+                        }
+                        if(trigger == 0){
+                            stackUniv.add(univlist.get(i));
+                        }
+                    }
+                    trigger = 0;
+
+                }//대학교 중복 없애기(성공)
+
+                //결론적으로 여기에 대학중복없이 최소거리부터 정렬되어 들어가있는 배열은 stackUniv이다.
+
+
+
+
+
+
+            }//
         });
     }
 

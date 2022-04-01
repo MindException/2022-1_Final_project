@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+//살려면 buy 사용자 기준 1인칭이 사용자
+
 public class BuyPage extends AppCompatActivity {
 
     @Override
