@@ -442,29 +442,56 @@ public class SignUpMap extends AppCompatActivity {
 
                     int endIndex = 0;       //대학교라는 글자의 시작 인덱스를 가져온다.
                     endIndex = univlist.get(i).university.indexOf("대학교");       //대학교에서 대의 시작 인덱스를 가져온다.
-                    univlist.get(i).university = univlist.get(i).university.substring(0,endIndex+3);  //이렇게 하면 대학교까지의 이름만 가져온다.
-                    if(stackUniv.size() == 0){       //아무것도 없을 경우인 처음에는 그냥 넣는다.
-                        stackUniv.add(univlist.get(i));
-                    }else{
-                        for(int j = 0; j < stackUniv.size(); j++){
+                    if(endIndex != -1){         //대학교로 검색하여 나온 경우
 
-                            if(univlist.get(i).university.equals(stackUniv.get(j).university)){     //서로 대학이 같지 않을 경우만 추가
-                                trigger = 1;        //저장한 적이 있다.
+                        univlist.get(i).university = univlist.get(i).university.substring(0,endIndex+3);  //이렇게 하면 대학교까지의 이름만 가져온다.
+                        if(stackUniv.size() == 0){       //아무것도 없을 경우인 처음에는 그냥 넣는다.
+                            stackUniv.add(univlist.get(i));
+                        }else{
+                            for(int j = 0; j < stackUniv.size(); j++){
+
+                                if(univlist.get(i).university.equals(stackUniv.get(j).university)){     //서로 대학이 같지 않을 경우만 추가
+                                    trigger = 1;        //저장한 적이 있다.
+                                }
+                            }
+                            if(trigger == 0){
+                                stackUniv.add(univlist.get(i));
                             }
                         }
-                        if(trigger == 0){
+
+                    }else{                 //대학으로 검색하여 나온 경우
+
+                        endIndex = univlist.get(i).university.indexOf("대학");       //대학에서 대의 시작 인덱스를 가져온다.
+                        univlist.get(i).university = univlist.get(i).university.substring(0,endIndex+2);  //이렇게 하면 대학교까지의 이름만 가져온다.
+                        if(stackUniv.size() == 0){       //아무것도 없을 경우인 처음에는 그냥 넣는다.
                             stackUniv.add(univlist.get(i));
+                        }else{
+                            for(int j = 0; j < stackUniv.size(); j++){
+
+                                if(univlist.get(i).university.equals(stackUniv.get(j).university)){     //서로 대학이 같지 않을 경우만 추가
+                                    trigger = 1;        //저장한 적이 있다.
+                                }
+                            }
+                            if(trigger == 0){
+                                stackUniv.add(univlist.get(i));
+                            }
                         }
+
                     }
+
                     trigger = 0;
 
                 }//대학교 중복 없애기(성공)
 
                 //결론적으로 여기에 대학중복없이 최소거리부터 정렬되어 들어가있는 배열은 stackUniv이다.
 
+                /*사용 예시
+                for(int i = 0; i < stackUniv.size(); i++){
 
+                    System.out.println("대학 리스트 출려: " + stackUniv.get(i).university);
 
-
+                }
+                */
 
 
             }//
