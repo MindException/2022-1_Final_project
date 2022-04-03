@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#745641"
     tools:context=".PostPage"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,13 +24,13 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <ImageButton
-                android:id="@+id/xbtn"
+            <TextView
+                android:id="@+id/pg_xbtn"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/backbtn">
-            </ImageButton>
+            </TextView>
 
             <TextView
                 android:layout_width="0dp"
@@ -55,13 +55,13 @@
                 android:layout_weight="0.5">
             </TextView>
 
-            <ImageButton
-                android:id="@+id/done"
+            <TextView
+                android:id="@+id/pg_done"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/done">
-            </ImageButton>
+            </TextView>
 
         </LinearLayout>
 
@@ -78,38 +78,45 @@
                 android:layout_weight="0.5">
             </TextView>
 
-            <ImageView
-                android:id="@+id/addpicture"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="@drawable/shapepicture"
-                android:scaleType="centerCrop">
-            </ImageView>
+                android:orientation="vertical"
+                android:weightSum="5">
 
-            <ImageView
-                android:id="@+id/addpicture2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="@drawable/shapepicture"
-                android:scaleType="centerCrop">
-            </ImageView>
+                <ImageButton
+                    android:id="@+id/add_img_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:background="@drawable/ic_baseline_photo_camera_24">
+                </ImageButton>
 
-            <ImageView
-                android:id="@+id/addpicture3"
+                <TextView
+                    android:id="@+id/count_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="사진 추가(0/10)"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:gravity="center">
+                </TextView>
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/prouduct_recycleview"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="@drawable/shapepicture"
-                android:scaleType="centerCrop">
-            </ImageView>
+                android:layout_weight="6"
+                android:scrollbars="horizontal">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
 
         </LinearLayout>
 
@@ -132,13 +139,14 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="품명"
+                android:text="제목"
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 android:textStyle="bold">
             </TextView>
 
             <EditText
+                android:id="@+id/title_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -148,7 +156,7 @@
                 android:background="@drawable/shape"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:hint="품명을 입력하세요.">
+                android:hint="제목을 입력하세요.">
             </EditText>
 
         </LinearLayout>
@@ -179,6 +187,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/et_cash"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -188,7 +197,8 @@
                 android:background="@drawable/shape"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:hint="가격을 입력하세요.">
+                android:hint="가격을 입력하세요."
+                android:inputType="number">
             </EditText>
 
         </LinearLayout>
@@ -218,14 +228,21 @@
                 android:gravity="center">
             </TextView>
 
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.2">
+            </TextView>
+
+            <!-- 스피너 가운데 정렬은 자바 코드로 해결해야한다.-->
             <Spinner
                 android:id="@+id/purpose"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="3.1"
                 android:spinnerMode="dropdown"
                 android:layout_gravity="center"
-                android:textAlignment="center">
+                android:gravity="center">
             </Spinner>
 
         </LinearLayout>
@@ -255,11 +272,17 @@
                 android:gravity="center">
             </TextView>
 
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="0.2">
+            </TextView>
+
             <Spinner
                 android:id="@+id/category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="3.1"
                 android:spinnerMode="dropdown"
                 android:layout_gravity="center"
                 android:textAlignment="center">
@@ -320,6 +343,7 @@
             </TextView>
 
             <EditText
+                android:id="@+id/text"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

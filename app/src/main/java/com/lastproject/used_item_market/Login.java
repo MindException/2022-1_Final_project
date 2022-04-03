@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,8 +79,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         myRef = database.getReference();
 
         //TextView 연결
-        et_email = findViewById(R.id.email);
-        et_password = findViewById(R.id.password);
+        et_email = (EditText)findViewById(R.id.email);
+        et_password = (EditText)findViewById(R.id.password);
+        google_button = (TextView)findViewById(R.id.bt_google);
+        login_button = (TextView)findViewById(R.id.bt_login);
 
         logininfo = getSharedPreferences("setting", MODE_PRIVATE);      //기본 저장 로그인 객체 생성
         editor = logininfo.edit();
@@ -116,7 +119,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     void login(){
 
-        login_button = (TextView)findViewById(R.id.bt_login);
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,6 +137,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             for(DataSnapshot ds1: snapshot.getChildren()){
 
                                 userinfo = ds1.getValue(User.class);        //한 개씩 가져와서 비교한다.
+                                mykey = ds1.getKey();
                                 if(userinfo.google_email.equals(semail)){   //아이디가 일치하는 경우
                                     email_trigger = true;
 
@@ -145,6 +148,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         login_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         login_intent.putExtra("email", email);
                                         login_intent.putExtra("mykey", mykey);
+                                        login_intent.putExtra("nickname", userinfo.nickname);
+                                        login_intent.putExtra("myUniv", userinfo.univetsity);
                                         startActivity(login_intent);
                                         finish();
 
@@ -195,7 +200,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     void googleLogin(){
 
-        google_button = (TextView)findViewById(R.id.bt_google);
         google_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

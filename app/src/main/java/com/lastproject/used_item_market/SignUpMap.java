@@ -406,7 +406,7 @@ public class SignUpMap extends AppCompatActivity {
     public void findAroundUniv(double lat, double lng){
         TMapData tmapdata = new TMapData();
         TMapPoint point = new TMapPoint(lat, lng);
-        tmapdata.findAroundNamePOI(point,"대학교",3,99,new TMapData.FindAroundNamePOIListenerCallback(){  // (위치, 카테고리, 반경거리, 검색개수)
+        tmapdata.findAroundNamePOI(point,"대학교",30,99,new TMapData.FindAroundNamePOIListenerCallback(){  // (위치, 카테고리, 반경거리, 검색개수)
             @Override
             public void onFindAroundNamePOI(ArrayList<TMapPOIItem> arrayList) {
                 ArrayList<String> arrList = new ArrayList<String>(); //대학Array 리스트 생성

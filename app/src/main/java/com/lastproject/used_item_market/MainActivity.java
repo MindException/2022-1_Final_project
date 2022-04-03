@@ -10,10 +10,26 @@ import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
+    //기본 나의 정보
+    String email = "";
+    String mykey = "";
+    String nickname = "";
+    String myUniv = "";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lobby);
+
+        //기본세팅
+        email = getIntent().getStringExtra("email");
+        mykey = getIntent().getStringExtra("mykey");
+        nickname = getIntent().getStringExtra("nickname");
+        myUniv = getIntent().getStringExtra("myUniv");
+
+
 
         Sell();
         Buy();
@@ -74,7 +90,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PostPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
                 startActivity(intent);
+                System.out.println();
             }
         });
     }

@@ -65,10 +65,10 @@ public class SignUp extends AppCompatActivity {
         System.out.println(email);
 
         //EditText 연결
-        et_email = findViewById(R.id.email_set);
-        et_password1 = findViewById(R.id.password_set);
-        et_password2 = findViewById(R.id.password2_set);
-        et_name = findViewById(R.id.name_set);
+        et_email = (EditText) findViewById(R.id.email_set);
+        et_password1 = (EditText)findViewById(R.id.password_set);
+        et_password2 =(EditText) findViewById(R.id.password2_set);
+        et_name = (EditText)findViewById(R.id.name_set);
         checkiv = (ImageView) findViewById(R.id.check_mark);
 
         //이메일 자동 세팅(xml에서 못 건드리게해서 고정된다.)
@@ -164,7 +164,7 @@ public class SignUp extends AppCompatActivity {
     //뒤로가기 버튼
     void cancel(){
 
-        ImageButton cancel_button = findViewById(R.id.back_login);
+        ImageButton cancel_button = (ImageButton) findViewById(R.id.back_login);
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,7 +182,7 @@ public class SignUp extends AppCompatActivity {
     //회원가입 버튼
     void sign_up(){
 
-        TextView btn_sign = findViewById(R.id.bt_school_choice);
+        TextView btn_sign = (TextView) findViewById(R.id.bt_school_choice);
         btn_sign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

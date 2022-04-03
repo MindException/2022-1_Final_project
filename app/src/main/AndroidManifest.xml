@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 0402 추가된 권한들 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,25 +24,26 @@
         android:theme="@style/Theme.Used_item_market">
         <activity
             android:name=".SettingPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".PostPage"
-            android:exported="false" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".AllPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SharePage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SellPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".BuyPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SetInFo"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SignUpMap"
             android:exported="true" >

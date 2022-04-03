@@ -2,6 +2,5 @@
 <resources>
     <string-array name="purpose">
         <item> 판매</item>
-        <item> 구매</item>
         <item> 무료나눔</item>
     </string-array></resources>
