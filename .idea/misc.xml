@@ -13,6 +13,7 @@
         <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/drawable/postadd.xml" value="0.2722222222222222" />
         <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/drawable/setting.xml" value="0.2722222222222222" />
         <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/drawable/shape.xml" value="0.2722222222222222" />
+        <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/drawable/shapepicture.xml" value="0.26145833333333335" />
         <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/activity_all_page.xml" value="0.32518115942028986" />
         <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/activity_buy_page.xml" value="0.32518115942028986" />
         <entry key="..\:/AndroidWorkspace/Used_item_market/app/src/main/res/layout/activity_main.xml" value="0.33605072463768115" />
@@ -47,7 +48,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15_PREVIEW" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
