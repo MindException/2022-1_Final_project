@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Location;
 import android.location.LocationListener;
@@ -23,12 +24,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
@@ -156,21 +159,58 @@ public class SignUpMap extends AppCompatActivity {
         //검색 리스트 뷰 setting
         keywordView = (EditText) findViewById(R.id.start_edit_keyword);
         listView = (ListView) findViewById(R.id.start_listView);
-        //listView.setBackgroundColor(Color.BLACK);   찾았다 이것 때문에 안보이는 것
+
         listView.setVisibility(listView.INVISIBLE);
-        mAdapter = new ArrayAdapter<POI>(this, android.R.layout.simple_list_item_1); // simple_list_item_1는 안드로이드에서 제공하는 폼
+        mAdapter = new ArrayAdapter<POI>(this, android.R.layout.simple_list_item_1){
+            @Override   //리스트뷰 글자 색 설정
+            public  View getView(int position, View convertView, ViewGroup parent){
+                View view = super.getView(position, convertView, parent);
+                TextView tv = (TextView) view.findViewById(android.R.id.text1);
+                tv.setTextColor(Color.BLACK);
+                return view;
+            }
+        }; // simple_list_item_1는 안드로이드에서 제공하는 폼
         listView.setAdapter(mAdapter);
         InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);  // 키패드 컨트롤
 
         //서치 버튼 클릭시 이벤트 처리
-        Button btn = (Button) findViewById(R.id.start_btn_search);
+        TextView btn = (TextView) findViewById(R.id.start_btn_search);
         btn.setOnClickListener(new View.OnClickListener() {
+            public boolean equals(){
+                String str = keywordView.getText().toString();
+                if(str.contains("대") | str.contains("대학") | str.contains("대학교")){  //검색에서 대,대학,대학교가 포함되었는지 확인
+                    return true;
+                }
+                return false;
+            }
             @Override
             public void onClick(View view) {
-                listView.setVisibility(listView.VISIBLE);
-                searchPOI();
+                if(keywordView.getText().toString().length() == 0) {
+                    keywordView.setHint("검색어를 입력해주세요.");
+                }else {
+                    listView.setVisibility(listView.VISIBLE);  // 리스트 뷰 출력
+                    if(equals() == true) {  //검색어에 대,대학,대학교가 포함되었다면 검색실행
+                        searchPOI();
+                        manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS); // 키패드 내리기
+                    }else{  //검색어에 대,대학,대학교가 포함되지 않는다면 다시 검색하라는 알림창 출력
+                        listView.setVisibility(listView.INVISIBLE); //리스트 뷰 감추기
+                        //다이얼로그
+                        AlertDialog.Builder dlg = new AlertDialog.Builder(SignUpMap.this);
+                        dlg.setTitle("대학교를 검색해주세요"); //제목
+                        dlg.setMessage("검색어에 '대', '대학', '대학교'가 포함된 검색어를 입력해주세요"); // 메시지
+                        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        dlg.show();
+
+                    }
+                }
             }
         });
+
 
         //세팅 후 다음으로 넘어가는 버튼
         nextButton();
@@ -213,7 +253,6 @@ public class SignUpMap extends AppCompatActivity {
                 item.setIcon(bitmap);//마커 아이콘
                 item.setPosition(0.5f, 1);//마커 크기
                 mapView.addMarkerItem("item", item); //마커 추가
-                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS); // 키패드 내리기
             }
         });
 
@@ -239,7 +278,6 @@ public class SignUpMap extends AppCompatActivity {
 
                             if (arrayList.size() > 0) {
                                 TMapPOIItem poi = arrayList.get(0);//리스트에서 검색한 장소 받아옴
-                                moveMap(poi.getPOIPoint().getLatitude(), poi.getPOIPoint().getLongitude());//검색한 위치로 맵 중심이동
                             }
                         }
                     });
@@ -345,8 +383,8 @@ public class SignUpMap extends AppCompatActivity {
     //다음으로 넘어가는 버튼
     void nextButton(){
 
-        Button bt_next = (Button)findViewById(R.id.next_btn_search);
-        bt_next.setOnClickListener(new View.OnClickListener() {
+        TextView t_next = (TextView) findViewById(R.id.next_btn_search);
+        t_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -408,7 +446,7 @@ public class SignUpMap extends AppCompatActivity {
     public void findAroundUniv(double lat, double lng){
         TMapData tmapdata = new TMapData();
         TMapPoint point = new TMapPoint(lat, lng);
-        tmapdata.findAroundNamePOI(point,"대학교",30,99,new TMapData.FindAroundNamePOIListenerCallback(){  // (위치, 카테고리, 반경거리, 검색개수)
+        tmapdata.findAroundNamePOI(point,"대학교",2,99,new TMapData.FindAroundNamePOIListenerCallback(){  // (위치, 카테고리, 반경거리, 검색개수)
             @Override
             public void onFindAroundNamePOI(ArrayList<TMapPOIItem> arrayList) {
                 ArrayList<String> arrList = new ArrayList<String>(); //대학Array 리스트 생성
@@ -489,7 +527,7 @@ public class SignUpMap extends AppCompatActivity {
                     //결론적으로 여기에 대학중복없이 최소거리부터 정렬되어 들어가있는 배열은 stackUniv이다.
 
                     for (int i = 0; i < stackUniv.size(); i++) {
-                        if(i < 5) {
+                        if(i < 5) {  // 대학리스트 5개까지만 넘김
                             SortList.add(stackUniv.get(i).university);
                         }
                     }
@@ -513,7 +551,7 @@ public class SignUpMap extends AppCompatActivity {
             @Override
             public void run() {
                 if(univ != null){
-                    dlg.setTitle("대학");
+                    dlg.setTitle("반경 2KM 대학");
                     dlg.setSingleChoiceItems(univ.toArray(new String[0]), 0, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
@@ -525,6 +563,11 @@ public class SignUpMap extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {  // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
                             //System.out.println("선택 : " + univ.get(selecteduniv[0]));
+
+                        }
+                    }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
                         }
                     });
