@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#745641"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -71,39 +70,52 @@
                         android:layout_height="150dp"
                         android:orientation="horizontal"
                         android:weightSum="2">
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="300dp"
-                            android:layout_height="150dp"
-                            app:cardCornerRadius="25dp"
-                            app:cardElevation="5dp"
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/img_view_round">
-                            <ImageButton
-                                android:id="@+id/Show"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:padding="0dp"
-                                ></ImageButton>
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="300dp"
-                            android:layout_height="150dp"
-                            app:cardCornerRadius="25dp"
-                            app:cardElevation="5dp"
-                            android:layout_weight="1"
+                            android:background="@drawable/img_view_round"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp">
-                            <ImageButton
-                                android:id="@+id/Sell"
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:padding="0dp"></ImageButton>
-                        </androidx.cardview.widget.CardView>
+                                app:cardCornerRadius="25dp"
+                                app:cardElevation="5dp"
+                                android:layout_margin="2dp">
+
+                                <ImageButton
+                                    android:id="@+id/Show"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="0dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/galaxy"></ImageButton>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/img_view_round"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp">
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:cardCornerRadius="25dp"
+                                app:cardElevation="5dp"
+                                android:layout_margin="2dp">
+                                <ImageButton
+                                    android:id="@+id/Sell"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
+                                    android:padding="0dp"
+                                    ></ImageButton>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -135,37 +147,54 @@
                         android:layout_height="150dp"
                         android:orientation="horizontal"
                         android:weightSum="2">
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="300dp"
-                            android:layout_height="150dp"
-                            app:cardCornerRadius="25dp"
-                            app:cardElevation="20dp"
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:background="@drawable/img_view_round"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp">
-                            <ImageButton
-                                android:id="@+id/Buy"
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:padding="0dp"></ImageButton>
-                        </androidx.cardview.widget.CardView>
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="300dp"
-                            android:layout_height="150dp"
-                            app:cardCornerRadius="25dp"
-                            app:cardElevation="20dp"
+                                app:cardCornerRadius="25dp"
+                                app:cardElevation="5dp"
+                                android:layout_margin="2dp">
+
+                                <ImageButton
+                                    android:id="@+id/Buy"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:padding="0dp"
+                                    android:scaleType="centerCrop"></ImageButton>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:background="@drawable/img_view_round"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp">
-                            <ImageButton
-                                android:id="@+id/Share"
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:padding="0dp"></ImageButton>
-                        </androidx.cardview.widget.CardView>
+                                app:cardCornerRadius="25dp"
+                                app:cardElevation="5dp"
+                                android:layout_margin="2dp">
+                                <ImageButton
+                                    android:id="@+id/Share"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="centerCrop"
+                                    android:padding="0dp"
+                                    ></ImageButton>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
