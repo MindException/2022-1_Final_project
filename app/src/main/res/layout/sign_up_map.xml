@@ -14,35 +14,46 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="10">
+        android:weightSum="10"
+        android:background="#2A5237"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp">
 
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:id="@+id/start_edit_keyword"
-            android:hint="출발지를 검색하세요"
-            android:layout_weight="7" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Search"
-            android:id="@+id/start_btn_search"
-            android:layout_weight="1.5"/>
+            android:hint="대학를 검색하세요."
+            android:layout_weight="7"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#A5A4A4"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Search"
-            android:layout_weight= "0.1"/>
+            android:text="검색"
+            android:id="@+id/start_btn_search"
+            android:layout_weight="1.5"
+            android:background="@drawable/bt_tumyeong_sty"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_margin="5dp"/>
 
-        <Button
+
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="next"
+            android:text="확인"
             android:id="@+id/next_btn_search"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1.5"
+            android:background="@drawable/bt_tumyeong_sty"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:layout_margin="5dp"/>
 
 
     </LinearLayout>
@@ -55,18 +66,22 @@
         <com.skt.Tmap.TMapView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/start_map_view" >
+            android:id="@+id/start_map_view"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
 
 
 
         </com.skt.Tmap.TMapView>
 
         <ListView
+            android:id="@+id/start_listView"
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:id="@+id/start_listView"
             android:layout_gravity="left|top"
-            android:background="#2A5237"/>
+            android:background="#FFFCDF"
+            android:layout_marginLeft="5dp"/>
     </FrameLayout>
 
 </LinearLayout>

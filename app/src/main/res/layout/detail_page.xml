@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#745641">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="45px"
+        android:background="#2A5237">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5">
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+                        <ImageButton
+                            android:id="@+id/back_login"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:src="@drawable/back"
+                            android:scaleType="fitStart"
+                            android:background="#00ff0000"
+                            android:padding="3dp"></ImageButton>
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:src="@drawable/logo"
+                            android:scaleType="fitCenter"
+                            android:background="#00ff0000"
+                            android:padding="3dp"></ImageView>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="350dp"
+                        android:layout_height="350dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/img_view_round">
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:cardCornerRadius="25dp"
+                            app:cardElevation="5dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="3dp">
+                            <ImageButton
+                                android:id="@+id/detail_page_main_img1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/galaxy"
+                                android:padding="0dp"></ImageButton>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="5dp"></androidx.recyclerview.widget.RecyclerView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#ffffff"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"></View>
+
+                    <TextView
+                        android:id="@+id/product_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="여기 품명"
+                        android:textColor="#ffffff"
+                        android:textSize="30dp"
+                        android:gravity="center">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/category_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="여기 카테고리 명"
+                        android:textColor="#ffffff"
+                        android:textSize="15dp"
+                        android:gravity="center">
+                    </TextView>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#ffffff"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"></View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:weightSum="4"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/purpose"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:text="무료나눔"
+                            android:textSize="20dp"
+                            android:textColor="#ffffff"
+                            android:gravity="center"></TextView>
+                        <TextView
+                            android:id="@+id/money"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:text="99,999,999 원"
+                            android:textSize="20dp"
+                            android:textColor="#ffffff"
+                            android:gravity="center|right"
+                            android:paddingRight="15dp">
+                        </TextView>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#ffffff"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"></View>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:paddingRight="100dp"
+                        android:paddingLeft="100dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp">
+                            <TextView
+                                android:id="@+id/go_transaction_map"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="지정된 거래장소 보기"
+                                android:textSize="15dp"
+                                android:textColor="#ffffff"
+                                android:gravity="center"
+                                android:background="@drawable/bt_tumyeong_sty"></TextView>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#ffffff"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"></View>
+
+                    <TextView
+                        android:id="@+id/detail_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="//여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        "
+                        android:textColor="#ffffff"
+                        android:textSize="18dp"></TextView>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#ffffff"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"></View>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal"
+                    android:paddingRight="120dp"
+                    android:paddingLeft="120dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:id="@+id/go_chatting"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="채팅하기"
+                        android:textSize="22dp"
+                        android:textColor="#ffffff"
+                        android:gravity="center"
+                        android:background="@drawable/bt_tumyeong_sty"
+                        ></TextView>
+                </LinearLayout>
+
+
+
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
