@@ -228,6 +228,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 resultLogin(account);   //로그인 결과값을 수행하는 메소드
 
 
+            }else{
+                System.out.println("실패함");
             }
         }
 
@@ -242,6 +244,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     public void onComplete(@NonNull Task<AuthResult> task) {  //Task는 인증 결과이다.
 
                         if(task.isSuccessful()){      //로그인이 성공했으면
+                            System.out.println("이메일 : " + account.getEmail());
 
                             //여기에 넘어갈 곳 인탠트 나중에 채우기
                             email = account.getEmail();         //이메일 저장
