@@ -149,7 +149,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                         login_intent.putExtra("email", email);
                                         login_intent.putExtra("mykey", mykey);
                                         login_intent.putExtra("nickname", userinfo.nickname);
-                                        login_intent.putExtra("myUniv", userinfo.univetsity);
+                                        login_intent.putExtra("myUniv", userinfo.university);
                                         startActivity(login_intent);
                                         finish();
 

@@ -5,7 +5,7 @@ public class User {         //사용자 테이블이다.
     public String google_email;             //인증 받은 구글 이메일
     public String password;                 //비밀번홓
     public String nickname;                 //별명
-    public String univetsity;               //소속한 대학
+    public String university;               //소속한 대학
     public String img;                      //이진 파일로 이미지가 들어가 있다.
 
 
@@ -16,7 +16,7 @@ public class User {         //사용자 테이블이다.
         this.google_email = google_email;
         this.password = password;
         this.nickname = nickname;
-        this.univetsity = univetsity;
+        this.university = univetsity;
 
     }
 

@@ -23,11 +23,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lobby);
 
+        /*
         //기본세팅
         email = getIntent().getStringExtra("email");
         mykey = getIntent().getStringExtra("mykey");
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
+        */
+
+        //기본세팅
+        email = "test";
+        mykey = "MyWmy4BWQkVrPxOq8Iw";
+        nickname = "test";
+        myUniv = "선문대학교";
 
 
 
