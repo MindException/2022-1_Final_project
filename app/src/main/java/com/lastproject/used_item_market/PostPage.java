@@ -35,6 +35,9 @@ public class PostPage extends AppCompatActivity {
     String myUniv;
     String email;
     String nickname;
+    String Address;
+    String latitude;
+    String longtitude;
 
     //스피너만 따로
     Spinner purposeSpinner;          //모집인원
@@ -74,6 +77,10 @@ public class PostPage extends AppCompatActivity {
         mykey = getIntent().getStringExtra("mykey");
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
+        Address = getIntent().getStringExtra("Address");
+        latitude = getIntent().getStringExtra("latitude");
+        longtitude = getIntent().getStringExtra("longtitude");
+
 
         //파이어 베이스 데이터베이스 연동
         database = FirebaseDatabase.getInstance();
