@@ -28,7 +28,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,6 +40,7 @@ import com.skt.Tmap.TMapView;
 import com.skt.Tmap.poi_item.TMapPOIItem;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class SignUpMap extends AppCompatActivity {
 
@@ -85,45 +85,27 @@ public class SignUpMap extends AppCompatActivity {
         nickname = getIntent().getStringExtra("nickname");
 
         //어플리케이션 실행 시 위치설정권한이 먼저 확인되어야 하므로 GPSTracker함수 실행
-        GPSTracker();
 
     }
 
-    //어플을 시작하기전 GPS사용여부 알림 및 GPS 사용
-    public void GPSTracker() {
-        // OS가 Marshmallow(23) 이상일 경우 권한체크 해야함.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-            if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-                // 권한 없음
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
-            } else {
-                // ACCESS_FINE_LOCATION 에 대한 권한이 이미 있음.
-                Mapsetting();// permissionselfcheck가 되고나서 Tmap을 실행시켜야 하므로 onstart함수로 이동
-
-            }
-        } else {
-            // OS가 Marshmallow 이전일 경우 권한체크를 하지 않는다.
-            Mapsetting();// permissionselfcheck가 되고나서 Tmap을 실행시켜야 하므로 onstart함수로 이동
-        }
-    }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // grantResults[0] 거부 -> -1
         // grantResults[0] 허용 -> 0 (PackageManager.PERMISSION_GRANTED)
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {// ACCESS_FINE_LOCATION 에 대한 권한 획득.
-            //권한을 획득하면 GPS설정을 통해 사용자의 위치를 받아옴
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // ACCESS_FINE_LOCATION 에 대한 권한 획득.
             tMapGPS = new TMapGpsManager(this);
             tMapGPS.setProvider(tMapGPS.NETWORK_PROVIDER);
             tMapGPS.OpenGps();
-            onStart();// permissionselfcheck가 되고나서 Tmap을 실행시켜야 하므로 onstart함수로 이동
+            onStart();
         } else {
             // ACCESS_FINE_LOCATION 에 대한 권한 거부.
-            onStart();// permissionselfcheck가 되고나서 Tmap을 실행시켜야 하므로 onstart함수로 이동
+            Mapsetting();
         }
 
     }
+
 
     void Mapsetting() {
         //티맵 뷰
@@ -291,10 +273,6 @@ public class SignUpMap extends AppCompatActivity {
 
         isInitialized = true;
         mapView.setMapType(TMapView.MAPTYPE_STANDARD); //Tmap Type설정
-        if (cacheLocation != null) {
-            moveMap(cacheLocation.getLatitude(), cacheLocation.getLongitude());
-            setMyLocation(cacheLocation.getLatitude(), cacheLocation.getLongitude());
-        }
         mapView.setOnClickListenerCallBack(new TMapView.OnClickListenerCallback() {
             @Override
             public boolean onPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
@@ -320,15 +298,23 @@ public class SignUpMap extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Mapsetting(); // Tmap 실행
-            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                //권한 없음
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS_FINE_LOCATION);
+                return;
+            }else {
+                // ACCESS_FINE_LOCATION 에 대한 권한이 이미 있음.
+                Mapsetting();
+            }
+            Location location = mLM.getLastKnownLocation(mProvider);
+            if (location != null) {
+                mListener.onLocationChanged(location);
+            }
+            mLM.requestSingleUpdate(mProvider, mListener, null);
+        }else{
+            // OS가 Marshmallow 이전일 경우 권한체크를 하지 않는다.
         }
-        Location location = mLM.getLastKnownLocation(mProvider);
-        if (location != null) {
-            mListener.onLocationChanged(location);
-        }
-        mLM.requestSingleUpdate(mProvider, mListener, null);
     }
     // 어플리케이션이 종료되면 GPS 백그라운드 제거
     @Override
@@ -362,6 +348,7 @@ public class SignUpMap extends AppCompatActivity {
             } else {
                 cacheLocation = location;
             }
+
         }
 
         @Override
@@ -446,22 +433,28 @@ public class SignUpMap extends AppCompatActivity {
     public void findAroundUniv(double lat, double lng){
         TMapData tmapdata = new TMapData();
         TMapPoint point = new TMapPoint(lat, lng);
-        tmapdata.findAroundNamePOI(point,"대학교",2,99,new TMapData.FindAroundNamePOIListenerCallback(){  // (위치, 카테고리, 반경거리, 검색개수)
+        tmapdata.findAroundNamePOI(point,"대학교",5,99,new TMapData.FindAroundNamePOIListenerCallback(){  // (위치, 카테고리, 반경거리, 검색개수)
             @Override
             public void onFindAroundNamePOI(ArrayList<TMapPOIItem> arrayList) {
                 ArrayList<String> arrList = new ArrayList<String>(); //대학Array 리스트 생성
                 ArrayList<String> SortList = new ArrayList<String>(); //대학Array 리스트 생성
+                ArrayList<TMapPoint> Sortuvpoint = new ArrayList<>(); //대학 위치 리스트 생성
                 ArrayList<Double> doubles = new ArrayList<Double>(); //거리Array 리스트 생성
+                ArrayList<TMapPoint> uvpoint = new ArrayList<>(); //대학 위치 리스트 생성
                 if (arrayList != null) {
                     for (int i = 0; i < arrayList.size(); i++) {
                         doubles.add(arrayList.get(i).getDistance(point)); // 받아온 주소 리스트 사이즈 만큼의 대학까지의 거리를 배열에 추가
+                        arrayList.get(i).getPOIPoint();
                         // 주차장 단어가 포함되어 있지 않은 대학교 검색
                         if (arrayList.get(i).getPOIName().contains("주차장")) {
 
                         } else {
                             arrList.add(arrayList.get(i).getPOIName());  //받아온 주소 리스트 사이즈 만큼의 대학 이름을 배열에 추가
+                            uvpoint.add(arrayList.get(i).getPOIPoint());
                         }
                     }
+                    //System.out.println("대학 확인 " + arrList);
+                    //System.out.println("위치 확인 " + uvpoint);
 
                     //공기계에서 접근권한 허용했는데 위치가 안변한다.(0401)
 
@@ -472,12 +465,14 @@ public class SignUpMap extends AppCompatActivity {
                         University uv = new University();
                         uv.university = arrList.get(k);
                         uv.distance = doubles.get(k);
+                        uv.uvpoint = uvpoint.get(k);
                         univlist.add(uv);
 
                     }
 
                     univlist.sort(new CompareUnivDistance<University>());     //이걸로 하면 최소거리부터 정렬된다.
                     ArrayList<University> stackUniv = new ArrayList<University>();      //순서대로 되었으니 대학만 받을 것이다.
+                    ArrayList<TMapPoint> stackpoint = new ArrayList<>(); //대학 위치 리스트 생성
                     int trigger = 0;            //1이 되면 저장한적이 있음으로 저장을 안한다.
                     for (int i = 0; i < univlist.size(); i++) {
 
@@ -488,6 +483,7 @@ public class SignUpMap extends AppCompatActivity {
                             univlist.get(i).university = univlist.get(i).university.substring(0, endIndex + 3);  //이렇게 하면 대학교까지의 이름만 가져온다.
                             if (stackUniv.size() == 0) {       //아무것도 없을 경우인 처음에는 그냥 넣는다.
                                 stackUniv.add(univlist.get(i));
+                                stackpoint.add(univlist.get(i).uvpoint);
                             } else {
                                 for (int j = 0; j < stackUniv.size(); j++) {
 
@@ -497,6 +493,7 @@ public class SignUpMap extends AppCompatActivity {
                                 }
                                 if (trigger == 0) {
                                     stackUniv.add(univlist.get(i));
+                                    stackpoint.add(univlist.get(i).uvpoint);
                                 }
                             }
 
@@ -506,6 +503,7 @@ public class SignUpMap extends AppCompatActivity {
                             univlist.get(i).university = univlist.get(i).university.substring(0, endIndex + 2);  //이렇게 하면 대학교까지의 이름만 가져온다.
                             if (stackUniv.size() == 0) {       //아무것도 없을 경우인 처음에는 그냥 넣는다.
                                 stackUniv.add(univlist.get(i));
+                                stackpoint.add(univlist.get(i).uvpoint);
                             } else {
                                 for (int j = 0; j < stackUniv.size(); j++) {
 
@@ -515,6 +513,7 @@ public class SignUpMap extends AppCompatActivity {
                                 }
                                 if (trigger == 0) {
                                     stackUniv.add(univlist.get(i));
+                                    stackpoint.add(univlist.get(i).uvpoint);
                                 }
                             }
 
@@ -529,19 +528,21 @@ public class SignUpMap extends AppCompatActivity {
                     for (int i = 0; i < stackUniv.size(); i++) {
                         if(i < 5) {  // 대학리스트 5개까지만 넘김
                             SortList.add(stackUniv.get(i).university);
+                            Sortuvpoint.add(stackpoint.get(i));
                         }
                     }
-                    dialog(SortList);
+                    dialog(SortList, Sortuvpoint);
+                    System.out.println("확인(횟수)");
 
 
                 }else{
-                    dialog(null);
+                    dialog(null, null);
                 }
             }
         });
 
     }
-    void dialog(ArrayList<String> univ){
+    void dialog(ArrayList<String> univ, ArrayList<TMapPoint> univpoint){
         AlertDialog.Builder dlg = new AlertDialog.Builder(SignUpMap.this);
         final int[] selecteduniv = {0};
 
@@ -550,19 +551,21 @@ public class SignUpMap extends AppCompatActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                dlg.setCancelable(false);
                 if(univ != null){
+                    System.out.println("확인(창)");
                     dlg.setTitle("반경 2KM 대학");
                     dlg.setSingleChoiceItems(univ.toArray(new String[0]), 0, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
-
                             selecteduniv[0] = which;
 
                         }
                     }).setPositiveButton("확인",new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which) {  // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
-                            //System.out.println("선택 : " + univ.get(selecteduniv[0]));
+                            System.out.println("선택 : " + univ.get(selecteduniv[0]));
+                            System.out.println("선택(위치) : " + univpoint.get(selecteduniv[0]));
 
                         }
                     }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -585,7 +588,7 @@ public class SignUpMap extends AppCompatActivity {
                     dlg.show();
                 }
             }
-        }, 0);
+        }, 1000);
 
 
 
