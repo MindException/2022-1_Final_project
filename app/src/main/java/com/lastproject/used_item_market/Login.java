@@ -219,7 +219,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if(requestCode == REQ_SIGN_GOOGLE){     //결과를 가져온다.
 
             //여기까지는 잘 들어온다.
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);  //여기서 값을 못 받음(도훈)
 
             //지금 여기서 값을 못 가져온다.
             if(result.isSuccess() == true){  //결과가 성공한 경우

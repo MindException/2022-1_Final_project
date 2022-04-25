@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 
 //살려면 buy 사용자 기준 1인칭이 사용자
 
+//내가 사고 싶은 목록
+
 public class BuyPage extends AppCompatActivity {
 
     @Override

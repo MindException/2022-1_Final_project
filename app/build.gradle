@@ -46,6 +46,9 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'             //둥근 이미지 뷰
     //noinspection GradleCompatible
     implementation 'com.android.support:design:29.0.0'              //카드 뷰
+    //새 DB
+    implementation platform('com.google.firebase:firebase-bom:29.3.0')
+    implementation 'com.google.firebase:firebase-firestore:24.1.1'
 
     //url 관련 gradle
     //implementation 'com.github.bumptech.glide:glide:4.9.0'           //글라이드 이미지 로딩

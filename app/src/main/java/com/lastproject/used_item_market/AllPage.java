@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-//모두 보기
-
-
 public class AllPage extends AppCompatActivity {
 
     @Override
