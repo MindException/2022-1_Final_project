@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.lastproject.used_item_market"
@@ -39,8 +39,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation platform('com.google.firebase:firebase-bom:29.1.0')
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-core:20.1.0'
-    implementation 'com.google.firebase:firebase-auth:21.0.2'        //파이어베이스 인증
+    implementation 'com.google.firebase:firebase-core:20.1.2'
+    implementation 'com.google.firebase:firebase-auth:21.0.3'        //파이어베이스 인증
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'           //파이어베이스 인증2
     implementation "androidx.viewpager2:viewpager2:1.0.0"           //view_pager2사용 화면 슥슥 넘어가는거
     implementation 'de.hdodenhof:circleimageview:3.1.0'             //둥근 이미지 뷰
