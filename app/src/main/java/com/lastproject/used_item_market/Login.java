@@ -258,8 +258,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             auth.signOut();
                             FirebaseAuth.getInstance().signOut();
                             AuthUI.getInstance().signOut(getApplicationContext());
-
-                            finish();
+                            System.exit(0);
 
 
                         }else{

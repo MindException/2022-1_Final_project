@@ -39,9 +39,6 @@
             android:name=".SellPage"
             android:exported="true" />
         <activity
-            android:name=".BuyPage"
-            android:exported="true" />
-        <activity
             android:name=".SetInFo"
             android:exported="true" />
         <activity
@@ -55,16 +52,16 @@
         <activity
             android:name=".Login"
             android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" >
         </activity>
     </application>
 

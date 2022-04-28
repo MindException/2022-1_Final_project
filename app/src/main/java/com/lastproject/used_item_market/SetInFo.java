@@ -11,6 +11,10 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SetInFo extends AppCompatActivity {
 
@@ -24,11 +28,12 @@ public class SetInFo extends AppCompatActivity {
     String latitude = "";            //위도
     String longtitude = "";          //경도
 
-    //서버 관련
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
+    //새서버 관련
+    private FirebaseFirestore firestore;
+
+
     public User userinfo;                  //서버에 저장될 사용자의 정보
-    public University universityinfo;      //서버에 저장될 대학 이름름
+    public Map<String, Object> universityinfo = new HashMap<>();
 
     TextView uv_name;
     TextView signup_button;
@@ -39,8 +44,7 @@ public class SetInFo extends AppCompatActivity {
         setContentView(R.layout.set_in_fo);
 
        //서버 연결
-       database = FirebaseDatabase.getInstance();
-       myRef = database.getReference();
+       firestore = FirebaseFirestore.getInstance();
 
        email = getIntent().getStringExtra("email");
        password = getIntent().getStringExtra("password");
@@ -66,11 +70,14 @@ public class SetInFo extends AppCompatActivity {
 
                //저장할 객체 생성
                userinfo = new User(email, password, nickname, university);
-               universityinfo = new University(university, latitude, longtitude);
+               //universityinfo = new University(university, latitude, longtitude);
+               universityinfo.put("university", university);
+               universityinfo.put("latitude", latitude);
+               universityinfo.put("longtitude", longtitude);
 
-               //저장
-               myRef.child("User").push().setValue(userinfo);
-               myRef.child("University").child(university).setValue(universityinfo);
+               //새저장
+               firestore.collection("User").add(userinfo);
+               firestore.collection("University").document(university).set(universityinfo);
 
                Intent signUp_intent = new Intent(SetInFo.this, Login.class);
                signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

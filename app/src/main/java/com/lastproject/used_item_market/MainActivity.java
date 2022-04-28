@@ -23,24 +23,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lobby);
 
-        /*
+
         //기본세팅
         email = getIntent().getStringExtra("email");
         mykey = getIntent().getStringExtra("mykey");
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
-        */
 
+        /*
         //기본세팅
         email = "test";
         mykey = "MyWmy4BWQkVrPxOq8Iw";
         nickname = "test";
         myUniv = "선문대학교";
-
+        */
 
 
         Sell();
-        Buy();
         Share();
         All();
         Post();
@@ -58,17 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    void Buy(){ //구매 버튼 클릭 시 화면 이동
-        ImageButton buy = (ImageButton)findViewById(R.id.Buy);
 
-        buy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, BuyPage.class);
-                startActivity(intent);
-            }
-        });
-    }
     void Share(){ //무료나눔 버튼 클릭 시 화면 이동
         ImageButton share = (ImageButton)findViewById(R.id.Share);
 

@@ -19,6 +19,9 @@ public class Product {
     public String purchaser;            //구매자 이름
     //사진 이미지 저장
     public List<String> pictures;        //사진들
+    //추후 거래 완료 시
+    public String success_time = "000000000000";          //기본 값 0000년 00월 00일 00시 00분
+    // 여기가 999999999999 가들어가면 사용자가 삭제한 데이터 값이다.
 
     public Product(){}
 

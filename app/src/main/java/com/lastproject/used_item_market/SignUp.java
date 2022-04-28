@@ -99,7 +99,7 @@ public class SignUp extends AppCompatActivity {
                     }//for문 끝
 
                     if(email_trigger == true){      //중복 이메일 발생하여 액티비티 종료
-                        finish();
+                        System.exit(0);
                     }
 
 
