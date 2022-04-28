@@ -32,6 +32,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
@@ -61,6 +65,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private DatabaseReference myRef;
     public User userinfo;           //서버에 저장될 사용자의 정보
 
+    //새서버
+    private FirebaseFirestore firestore;
+    private CollectionReference userDocument;
+
     //텍스트로 정보를 가져옴
     private String semail = "";
     private String spassword = "";
@@ -77,6 +85,10 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         //파이어 베이스 데이터베이스 연동
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
+
+        //서버 연결
+        firestore = FirebaseFirestore.getInstance();
+        userDocument = firestore.collection("User");
 
         //TextView 연결
         et_email = (EditText)findViewById(R.id.email);
@@ -245,21 +257,41 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                         if(task.isSuccessful()){      //로그인이 성공했으면
                             System.out.println("이메일 : " + account.getEmail());
-
-                            //여기에 넘어갈 곳 인탠트 나중에 채우기
                             email = account.getEmail();         //이메일 저장
-                            Intent signUp_intent = new Intent(Login.this, SignUp.class);
-                            signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            signUp_intent.putExtra("email", email);
-                            startActivity(signUp_intent);
+                            System.out.println(email);
 
-                            //이것을 해줘야 다음에 계정 생성을 할 때도 다시 계정선택이 가능하다.
-                            auth.signOut();
-                            FirebaseAuth.getInstance().signOut();
-                            AuthUI.getInstance().signOut(getApplicationContext());
-                            System.exit(0);
 
+                            //먼저 구글 아이디가 존재하는지 확인한다.
+                            //닉네임을 검사한다.
+                            userDocument.whereEqualTo("google_email", email)
+                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful()){        //송수신 성공시
+                                        System.out.println("여기까지 들어옴");
+                                        if(task.getResult().size() <= 0){       //아무것도 없어야 중복이 아니다.
+                                            Intent signUp_intent = new Intent(Login.this, SignUp.class);
+                                            signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            signUp_intent.putExtra("email", email);
+                                            startActivity(signUp_intent);
+                                            //이것을 해줘야 다음에 계정 생성을 할 때도 다시 계정선택이 가능하다.
+                                            auth.signOut();
+                                            FirebaseAuth.getInstance().signOut();
+                                            AuthUI.getInstance().signOut(getApplicationContext());
+                                            System.exit(0);
+                                        }else{
+                                            Toast.makeText(Login.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
+                                            //이것을 해줘야 다음에 계정 생성을 할 때도 다시 계정선택이 가능하다.
+                                            auth.signOut();
+                                            FirebaseAuth.getInstance().signOut();
+                                            AuthUI.getInstance().signOut(getApplicationContext());
+                                        }
+                                    }else{
+                                        System.out.println("송수신 실패");
+                                    }
+                                }
+                            });
 
                         }else{
 
