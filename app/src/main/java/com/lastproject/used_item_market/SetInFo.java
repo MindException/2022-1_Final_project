@@ -75,6 +75,13 @@ public class SetInFo extends AppCompatActivity {
                universityinfo.put("latitude", latitude);
                universityinfo.put("longtitude", longtitude);
 
+               //비밀번호 변환(AES256)
+               AES256 aes256 = new AES256();
+               try {
+                   userinfo.password = aes256.encrypt(userinfo.password);
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
                //새저장
                firestore.collection("User").add(userinfo);
                firestore.collection("University").document(university).set(universityinfo);

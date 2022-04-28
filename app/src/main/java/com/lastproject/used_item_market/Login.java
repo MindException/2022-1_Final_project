@@ -35,6 +35,7 @@ import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
@@ -59,10 +60,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     //사용자가 입력한 이메일과 비밀번호
     EditText et_email;
     EditText et_password;
-
-    //서버 관련
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
     public User userinfo;           //서버에 저장될 사용자의 정보
 
     //새서버
@@ -74,17 +71,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private String spassword = "";
     private String mykey = "";
 
-    private boolean email_trigger = false;            //true가 되면 아이디 존재
-    private boolean password_trigger = false;            //true가 되면 비밀번호 일치
+    //비밀번호 암호화
+    AES256 aes256;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
-        //파이어 베이스 데이터베이스 연동
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
 
         //서버 연결
         firestore = FirebaseFirestore.getInstance();
@@ -95,6 +88,9 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         et_password = (EditText)findViewById(R.id.password);
         google_button = (TextView)findViewById(R.id.bt_google);
         login_button = (TextView)findViewById(R.id.bt_login);
+
+        //암호화 객체 생성
+        aes256 = new AES256();
 
         logininfo = getSharedPreferences("setting", MODE_PRIVATE);      //기본 저장 로그인 객체 생성
         editor = logininfo.edit();
@@ -139,6 +135,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 semail = et_email.getText().toString();
                 spassword = et_password.getText().toString();
 
+                /*
                 try{
 
                     myRef.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -204,7 +201,59 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     et_password.setText("");
                     Toast.makeText(Login.this, "로그인 오류", Toast.LENGTH_SHORT).show();
                 }
+                */
+                System.out.println(semail);
+                Query loginQuery = userDocument.whereEqualTo("google_email", semail);
+                loginQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
+                        if(task.isSuccessful()){
+                            if(task.getResult().size() > 0){
+                                for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){    //가져오고 1개 들어있다.
+                                    userinfo = queryDocumentSnapshot.toObject(User.class);
+                                    mykey = queryDocumentSnapshot.getId();
+                                    System.out.println(mykey);
+                                }
+                                try {
+                                    userinfo.password = aes256.decrypt(userinfo.password);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                if(spassword.equals(userinfo.password)){    //비밀번호가 같을 경우
+                                    Intent login_intent = new Intent(Login.this, MainActivity.class);
+                                    login_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    login_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    login_intent.putExtra("email", email);
+                                    login_intent.putExtra("mykey", mykey);
+                                    login_intent.putExtra("nickname", userinfo.nickname);
+                                    login_intent.putExtra("myUniv", userinfo.university);
+                                    startActivity(login_intent);
+                                    System.exit(0);
+                                }else{  //비밀번호가 틀릴 경우
+                                    spassword = "";
+                                    et_password.setText("");
+                                    et_password.setHint("비밀번호가 일치하지 않습니다.");
+                                }
+                            }else{      //아이디가 존재하지 않음
+                                //다시 기본 세팅들 초기화
+                                semail = "";
+                                spassword = "";
+                                et_email.setText("");
+                                et_email.setHint("일치하는 아이디가 없습니다.");
+                                et_password.setText("");
+                            }
+                        }else{
+                            //다시 기본 세팅들 초기화
+                            semail = "";
+                            spassword = "";
+                            //화면도 초기화
+                            et_email.setText("");
+                            et_password.setText("");
+                            Toast.makeText(Login.this, "로그인 오류", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 
