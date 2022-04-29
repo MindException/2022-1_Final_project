@@ -1,5 +1,6 @@
 package com.lastproject.used_item_market;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,8 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -47,9 +52,8 @@ public class PostPage extends AppCompatActivity {
     String result_purpose = "";
     String result_category = "";
 
-    //DB 관련
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
+    //새DB
+    private FirebaseFirestore firestore;
 
     //이미지 관련
     ArrayList<String> imgarray = new ArrayList<String>();       //이미지 이진화 모음
@@ -81,10 +85,8 @@ public class PostPage extends AppCompatActivity {
         latitude = getIntent().getStringExtra("latitude");
         longtitude = getIntent().getStringExtra("longtitude");
 
-
-        //파이어 베이스 데이터베이스 연동
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
+        //파이어베이스 데이터베이스 연동
+        firestore = FirebaseFirestore.getInstance();
 
         rv = (RecyclerView)findViewById(R.id.prouduct_recycleview);
         img_countView = (TextView)findViewById(R.id.count_img);
@@ -149,8 +151,22 @@ public class PostPage extends AppCompatActivity {
                             }
                         }
 
-                        //다 저장되었으니 이제 서버에 저장
-                        myRef.child("Product").push().setValue(savepd);
+                        System.out.println("저장여기");
+
+                        //서버에 저장
+                        firestore.collection("Product").add(savepd)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    System.out.println("성공함");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    System.out.println("실패함");
+                                }
+                            });
 
                         //저장되었으니 인탠트로 넘어간다.
                         Intent intent = new Intent(PostPage.this, MainActivity.class);
@@ -246,11 +262,11 @@ public class PostPage extends AppCompatActivity {
             byte[] img1Byte = stream1.toByteArray();
             String img = ParseIMG.byteArrayToBinaryString(img1Byte); //(성공)
 
-            if(imgarray.size() < 10){       //사진을 10개까지 받는다.
+            if(imgarray.size() < 5){       //사진을 5개까지 받는다.
                 //배열에 저장
                 imgarray.add(img);
                 //사진 개수 카운트
-                img_countView.setText("사진 추가(" + imgarray.size() + "/10)");
+                img_countView.setText("사진 추가(" + imgarray.size() + "/5)");
                 //여기서 리사이클 뷰 실행
                 init();
             }
