@@ -28,8 +28,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -53,7 +60,9 @@ public class PostPage extends AppCompatActivity {
     String result_category = "";
 
     //새DB
-    private FirebaseFirestore firestore;
+    private FirebaseFirestore firestore;        //DB
+    private FirebaseStorage storage;            //이미지 저장소
+    private StorageReference storageRef;     //정확한 위치에 파일 저장
 
     //이미지 관련
     ArrayList<String> imgarray = new ArrayList<String>();       //이미지 이진화 모음
@@ -61,6 +70,8 @@ public class PostPage extends AppCompatActivity {
     private RecyclerView rv;
     public RecyclePostAdapter adapter;
     TextView img_countView;                                //사진 개수
+    //새 이미지 관련
+    ArrayList<InputStream> inputStreamArrayList = new ArrayList<InputStream>();
 
     //위젯 모음
     TextView done_btn;                      //작성하기
@@ -87,6 +98,8 @@ public class PostPage extends AppCompatActivity {
 
         //파이어베이스 데이터베이스 연동
         firestore = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
 
         rv = (RecyclerView)findViewById(R.id.prouduct_recycleview);
         img_countView = (TextView)findViewById(R.id.count_img);
@@ -247,15 +260,71 @@ public class PostPage extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
 
-
+            //새로운 저장 방법(uri로) 다이렉트로 해버린다.
             Uri uri = data.getData();
+            StorageReference imgRef = storageRef.child(mykey).child("test");
+            UploadTask uploadTask = imgRef.putFile(uri);
+
+            //DB에서 이미지 꺼내기기
+            try {
+                Thread.sleep(2000);
+            }catch (Exception e){}
+
+            StorageReference getRef = storageRef.child(mykey + "/" + "test");
+            try {
+                File localFile = File.createTempFile("images", "jpeg");
+                getRef.getFile(localFile).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("사진 가져오기 실패");
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        System.out.println("사진 가져오기 성공");
+                        FileInputStream inputStream = null;
+                        try {
+                            inputStream = new FileInputStream(localFile);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);        //비트맵으로 가져온다.
+                        ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.WEBP, 100, stream1);
+                        byte[] img1Byte = stream1.toByteArray();
+                        String img = ParseIMG.byteArrayToBinaryString(img1Byte); //(성공)
+                        if(imgarray.size() < 5){       //사진을 5개까지 받는다.
+                            //배열에 저장
+                            imgarray.add(img);
+                            //사진 개수 카운트
+                            img_countView.setText("사진 추가(" + imgarray.size() + "/5)");
+                            //여기서 리사이클 뷰 실행
+                            init();
+                        }
+                    }
+                });
+
+
+            } catch (IOException e) {
+                System.out.println("try catch");
+                e.printStackTrace();
+            }
+
+            /*
+            //Uri ur = data.getData();
+            System.out.println(uri.toString());
             InputStream inputStream = null;
             try {
                 inputStream = getContentResolver().openInputStream(uri);
+                inputStreamArrayList.add(inputStream);      //스트림 배열에 저장
+                //StorageReference imgRef = storageRef.child(mykey);
+                //UploadTask uploadTask = imgRef.putStream(inputStream);          //여기서 저장
             }
             catch (IOException e) {
                 e.printStackTrace();
+                System.out.println("이미지 스트림 문제 발생");
             }
+
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);        //비트맵으로 가져온다.
             ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.WEBP, 100, stream1);
@@ -270,7 +339,7 @@ public class PostPage extends AppCompatActivity {
                 //여기서 리사이클 뷰 실행
                 init();
             }
-
+            */
         }
     }
 
