@@ -12,6 +12,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -71,7 +74,7 @@ public class PostPage extends AppCompatActivity {
     public RecyclePostAdapter adapter;
     TextView img_countView;                                //사진 개수
     //새 이미지 관련
-    ArrayList<InputStream> inputStreamArrayList = new ArrayList<InputStream>();
+    ArrayList<Uri> uriArrayList = new ArrayList<Uri>();
 
     //위젯 모음
     TextView done_btn;                      //작성하기
@@ -79,6 +82,8 @@ public class PostPage extends AppCompatActivity {
     EditText et_title;                      //제목
     EditText et_cash;                      //가격
     EditText et_text;                       //내용
+    String beforeString = "";               //전 가격 내용
+
 
 
 
@@ -164,7 +169,6 @@ public class PostPage extends AppCompatActivity {
                             }
                         }
 
-                        System.out.println("저장여기");
 
                         //서버에 저장
                         firestore.collection("Product").add(savepd)
@@ -212,6 +216,21 @@ public class PostPage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 result_purpose = purposeSpinner.getSelectedItem().toString(); // 스피너 선택값 가져오기
+
+
+                //무료나눔일 경우 세팅을 다시하여야 한다.
+                if (result_purpose.equals("무료나눔")){
+
+                    et_cash.setText("");
+                    et_cash.setHint("무료");
+                    et_cash.setEnabled(false);          //무료로 가격 입력 없애기
+
+                }else{
+                    et_cash.setEnabled(true);           //판매로 다시 가격 입력하기
+                    beforeString = "";
+                    et_cash.setText("");
+                    et_cash.setHint("가격(원)을 입력하세요.");
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -259,9 +278,30 @@ public class PostPage extends AppCompatActivity {
 
 
         if (resultCode == RESULT_OK) {
+            //uri.compareTo로 같은 사진이면 양수가 나오고, 다른 사진이면 음수가 나온다.
 
             //새로운 저장 방법(uri로) 다이렉트로 해버린다.
             Uri uri = data.getData();
+            if(uriArrayList.size() < 5){       //사진을 5개까지 받는다.
+                boolean trigger = true;        //false이면 중복사진으로 저장이 안된다.
+                for(int i = 0; i < uriArrayList.size(); i++){
+                    if(uri.compareTo(uriArrayList.get(i)) < 0){     //음수일 경우
+                        trigger = false;
+                        break;
+                    }
+                }
+                if(trigger){
+                    uriArrayList.add(uri);
+                    img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
+                    init();
+                }else{      //중복 사진 발생
+                    Toast.makeText(PostPage.this, "중복 사진입니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+
+            /*
             StorageReference imgRef = storageRef.child(mykey).child("test");
             UploadTask uploadTask = imgRef.putFile(uri);
 
@@ -309,38 +349,8 @@ public class PostPage extends AppCompatActivity {
                 System.out.println("try catch");
                 e.printStackTrace();
             }
-
-            /*
-            //Uri ur = data.getData();
-            System.out.println(uri.toString());
-            InputStream inputStream = null;
-            try {
-                inputStream = getContentResolver().openInputStream(uri);
-                inputStreamArrayList.add(inputStream);      //스트림 배열에 저장
-                //StorageReference imgRef = storageRef.child(mykey);
-                //UploadTask uploadTask = imgRef.putStream(inputStream);          //여기서 저장
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("이미지 스트림 문제 발생");
-            }
-
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);        //비트맵으로 가져온다.
-            ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.WEBP, 100, stream1);
-            byte[] img1Byte = stream1.toByteArray();
-            String img = ParseIMG.byteArrayToBinaryString(img1Byte); //(성공)
-
-            if(imgarray.size() < 5){       //사진을 5개까지 받는다.
-                //배열에 저장
-                imgarray.add(img);
-                //사진 개수 카운트
-                img_countView.setText("사진 추가(" + imgarray.size() + "/5)");
-                //여기서 리사이클 뷰 실행
-                init();
-            }
             */
-        }
+        }//request code 끝
     }
 
     //리사이클 뷰 동작
@@ -350,8 +360,8 @@ public class PostPage extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);             //이렇게 하면 수평으로 생성
         rv.setLayoutManager(linearLayoutManager);
         adapter = new RecyclePostAdapter();
-        for(int i = 0; i < imgarray.size(); i++){
-            adapter.addItem(imgarray.get(i));
+        for(int i = 0; i < uriArrayList.size(); i++){
+            adapter.addItem(uriArrayList.get(i));
         }
         rv.addItemDecoration(new RecyclerDecoration(5));       //간격을 추가한다.
         rv.setAdapter(adapter);
