@@ -77,7 +77,6 @@ public class SignUpMap extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up_map);
 
         //가져온 저장
         email = getIntent().getStringExtra("email");
@@ -217,16 +216,16 @@ public class SignUpMap extends AppCompatActivity {
                 startY[0] = poi.item.getPOIPoint().getLongitude();
                 //System.out.println("대학 지역 : " + poi.item.getPOIName());
                 latitude = Double.toString(poi.item.getPOIPoint().getLatitude());
-                System.out.println("대학 위도 : " + latitude);
+                //System.out.println("대학 위도 : " + latitude);
                 longtitude = Double.toString(poi.item.getPOIPoint().getLongitude());
-                System.out.println("대학 경도 : " + longtitude);
+                //System.out.println("대학 경도 : " + longtitude);
                 try {
                     school = poi.item.getPOIName().substring(0, start[0].indexOf(" "));
-                    System.out.println("대학 스페이스 들어간 이름 : " + school);
+                   //System.out.println("대학 스페이스 들어간 이름 : " + school);
 
                 }catch (Exception e){
                     nospace_school = poi.item.getPOIName();
-                    System.out.println("대학 노스페이스 이름 : " + poi.item.getPOIName());
+                    //System.out.println("대학 노스페이스 이름 : " + poi.item.getPOIName());
                 }
                 TMapMarkerItem item = new TMapMarkerItem();
                 tMapPoint[0] = new TMapPoint(poi.item.getPOIPoint().getLatitude(), poi.item.getPOIPoint().getLongitude());
@@ -375,7 +374,7 @@ public class SignUpMap extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println(school + nospace_school);
+                //System.out.println(school + nospace_school);
 
 
                 if(!latitude.equals("") || !longtitude.equals("")){      //검색하였을 경우만 가능하다.
@@ -441,6 +440,7 @@ public class SignUpMap extends AppCompatActivity {
                 ArrayList<TMapPoint> Sortuvpoint = new ArrayList<>(); //대학 위치 리스트 생성
                 ArrayList<Double> doubles = new ArrayList<Double>(); //거리Array 리스트 생성
                 ArrayList<TMapPoint> uvpoint = new ArrayList<>(); //대학 위치 리스트 생성
+
                 if (arrayList != null) {
                     for (int i = 0; i < arrayList.size(); i++) {
                         doubles.add(arrayList.get(i).getDistance(point)); // 받아온 주소 리스트 사이즈 만큼의 대학까지의 거리를 배열에 추가
@@ -532,7 +532,6 @@ public class SignUpMap extends AppCompatActivity {
                         }
                     }
                     dialog(SortList, Sortuvpoint);
-                    System.out.println("확인(횟수)");
 
 
                 }else{
@@ -542,7 +541,7 @@ public class SignUpMap extends AppCompatActivity {
         });
 
     }
-    void dialog(ArrayList<String> univ, ArrayList<TMapPoint> univpoint){
+    void dialog(ArrayList<String> university, ArrayList<TMapPoint> universitypoint){
         AlertDialog.Builder dlg = new AlertDialog.Builder(SignUpMap.this);
         final int[] selecteduniv = {0};
 
@@ -552,10 +551,9 @@ public class SignUpMap extends AppCompatActivity {
             @Override
             public void run() {
                 dlg.setCancelable(false);
-                if(univ != null){
-                    System.out.println("확인(창)");
+                if(university != null){
                     dlg.setTitle("반경 2KM 대학");
-                    dlg.setSingleChoiceItems(univ.toArray(new String[0]), 0, new DialogInterface.OnClickListener() {
+                    dlg.setSingleChoiceItems(university.toArray(new String[0]), 0, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int which) {
                             selecteduniv[0] = which;
@@ -564,9 +562,11 @@ public class SignUpMap extends AppCompatActivity {
                     }).setPositiveButton("확인",new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which) {  // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
-                            System.out.println("선택 : " + univ.get(selecteduniv[0]));
-                            System.out.println("선택(위치) : " + univpoint.get(selecteduniv[0]));
-
+                            school = university.get(selecteduniv[0]);
+                            nospace_school = university.get(selecteduniv[0]);
+                            latitude = Double.toString(universitypoint.get(selecteduniv[0]).getLatitude());
+                            longtitude = Double.toString(universitypoint.get(selecteduniv[0]).getLongitude());
+                            nextInfo();
                         }
                     }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
                         @Override
@@ -576,7 +576,7 @@ public class SignUpMap extends AppCompatActivity {
                     });
                     dlg.show();
                 }
-                if(univ == null){
+                if(university == null){
                     dlg.setTitle("대학");
                     dlg.setMessage("주변에 대학이 존재하지 않습니다."); // 메시지
                     dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
