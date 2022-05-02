@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,8 +52,8 @@ public class PostPage extends AppCompatActivity {
     String email;
     String nickname;
     String Address;
-    String latitude;
-    String longtitude;
+    String latitude;            //도착 위도 값
+    String longtitude;          //도착 경도 값
 
     //스피너만 따로
     Spinner purposeSpinner;          //모집인원
@@ -65,7 +66,7 @@ public class PostPage extends AppCompatActivity {
     //새DB
     private FirebaseFirestore firestore;        //DB
     private FirebaseStorage storage;            //이미지 저장소
-    private StorageReference storageRef;     //정확한 위치에 파일 저장
+    private StorageReference storageRef;        //정확한 위치에 파일 저장
 
     //이미지 관련
     ArrayList<String> imgarray = new ArrayList<String>();       //이미지 이진화 모음
@@ -79,11 +80,14 @@ public class PostPage extends AppCompatActivity {
     //위젯 모음
     TextView done_btn;                      //작성하기
     TextView back_btn;                      //뒤로가기
+    TextView map_btn;                       //맵 선택 버튼
     EditText et_title;                      //제목
-    EditText et_cash;                      //가격
+    EditText et_cash;                       //가격
     EditText et_text;                       //내용
-    String beforeString = "";               //전 가격 내용
+    ImageView checkiv;                      //지도정보가 있나 없나 체크
 
+    String beforeString = "";               //전 가격 내용
+    boolean freeTrigger = false;            //무료인지 아닌지
 
 
 
@@ -98,7 +102,8 @@ public class PostPage extends AppCompatActivity {
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
         Address = getIntent().getStringExtra("Address");
-        latitude = getIntent().getStringExtra("latitude");
+        //t-map 설정 후 다시 돌아왔을 때를 위함이다.
+        latitude = getIntent().getStringExtra("latitude");                  //가져올때 키값 잘 보기
         longtitude = getIntent().getStringExtra("longtitude");
 
         //파이어베이스 데이터베이스 연동
@@ -115,12 +120,26 @@ public class PostPage extends AppCompatActivity {
         et_title = (EditText) findViewById(R.id.title_text);
         et_cash = (EditText) findViewById(R.id.et_cash);
         et_text = (EditText) findViewById(R.id.text);
+        map_btn = (TextView)findViewById(R.id.tmap_btn);
+        checkiv = (ImageView)findViewById(R.id.check_mark);
+
+        if(longtitude != null && latitude != null){     //위도 경도가 있을 경우
+
+            checkiv.setImageResource(R.drawable.check);
+
+        }else{      //위도 경도가 없을 경우
+
+            checkiv.setImageResource(R.drawable.uncheck);
+
+        }
+
 
         back();
         done();
         setPurposeSpinner();
         setCategorySpinner();
         saveImage();
+        saveMap();
     }
 
     public void back(){
@@ -145,12 +164,16 @@ public class PostPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //StorageReference imgRef = storageRef.child("images").child(my).child("test");
+                //UploadTask uploadTask = imgRef.putFile(uri);
+
                 String nowTime = Time.nowTime();        //작성 시간을 저장
                 String title = et_title.getText().toString();
                 String cash = et_cash.getText().toString();
                 String text = et_text.getText().toString();
-
-                System.out.println(cash);
+                if(cash.equals("") && freeTrigger == true){
+                    cash = "0";     //무료이니까 0원이다.
+                }
 
                 if(!title.equals("") && !cash.equals("") && !text.equals("")){        //공백으로 받는게 없어야 한다.
 
@@ -158,30 +181,34 @@ public class PostPage extends AppCompatActivity {
 
                         Long icash = Long.parseLong(cash);     //한번
                         Product savepd = new Product(mykey,nickname,myUniv,title,icash,result_purpose,
-                                result_category,"", text, nowTime);
+                                result_category, text, nowTime);
 
-                        if(imgarray.size() != 0){   //이미지가 있어야 이미지를 추가한다.
-                            savepd.pictures = new ArrayList<String>();
-                            for(int i = 0; i < imgarray.size(); i++){
-
-                                savepd.pictures.add(imgarray.get(i));
-
-                            }
-                        }
+                        /*
+                                여기다가 위도 경도 존재할 경우를 넣어줘야 한다.
+                         */
 
 
                         //서버에 저장
+                        //product를 한번 저장을 하고 키값을 저장한 후에 이미지를 가져와야 한다.
                         firestore.collection("Product").add(savepd)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
-                                    System.out.println("성공함");
+                                    String product_key = documentReference.getId();     //key값 가져오는거 성공
+
+                                    //요기다가 이미지 저장 후 다시 저장
+                                    for(int i = 0; i < uriArrayList.size(); i++){       //사진을 하나씩 저장
+                                        //사진 저장 경로
+                                        StorageReference imgRef = storageRef.child("images").
+                                                child(product_key).child(Time.nowTime() + Integer.toString(i));
+
+                                    }
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    System.out.println("실패함");
+                                    System.out.println("상품 초기 저장 실패함");
                                 }
                             });
 
@@ -221,11 +248,14 @@ public class PostPage extends AppCompatActivity {
                 //무료나눔일 경우 세팅을 다시하여야 한다.
                 if (result_purpose.equals("무료나눔")){
 
+                    freeTrigger = true;
                     et_cash.setText("");
                     et_cash.setHint("무료");
                     et_cash.setEnabled(false);          //무료로 가격 입력 없애기
 
                 }else{
+
+                    freeTrigger = false;
                     et_cash.setEnabled(true);           //판매로 다시 가격 입력하기
                     beforeString = "";
                     et_cash.setText("");
@@ -368,5 +398,27 @@ public class PostPage extends AppCompatActivity {
 
     }
 
+    //맵을 여기다가 저장한다.
+    void saveMap(){     //맵 결과값을 인탠트로 가져올 예정
 
+        map_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {        //티맵 버튼이 눌렸을 경우
+
+                /*       ****** class만 바꾸어서 넘어갔다 오기
+                //저장되었으니 인탠트로 넘어간다.
+                Intent intent = new Intent(PostPage.this, *******.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
+                startActivity(intent);
+                */
+
+            }
+        });
+
+    }
 }
