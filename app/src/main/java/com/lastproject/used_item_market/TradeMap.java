@@ -37,7 +37,6 @@ public class TradeMap extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.trade_map);
 
         Mapsetting();
 
@@ -100,25 +99,19 @@ public class TradeMap extends AppCompatActivity {
                     public void onReverseGeocoding(TMapAddressInfo addressInfo) {
                         if(addressInfo.strBuildingName.toString().equals("")){
                             try {
-                                System.out.println("선택한 위치의 주소는 " + addressInfo.strRoadName);
-                                System.out.println("빈거");
                                 latitude = Double.toString(centerPoint.getLatitude());
                                 longtitude = Double.toString(centerPoint.getLongitude());
-                                System.out.println("위도 : " +latitude );
-                                System.out.println("경도 : " +longtitude );
                                 item.setCalloutTitle(addressInfo.strRoadName);
                             }catch (Exception e){
+                                item.setCalloutTitle("없는 주소");
                             }
                         }else{
                             try {
-                                System.out.println("선택한 위치의 주소는 " + addressInfo.strBuildingName);
-                                System.out.println("안빈거");
                                 latitude = Double.toString(centerPoint.getLatitude());
                                 longtitude = Double.toString(centerPoint.getLongitude());
-                                System.out.println("위도 : " +latitude );
-                                System.out.println("경도 : " +longtitude );
                                 item.setCalloutTitle(addressInfo.strBuildingName);
                             }catch (Exception e){
+                                item.setCalloutTitle("없는 주소");
                             }
                         }
                     }
