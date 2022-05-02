@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#745641"
+    android:background="#4A3424"
     android:orientation="vertical"
     tools:context=".Login">
 
@@ -12,13 +12,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="45px"
-        android:background="#2A5237"
-        android:weightSum="5.4">
+        android:layout_margin="30px"
+        android:background="@drawable/img_view_chalk5">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"></LinearLayout>
+            android:layout_weight="0.3"></LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,8 +59,9 @@
                             android:layout_height="match_parent"
                             android:text=" email : "
                             android:textColor="#ffffff"
-                            android:textSize="20dp"
-                            android:gravity="center"></TextView>
+                            android:textSize="15dp"
+                            android:gravity="center"
+                            android:fontFamily="@font/font_5"></TextView>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -78,10 +78,11 @@
                             android:textColor="#ffffff"
                             android:backgroundTint="#ffffff"
                             android:textColorHighlight="#FFC107"
-                            android:textSize="17dp"
+                            android:textSize="15dp"
                             android:maxLines="25"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"></EditText>
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/font_3"></EditText>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -99,8 +100,9 @@
                             android:layout_height="match_parent"
                             android:text=" 비밀번호 : "
                             android:textColor="#ffffff"
-                            android:textSize="18dp"
-                            android:gravity="center"></TextView>
+                            android:textSize="15dp"
+                            android:gravity="center"
+                            android:fontFamily="@font/font_5"></TextView>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -118,10 +120,11 @@
                             android:backgroundTint="#FFFFFF"
                             android:textColorHighlight="#FFC107"
                             android:selectAllOnFocus="true"
-                            android:textSize="17dp"
+                            android:textSize="15dp"
                             android:maxLines="25"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"></EditText>
+                            android:layout_marginBottom="10dp"
+                            android:fontFamily="@font/font_3"></EditText>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -156,13 +159,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Google"
-                            android:textSize="22dp"
+                            android:textSize="18dp"
                             android:textStyle="bold"
                             android:textColor="#ffffff"
                             android:background="@drawable/bt_tumyeong_sty"
-                            android:layout_margin="5dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="25dp"
                             android:gravity="center"
-                            ></TextView>
+                            android:fontFamily="@font/font_6"></TextView>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -187,12 +193,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="로그인"
-                            android:textSize="22dp"
+                            android:textSize="18dp"
                             android:textStyle="bold"
                             android:textColor="#ffffff"
                             android:background="@drawable/bt_tumyeong_sty"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginBottom="25dp"
+                            android:layout_marginTop="5dp"
                             android:gravity="center"
-                            ></TextView>
+                            android:fontFamily="@font/font_6"></TextView>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
