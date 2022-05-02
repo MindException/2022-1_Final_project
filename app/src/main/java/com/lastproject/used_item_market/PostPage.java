@@ -89,6 +89,8 @@ public class PostPage extends AppCompatActivity {
     String beforeString = "";               //전 가격 내용
     boolean freeTrigger = false;            //무료인지 아닌지
 
+    String product_key = "";
+
 
 
     @Override
@@ -187,22 +189,14 @@ public class PostPage extends AppCompatActivity {
                                 여기다가 위도 경도 존재할 경우를 넣어줘야 한다.
                          */
 
-
                         //서버에 저장
                         //product를 한번 저장을 하고 키값을 저장한 후에 이미지를 가져와야 한다.
                         firestore.collection("Product").add(savepd)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
-                                    String product_key = documentReference.getId();     //key값 가져오는거 성공
+                                    product_key = documentReference.getId();     //key값 가져오는거 성공
 
-                                    //요기다가 이미지 저장 후 다시 저장
-                                    for(int i = 0; i < uriArrayList.size(); i++){       //사진을 하나씩 저장
-                                        //사진 저장 경로
-                                        StorageReference imgRef = storageRef.child("images").
-                                                child(product_key).child(Time.nowTime() + Integer.toString(i));
-
-                                    }
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -211,6 +205,26 @@ public class PostPage extends AppCompatActivity {
                                     System.out.println("상품 초기 저장 실패함");
                                 }
                             });
+
+                        int i = 0;
+                        //요기다가 이미지 저장 후 다시 저장
+                        for(i = 0; i < uriArrayList.size(); i++){       //사진을 하나씩 저장
+                            //사진 저장 경로
+                            String imgName = Time.nowTime() + Integer.toString(i); //현재 시간 + 인덱스번호
+                            StorageReference imgRef = storageRef.child("images").
+                                    child(product_key).child(imgName);
+
+                            Uri uri = uriArrayList.get(i);
+
+                            //여기서 문제가 터진다.
+                            UploadTask uploadTask = imgRef.putFile(uri);
+                            savepd.pictures.add(imgName);
+
+                        }
+                        firestore.collection("Product")
+                                .document(product_key).set(savepd);
+
+
 
                         //저장되었으니 인탠트로 넘어간다.
                         Intent intent = new Intent(PostPage.this, MainActivity.class);
@@ -328,8 +342,6 @@ public class PostPage extends AppCompatActivity {
                     Toast.makeText(PostPage.this, "중복 사진입니다.", Toast.LENGTH_SHORT).show();
                 }
             }
-
-
 
             /*
             StorageReference imgRef = storageRef.child(mykey).child("test");
