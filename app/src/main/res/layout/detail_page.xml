@@ -25,7 +25,7 @@
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:orientation="horizontal"
                         android:weightSum="10">
                         <ImageButton
@@ -33,10 +33,11 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1.5"
-                            android:src="@drawable/back"
+                            android:src="@drawable/ic_back2"
                             android:scaleType="fitStart"
                             android:background="#00ff0000"
-                            android:padding="3dp"></ImageButton>
+                            android:padding="3dp"
+                            android:layout_margin="3dp"></ImageButton>
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -45,6 +46,16 @@
                             android:scaleType="fitCenter"
                             android:background="#00ff0000"
                             android:padding="3dp"></ImageView>
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:background="#00ff0000"
+                            android:padding="3dp"
+                            android:scaleType="fitEnd"
+                            android:src="@drawable/ic_complete3"
+                            android:layout_margin="3dp"></ImageButton>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="350dp"
@@ -57,14 +68,14 @@
                             app:cardCornerRadius="25dp"
                             app:cardElevation="5dp"
                             android:layout_gravity="center"
-                            android:layout_margin="3dp">
+                            android:layout_margin="2dp">
                             <ImageButton
                                 android:id="@+id/detail_page_main_img1"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/galaxy"
+                                android:src="@drawable/ic_setimg"
                                 android:padding="0dp"></ImageButton>
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>
@@ -87,6 +98,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:text="여기 품명"
+                        android:fontFamily="@font/font_5"
                         android:textColor="#ffffff"
                         android:textSize="30dp"
                         android:gravity="center">
@@ -97,6 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:text="여기 카테고리 명"
+                        android:fontFamily="@font/font_1"
                         android:textColor="#ffffff"
                         android:textSize="15dp"
                         android:gravity="center">
@@ -121,6 +134,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:text="무료나눔"
+                            android:fontFamily="@font/font_5"
                             android:textSize="20dp"
                             android:textColor="#ffffff"
                             android:gravity="center"></TextView>
@@ -130,6 +144,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="3"
                             android:text="99,999,999 원"
+                            android:fontFamily="@font/font_5"
                             android:textSize="20dp"
                             android:textColor="#ffffff"
                             android:gravity="center|right"
@@ -156,6 +171,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:text="지정된 거래장소 보기"
+                                android:fontFamily="@font/font_6"
                                 android:textSize="15dp"
                                 android:textColor="#ffffff"
                                 android:gravity="center"
@@ -177,6 +193,7 @@
                         android:padding="10dp"
                         android:text="//여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        //여기 내용//        "
                         android:textColor="#ffffff"
+                        android:fontFamily="@font/font_5"
                         android:textSize="18dp"></TextView>
                     <View
                         android:layout_width="match_parent"
@@ -199,6 +216,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="채팅하기"
+                        android:fontFamily="@font/font_6"
                         android:textSize="22dp"
                         android:textColor="#ffffff"
                         android:gravity="center"

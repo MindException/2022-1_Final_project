@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AllPage"
-    android:background="#745641"
+    android:background="#4A3424"
     android:orientation="vertical">
 
 
@@ -15,69 +15,75 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="10"
-        android:background="#2A5237"
-        android:layout_margin="45px">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:weightSum="5"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/xbtn"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/backbtn">
-            </ImageButton>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5">
-            </TextView>
-
-            <TextView
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:textSize="25dp"
-                android:textAlignment="center"
-                android:layout_gravity="center"
-                android:text="모두 보기"
-                android:textColor="@color/white">
-            </TextView>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5">
-            </TextView>
-
-            <ImageButton
-                android:id="@+id/menubtn"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_weight="0.5"
-                android:background="@drawable/menu"
-                android:gravity="center">
-            </ImageButton>
-        </LinearLayout>
+        android:background="@drawable/img_view_chalk5"
+        android:layout_margin="30px">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:layout_weight="9"
-            android:weightSum="10">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/alllist"
+            android:layout_height="673dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:weightSum="5"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-            </androidx.recyclerview.widget.RecyclerView>
+                <ImageButton
+                    android:id="@+id/xbtn"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.5"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/ic_back2">
+                </ImageButton>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5">
+                </TextView>
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:textSize="25dp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:text="모두 보기"
+                    android:textColor="@color/white">
+                </TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5">
+                </TextView>
+
+                <ImageButton
+                    android:id="@+id/menubtn"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/menu"
+                    android:layout_margin="5dp"
+                    android:gravity="center">
+                </ImageButton>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="9"
+                android:weightSum="10">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/alllist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

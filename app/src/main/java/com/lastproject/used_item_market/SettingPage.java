@@ -13,13 +13,13 @@ public class SettingPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting_page);
+        setContentView(R.layout.activity_my_page);
 
         Back();
     }
 
     void Back(){
-        ImageButton back = (ImageButton)findViewById(R.id.backbtn);
+        ImageButton back = (ImageButton)findViewById(R.id.mypage_back);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

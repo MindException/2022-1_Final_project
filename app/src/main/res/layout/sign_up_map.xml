@@ -18,9 +18,7 @@
         android:background="#2A5237"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:clickable="true"
-        android:focusableInTouchMode="true">
+        android:layout_marginLeft="5dp">
 
 
         <EditText
@@ -83,7 +81,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="left|top"
             android:background="#FFFCDF"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp" />
     </FrameLayout>
 
 </LinearLayout>
