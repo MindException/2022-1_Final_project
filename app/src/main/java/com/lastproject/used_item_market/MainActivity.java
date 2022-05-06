@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         /*
         //기본세팅
         email = "test";
-        mykey = "MyWmy4BWQkVrPxOq8Iw";
-        nickname = "test";
+        mykey = "io2IeEjLYV5ERxhyBqdd";
+        nickname = "admin1234";
         myUniv = "선문대학교";
         */
 
@@ -53,7 +53,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SellPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
                 startActivity(intent);
+                System.exit(0);
             }
         });
     }

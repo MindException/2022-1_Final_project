@@ -351,9 +351,9 @@ public class PostPage extends AppCompatActivity {
                 if(trigger){
 
                     //먼저 서버에 저장한다.
-                    String nowTime = Time.nowNewTime();         //이미지들을 전부 시간으로 저장한다.
+                    String nowTime = mykey + Time.nowNewTime();         //이미지들을 전부 시간으로 저장한다.
                     StorageReference imgRef = storageRef.child("images").
-                            child(mykey).child(nowTime);        //  경로: 이미지/사용자키/파일이름(현재시간-년일시분초)
+                            child(nowTime);        //  경로: 이미지/사용자키/파일이름(현재시간-년일시분초)
                     UploadTask uploadTask = (UploadTask)imgRef.putFile(uri)
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -445,7 +445,7 @@ public class PostPage extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) { //사진 삭제
 
                         StorageReference deserRef = storageRef.child("images").
-                                child(mykey).child(productInfo.pictures.get(pos));      //리사이클뷰에서 위치 가져온다.
+                                child(productInfo.pictures.get(pos));      //리사이클뷰에서 위치 가져온다.
 
                         deserRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {      //삭제에 성공한 경우
                             @Override

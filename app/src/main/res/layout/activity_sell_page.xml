@@ -71,12 +71,19 @@
             android:layout_weight="9"
             android:weightSum="10">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/selllist"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/sellpage_swipelayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </androidx.recyclerview.widget.RecyclerView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/selllist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         </LinearLayout>
 
     </LinearLayout>
