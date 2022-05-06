@@ -42,4 +42,13 @@ public class Product {
 
     }
 
+    //기본 입력 판매자, 판매자키, 대학
+    public Product(String seller, String seller_key, String university){
+
+        this.seller = seller;
+        this.seller_key = seller_key;
+        this.university = university;
+
+    }
+
 }

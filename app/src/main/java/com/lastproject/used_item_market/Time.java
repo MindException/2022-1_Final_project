@@ -1,7 +1,9 @@
 package com.lastproject.used_item_market;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 public class Time {                 //현재 시간을 구하여 주는 클래스이다.
@@ -154,6 +156,49 @@ public class Time {                 //현재 시간을 구하여 주는 클래�
 
     }
 
+    static String nowNewTime(){       //기존에서 초까지 반환한다.
+
+        String ret = "";
+
+        //년월일 저장
+        LocalDate now = LocalDate.now();        //현재 시간
+        ret = Integer.toString(now.getYear());      //년 저장
+        int month = now.getMonthValue();            //월 저장
+        if (month < 10){
+            ret = ret + '0' + Integer.toString(month);
+        }else{
+            ret = ret + Integer.toString(month);
+        }
+        int day = now.getDayOfMonth();
+        if (day < 10){
+            ret = ret + '0' + Integer.toString(day);
+        }else{
+            ret = ret + Integer.toString(day);
+        }
+
+        //시분초 저장장
+        LocalTime nowTime = LocalTime.now();
+        int hour = nowTime.getHour();
+        if (hour < 10){
+            ret = ret + '0' + Integer.toString(hour);
+        }else{
+            ret = ret + Integer.toString(hour);
+        }
+        int minute = nowTime.getMinute();
+        if (minute < 10){
+            ret = ret + '0' + Integer.toString(minute);
+        }else{
+            ret = ret + Integer.toString(minute);
+        }
+        int seconds = nowTime.getSecond();
+        if (seconds < 10){
+            ret = ret + '0' + Integer.toString(seconds);
+        }else{
+            ret = ret + Integer.toString(seconds);
+        }
+
+        return ret;
+    }
 
 
 }

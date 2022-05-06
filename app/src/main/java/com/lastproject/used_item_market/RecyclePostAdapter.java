@@ -21,7 +21,17 @@ public class RecyclePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     //상품 이미지(Uri)를 가져온다.
     private ArrayList<Uri> productArrayList = new ArrayList<Uri>();
+    private OnItemClickListener mListener = null;  //클릭 리스너 변수
 
+    public interface OnItemClickListener            //아이템이 눌린
+    {
+        void onItemClick(View v, int pos);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        this.mListener = listener;
+    }
 
     @NonNull
     @Override
@@ -56,9 +66,25 @@ public class RecyclePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public ViewHolderPostProduct(@NonNull View itemView) {
             super(itemView);
+
             //아이템 연결
             iv = (ImageView) itemView.findViewById(R.id.img);
             cr = itemView.getContext().getContentResolver();
+
+            itemView.setOnClickListener(new View.OnClickListener() {            //클릭은 여기다가 한다.
+                @Override
+                public void onClick(View v) {
+
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION)            //눌렸을 경우
+                    {
+                        // click event
+                        mListener.onItemClick(v, pos);
+                    }
+
+                }
+            });
+
 
         }
 
@@ -76,10 +102,6 @@ public class RecyclePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         }
     }
-
-
-
-
 
 
 }
