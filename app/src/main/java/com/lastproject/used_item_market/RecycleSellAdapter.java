@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -70,8 +71,12 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.market_list_itme, parent, false);
+        ViewHolderSellProduct viewHolderSellProduct = new ViewHolderSellProduct(view);
+        viewHolderSellProduct.setIsRecyclable(false);       //이거를 넣어줘야 한다.
+        //.setIsRecyclable은 리사이클뷰가 재활용할 것인가 아닌가를 하는것인데 재활용할 경우
+        //grilde에서 사진이 변하기는 하지만 기존에 다른 사진을 내놓고 있다가 원래 사진을 출력한다.
 
-        return new ViewHolderSellProduct(view);
+        return viewHolderSellProduct;
     }
 
     @Override
@@ -124,6 +129,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             //아이템 연결
             iv = (ImageView) itemView.findViewById(R.id.market_list_img);
+            iv.setImageDrawable(null);
             title = (TextView) itemView.findViewById(R.id.market_list_title);
             title.setSelected(true); // 긴 문장 흘러서 보여줌.
             price = (TextView) itemView.findViewById(R.id.market_list_price);
