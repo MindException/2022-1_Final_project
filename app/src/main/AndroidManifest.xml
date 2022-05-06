@@ -3,8 +3,7 @@
     package="com.lastproject.used_item_market">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 0402 추가된 권한들 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 0402 추가된 권한들 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,12 +22,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Used_item_market">
         <activity
+            android:name=".DetailPage"
+            android:exported="false" />
+        <activity
             android:name=".SettingPage"
             android:exported="true" />
         <activity
             android:name=".PostPage"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".AllPage"
             android:exported="true" />
@@ -44,16 +46,13 @@
         <activity
             android:name=".SignUpMap"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".TradeMap"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".SellPlaceMap"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".SignUp"
             android:exported="true" />
@@ -68,8 +67,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>

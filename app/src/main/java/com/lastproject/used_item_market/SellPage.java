@@ -46,7 +46,8 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
     RecycleSellAdapter recycleSellAdapter;
     RecyclerView.OnScrollListener onScrollListener;
     SwipeRefreshLayout swipeRefreshLayout;
-    List<Product> productList = new ArrayList<>();      //여기에 모든 상품들이 들어간다.
+    List<Product> productList = new ArrayList<Product>();      //여기에 모든 상품들이 들어간다.
+    ArrayList<String> productKeyList = new ArrayList<String>();
 
     //카테고리리
     String category = "모두보기";       //기본값
@@ -75,9 +76,16 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
            @Override
            public void onItemClick(View v, int pos) {  //리사이클 뷰 가 눌렸을 경우 상세 페이지로 이동
 
-
-
-
+               Intent intent = new Intent(SellPage.this, DetailPage.class);
+               intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               intent.putExtra("email", email);
+               intent.putExtra("mykey", mykey);
+               intent.putExtra("nickname", nickname);
+               intent.putExtra("myUniv", myUniv);
+               intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+               startActivity(intent);
+               System.exit(0);
 
            }
        });
@@ -101,6 +109,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                        for(DocumentSnapshot document : task.getResult()){
                            Product product = document.toObject(Product.class);
                            productList.add(product);
+                           productKeyList.add(document.getId());
                        }
                        //상품 추가했으니 어뎁터 갱신
                        recycleSellAdapter.notifyDataSetChanged();
@@ -144,6 +153,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                                                    for(DocumentSnapshot nextDocument : nextTask.getResult()){
                                                        Product product = nextDocument.toObject(Product.class);
                                                        productList.add(product);
+                                                       productKeyList.add(nextDocument.getId());
                                                    }
                                                    //어뎁터 또 갱신
                                                    recycleSellAdapter.notifyDataSetChanged();
@@ -202,8 +212,26 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
         isScrolling = true;
         isLastItemReached = false;
         productList = new ArrayList<>();
+        productKeyList = new ArrayList<String>();
         //어뎁터를 새로 설치해줘야 한다.
         recycleSellAdapter = new RecycleSellAdapter(productList);
+        recycleSellAdapter.setOnItemClickListener(new RecycleSellAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {  //리사이클 뷰 가 눌렸을 경우 상세 페이지로 이동
+
+                Intent intent = new Intent(SellPage.this, DetailPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
+                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                startActivity(intent);
+                System.exit(0);
+
+            }
+        });
         recyclerView.setAdapter(recycleSellAdapter);
 
         if (category.equals("모두보기")){
@@ -223,6 +251,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
+                                productKeyList.add(document.getId());
                             }
                             //상품 추가했으니 어뎁터 갱신
                             recycleSellAdapter.notifyDataSetChanged();
@@ -266,6 +295,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                                                         for(DocumentSnapshot nextDocument : nextTask.getResult()){
                                                             Product product = nextDocument.toObject(Product.class);
                                                             productList.add(product);
+                                                            productKeyList.add(nextDocument.getId());
                                                         }
                                                         //어뎁터 또 갱신
                                                         recycleSellAdapter.notifyDataSetChanged();
@@ -316,6 +346,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
+                                productKeyList.add(document.getId());
                             }
                             //상품 추가했으니 어뎁터 갱신
                             recycleSellAdapter.notifyDataSetChanged();
@@ -361,6 +392,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                                                         for(DocumentSnapshot nextDocument : nextTask.getResult()){
                                                             Product product = nextDocument.toObject(Product.class);
                                                             productList.add(product);
+                                                            productKeyList.add(nextDocument.getId());
                                                         }
                                                         //어뎁터 또 갱신
                                                         recycleSellAdapter.notifyDataSetChanged();

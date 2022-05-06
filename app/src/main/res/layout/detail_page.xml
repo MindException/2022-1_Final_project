@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#745641">
+    android:background="#745641"
+    tools:context=".DetailPage">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
