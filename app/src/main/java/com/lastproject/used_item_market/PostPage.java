@@ -494,9 +494,9 @@ public class PostPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {        //티맵 버튼이 눌렸을 경우
 
-                /*
+
                 //저장되었으니 인탠트로 넘어간다.
-                Intent intent = new Intent(PostPage.this, *******.class);
+                Intent intent = new Intent(PostPage.this, TradeMap.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("email", email);
@@ -504,7 +504,7 @@ public class PostPage extends AppCompatActivity {
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
                 startActivity(intent);
-                */
+
 
             }
         });

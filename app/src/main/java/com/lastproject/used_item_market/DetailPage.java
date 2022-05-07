@@ -151,6 +151,7 @@ public class DetailPage extends AppCompatActivity {
         back();
         detailSelect();
         chatting();
+        tmap();
 
     }
 
@@ -220,6 +221,12 @@ public class DetailPage extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    void tmap(){
+
+
 
     }
 

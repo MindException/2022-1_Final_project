@@ -33,11 +33,20 @@ public class TradeMap extends AppCompatActivity {
 
     String latitude = "";            //위도
     String longtitude = "";          //경도
+    String mykey;
+    String myUniv;
+    String email;
+    String nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //기본세팅
+        email = getIntent().getStringExtra("email");
+        mykey = getIntent().getStringExtra("mykey");
+        nickname = getIntent().getStringExtra("nickname");
+        myUniv = getIntent().getStringExtra("myUniv");
         Mapsetting();
 
     }
@@ -214,14 +223,17 @@ public class TradeMap extends AppCompatActivity {
 
     void nextInfo(){        //다음으로 넘어갈 경우 줘야하는 정보
 
-        Intent PostPage_intent = new Intent(com.lastproject.used_item_market.TradeMap.this, SetInFo.class);
+        Intent PostPage_intent = new Intent(com.lastproject.used_item_market.TradeMap.this, PostPage.class);
         PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PostPage_intent.putExtra("latitude", latitude);
         PostPage_intent.putExtra("longtitude", longtitude);
-
+        PostPage_intent.putExtra("email", email);
+        PostPage_intent.putExtra("mykey", mykey);
+        PostPage_intent.putExtra("nickname", nickname);
+        PostPage_intent.putExtra("myUniv", myUniv);
         startActivity(PostPage_intent);
-        finish();
+        System.exit(0);
 
     }
 
