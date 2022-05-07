@@ -55,7 +55,15 @@
         <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/sign_up_map.xml" value="0.2128623188405797" />
         <entry key="app/src/main/res/drawable-v24/bt_tumyeong_sty.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_buy_page.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/detail_page.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/horizon_rectcler_item.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/lobby.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/login.xml" value="0.28281860351562516" />
+        <entry key="app/src/main/res/layout/market_list_itme.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/mypage_list_item.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/product_item_img.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/sell_place_map.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/set_in_fo.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/sign_up.xml" value="0.22056159420289856" />
       </map>
     </option>

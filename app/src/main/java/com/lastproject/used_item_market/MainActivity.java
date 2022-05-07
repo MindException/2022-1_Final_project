@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
                 startActivity(intent);
-                System.out.println();
+                System.exit(0);
             }
         });
     }
@@ -113,7 +113,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SettingPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
                 startActivity(intent);
+                System.exit(0);
             }
         });
     }

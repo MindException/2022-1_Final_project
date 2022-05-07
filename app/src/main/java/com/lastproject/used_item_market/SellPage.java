@@ -34,7 +34,6 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
 
     //파이어베이스
     FirebaseFirestore firestore;
-    CollectionReference userDocument;
     CollectionReference productRef;
 
     //상품관련
@@ -59,7 +58,6 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
 
        //DB 생성
        firestore = FirebaseFirestore.getInstance();
-       userDocument = firestore.collection("Users");
        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.sellpage_swipelayout);
 
        //기본세팅
@@ -70,6 +68,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
 
        //리사이클 뷰 기초세팅
        recyclerView = (RecyclerView)findViewById(R.id.selllist);
+       //recyclerView.setItemAnimator(null);
        recyclerView.setLayoutManager(new LinearLayoutManager(this));
        recycleSellAdapter = new RecycleSellAdapter(productList);
        recycleSellAdapter.setOnItemClickListener(new RecycleSellAdapter.OnItemClickListener() {
@@ -84,6 +83,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                intent.putExtra("nickname", nickname);
                intent.putExtra("myUniv", myUniv);
                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+               intent.putExtra("wherefrom", "SellPage");
                startActivity(intent);
                System.exit(0);
 

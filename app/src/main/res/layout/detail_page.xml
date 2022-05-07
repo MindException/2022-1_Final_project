@@ -30,7 +30,7 @@
                         android:orientation="horizontal"
                         android:weightSum="10">
                         <ImageButton
-                            android:id="@+id/back_login"
+                            android:id="@+id/back_list"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1.5"
@@ -82,9 +82,11 @@
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/product_imges"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:layout_marginTop="5dp"></androidx.recyclerview.widget.RecyclerView>
+                        android:layout_marginTop="5dp">
+                    </androidx.recyclerview.widget.RecyclerView>
 
                     <View
                         android:layout_width="match_parent"
@@ -176,7 +178,8 @@
                                 android:textSize="15dp"
                                 android:textColor="#ffffff"
                                 android:gravity="center"
-                                android:background="@drawable/bt_tumyeong_sty"></TextView>
+                                android:background="@drawable/bt_tumyeong_sty">
+                            </TextView>
                     </LinearLayout>
 
                     <View
