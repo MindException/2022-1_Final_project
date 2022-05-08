@@ -227,6 +227,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
                 intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("wherefrom", "SellPage");
                 startActivity(intent);
                 System.exit(0);
 
