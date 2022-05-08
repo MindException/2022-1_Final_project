@@ -90,7 +90,7 @@ public class SetInFo extends AppCompatActivity {
                signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                startActivity(signUp_intent);
-               System.exit(0);
+               finish();
 
            }
        });

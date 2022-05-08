@@ -111,7 +111,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             super(itemView);
             this.itemview = itemView;
-            cr = itemView.getContext().getContentResolver();
+            //cr = itemView.getContext().getContentResolver();
 
             itemView.setOnClickListener(new View.OnClickListener() {            //클릭은 여기다가 한다.
                 @Override
@@ -145,7 +145,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             date.setText(pdt.time);
 
             //이미지 처리
-            if(pdt.pictures != null){       //상품에 사진이 있는 경우
+            if(pdt.pictures.size() != 0){       //상품에 사진이 있는 경우
 
                 String firstimg_key = pdt.pictures.get(0);       //첫 번째 사진만 가져온다.
                 StorageReference getRef = storageRef.child("images").child(firstimg_key);
