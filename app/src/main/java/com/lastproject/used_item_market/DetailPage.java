@@ -84,7 +84,7 @@ public class DetailPage extends AppCompatActivity {
         wherefrom = getIntent().getStringExtra("wherefrom");        //이것으로 다시 돌아간다.
 
         //위젯 생성
-        back_btn = (ImageButton)findViewById(R.id.back_list);
+        back_btn = (ImageButton)findViewById(R.id.back_login);
         title_view = (TextView)findViewById(R.id.product_name);
         purpose_view = (TextView)findViewById(R.id.purpose);
         category_view = (TextView)findViewById(R.id.category_name);
