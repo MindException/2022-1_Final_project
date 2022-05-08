@@ -118,7 +118,12 @@ public class DetailPage extends AppCompatActivity {
                     if (document.exists()) {    //문서를 가져오는데 성공
 
                         product = document.toObject(Product.class);     //상품을 가져온다.
-                        SellPlace();
+                        if(product.destination_latitude != null && product.destination_longtitude != null){
+
+                            SellPlace();
+
+                        }
+
                         if(product.pictures != null){   //이미지가 있을 경우 세팅
 
                             for(int i = 0; i < product.pictures.size(); i++){       //이미지만큼 가져온다.
