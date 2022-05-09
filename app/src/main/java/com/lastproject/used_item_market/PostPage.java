@@ -37,8 +37,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
@@ -77,6 +79,10 @@ public class PostPage extends AppCompatActivity {
     String result_purpose = "";
     String result_category = "";
 
+    //Realtime-Database
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+
     //새DB
     private FirebaseFirestore firestore;        //DB
     private FirebaseStorage storage;            //이미지 저장소
@@ -105,6 +111,8 @@ public class PostPage extends AppCompatActivity {
 
     String product_key = "";
     Product productInfo;
+    String chat_key;
+    ChatInfo chatInfo;
 
 
 
@@ -127,6 +135,10 @@ public class PostPage extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+        //파이어 베이스 리얼 타임 데이터베이스 연동
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
 
         //제품 생성
         productInfo = new Product(nickname, mykey, myUniv);
@@ -223,16 +235,35 @@ public class PostPage extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
 
-                                    //저장되었으니 인탠트로 넘어간다.
-                                    Intent intent = new Intent(PostPage.this, MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("email", email);
-                                    intent.putExtra("mykey", mykey);
-                                    intent.putExtra("nickname", nickname);
-                                    intent.putExtra("myUniv", myUniv);
-                                    startActivity(intent);
-                                    System.exit(0);
+                                    //채팅방을 생성하여서 넣어준다.
+                                    String product_key = documentReference.getId();
+                                    chatInfo = new ChatInfo(mykey, nickname);
+                                    myRef.child("Chatting").child(product_key)
+                                            .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {    //실시간 데이터베이스에 성공적으로 만들었을 경우
+
+                                            ChattingRoomInfo chattingRoomInfo = new ChattingRoomInfo(mykey, nickname, chatInfo.start_time);
+                                            firestore.collection("ChattingRoom").add(chattingRoomInfo)
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {        //채팅룸도 성공
+
+                                                    //저장되었으니 인탠트로 넘어간다.
+                                                    Intent intent = new Intent(PostPage.this, MainActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    intent.putExtra("email", email);
+                                                    intent.putExtra("mykey", mykey);
+                                                    intent.putExtra("nickname", nickname);
+                                                    intent.putExtra("myUniv", myUniv);
+                                                    startActivity(intent);
+                                                    finish();
+
+                                                }
+                                            });
+                                        }
+                                    });
 
                                 }
                             })//성공 리스너
@@ -241,7 +272,7 @@ public class PostPage extends AppCompatActivity {
                                 public void onFailure(@NonNull Exception e) {
                                     System.out.println("상품 초기 저장 실패함");
                                 }
-                            });
+                            });//리스너 끝
 
                     }catch (Exception e){
 

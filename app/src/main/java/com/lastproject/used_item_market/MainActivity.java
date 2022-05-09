@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
                 startActivity(intent);
-                System.exit(0);
+                finish();
             }
         });
     }
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
                 startActivity(intent);
-                System.exit(0);
+                finish();
             }
         });
     }
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
                 startActivity(intent);
-                System.exit(0);
+                finish();
             }
         });
     }
