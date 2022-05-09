@@ -99,6 +99,7 @@ public class DetailPage extends AppCompatActivity {
         text_view = (TextView)findViewById(R.id.detail_text);
         chat_btn = (TextView)findViewById(R.id.go_chatting);
         map_btn = (TextView)findViewById(R.id.go_transaction_map);
+        back();     //Tmap 세팅이 제일 뒤에 있어야 한다 tmap이 송출되면 버튼리스너가 안먹힌다.
 
         //이미지 관련 위젯
         recyclerView = (RecyclerView)findViewById(R.id.product_imges);
@@ -160,8 +161,6 @@ public class DetailPage extends AppCompatActivity {
             }
         });
 
-
-        back();
         detailSelect();
         chatting();
 
@@ -173,7 +172,9 @@ public class DetailPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                switch (wherefrom){         //어디로 다시 돌아가야할지 정해야한다.
+                System.out.println("나가기 누름");
+
+               switch (wherefrom){         //어디로 다시 돌아가야할지 정해야한다.
 
                     case "SellPage":
                         Intent intent = new Intent(DetailPage.this, SellPage.class);
