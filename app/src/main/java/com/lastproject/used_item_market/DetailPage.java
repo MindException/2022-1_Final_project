@@ -48,6 +48,7 @@ public class DetailPage extends AppCompatActivity {
     String myUniv = "";
     String product_key = "";
     String wherefrom = "";
+    String myimg = "";
 
     //파이어베이스
     private FirebaseFirestore firestore;
@@ -89,6 +90,7 @@ public class DetailPage extends AppCompatActivity {
         myUniv = getIntent().getStringExtra("myUniv");
         product_key = getIntent().getStringExtra("productkey");
         wherefrom = getIntent().getStringExtra("wherefrom");        //이것으로 다시 돌아간다.
+        myimg = getIntent().getStringExtra("myimg");
 
         //위젯 생성
         back_btn = (ImageButton)findViewById(R.id.back_login);
@@ -172,8 +174,6 @@ public class DetailPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println("나가기 누름");
-
                switch (wherefrom){         //어디로 다시 돌아가야할지 정해야한다.
 
                     case "SellPage":
@@ -184,6 +184,7 @@ public class DetailPage extends AppCompatActivity {
                         intent.putExtra("mykey", mykey);
                         intent.putExtra("nickname", nickname);
                         intent.putExtra("myUniv", myUniv);
+                        intent.putExtra("myimg", myimg);
                         startActivity(intent);
                         System.exit(0);
                         break;
@@ -195,6 +196,7 @@ public class DetailPage extends AppCompatActivity {
                         intent2.putExtra("mykey", mykey);
                         intent2.putExtra("nickname", nickname);
                         intent2.putExtra("myUniv", myUniv);
+                        intent2.putExtra("myimg", myimg);
                         startActivity(intent2);
                         System.exit(0);
                         break;
@@ -206,6 +208,7 @@ public class DetailPage extends AppCompatActivity {
                         intent3.putExtra("mykey", mykey);
                         intent3.putExtra("nickname", nickname);
                         intent3.putExtra("myUniv", myUniv);
+                        intent3.putExtra("myimg", myimg);
                         startActivity(intent3);
                         System.exit(0);
                         break;

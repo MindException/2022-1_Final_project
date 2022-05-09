@@ -15,6 +15,7 @@ public class SettingPage extends AppCompatActivity {
     String mykey = "";
     String nickname = "";
     String myUniv = "";
+    String myimg = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class SettingPage extends AppCompatActivity {
         mykey = getIntent().getStringExtra("mykey");
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
+        myimg = getIntent().getStringExtra("myimg");
 
         Back();
     }
@@ -43,6 +45,7 @@ public class SettingPage extends AppCompatActivity {
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
+                intent.putExtra("myimg", myimg);
                 startActivity(intent);
                 System.exit(0);
             }

@@ -31,6 +31,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
     String mykey = "";
     String nickname = "";
     String myUniv = "";
+    String myimg = "";
 
     //파이어베이스
     FirebaseFirestore firestore;
@@ -65,6 +66,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
        mykey = getIntent().getStringExtra("mykey");
        nickname = getIntent().getStringExtra("nickname");
        myUniv = getIntent().getStringExtra("myUniv");
+       myimg = getIntent().getStringExtra("myimg");
 
        //리사이클 뷰 기초세팅
        recyclerView = (RecyclerView)findViewById(R.id.selllist);
@@ -228,6 +230,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                 intent.putExtra("myUniv", myUniv);
                 intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
                 intent.putExtra("wherefrom", "SellPage");
+                intent.putExtra("myimg", myimg);
                 startActivity(intent);
                 System.exit(0);
 

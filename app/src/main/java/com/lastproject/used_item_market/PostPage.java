@@ -70,6 +70,7 @@ public class PostPage extends AppCompatActivity {
     String Address;
     String latitude;            //도착 위도 값
     String longtitude;          //도착 경도 값
+    String myimg;
 
     //스피너만 따로
     Spinner purposeSpinner;          //모집인원
@@ -127,6 +128,7 @@ public class PostPage extends AppCompatActivity {
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
         Address = getIntent().getStringExtra("Address");
+        myimg = getIntent().getStringExtra("myimg");
         //t-map 설정 후 다시 돌아왔을 때를 위함이다.
         latitude = getIntent().getStringExtra("latitude");                  //가져올때 키값 잘 보기
         longtitude = getIntent().getStringExtra("longtitude");
@@ -257,6 +259,7 @@ public class PostPage extends AppCompatActivity {
                                                     intent.putExtra("mykey", mykey);
                                                     intent.putExtra("nickname", nickname);
                                                     intent.putExtra("myUniv", myUniv);
+                                                    intent.putExtra("myimg", myimg);
                                                     startActivity(intent);
                                                     finish();
 

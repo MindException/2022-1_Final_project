@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     String mykey = "";
     String nickname = "";
     String myUniv = "";
+    String myimg = "";
 
 
 
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         mykey = getIntent().getStringExtra("mykey");
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
+        myimg = getIntent().getStringExtra("myimg");
+
+        //System.out.println("이미지 결과: " + myimg);     //null값으로 가져온다.
 
         /*
         //기본세팅
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
+                intent.putExtra("myimg", myimg);
                 startActivity(intent);
                 finish();
             }
@@ -100,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
+                intent.putExtra("myimg", myimg);
                 startActivity(intent);
                 finish();
             }
@@ -119,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
+                intent.putExtra("myimg", myimg);
                 startActivity(intent);
                 finish();
             }

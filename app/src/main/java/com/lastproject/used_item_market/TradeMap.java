@@ -47,6 +47,7 @@ public class TradeMap extends AppCompatActivity {
     String mykey;
     String nickname;
     String myUniv;
+    String myimg;
 
     University university;
 
@@ -61,6 +62,7 @@ public class TradeMap extends AppCompatActivity {
         mykey = getIntent().getStringExtra("mykey");
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
+        myimg = getIntent().getStringExtra("myimg");
 
         Mapsetting();
 
@@ -275,7 +277,7 @@ public class TradeMap extends AppCompatActivity {
         PostPage_intent.putExtra("mykey", mykey);
         PostPage_intent.putExtra("nickname", nickname);
         PostPage_intent.putExtra("myUniv", myUniv);
-
+        PostPage_intent.putExtra("myimg", myimg);
         startActivity(PostPage_intent);
         finish();
 
