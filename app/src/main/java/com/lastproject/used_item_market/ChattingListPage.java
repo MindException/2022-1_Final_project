@@ -9,6 +9,6 @@ public class ChattingListPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chatting_list_page);
+        setContentView(R.layout.activity_chatting_home);
     }
 }

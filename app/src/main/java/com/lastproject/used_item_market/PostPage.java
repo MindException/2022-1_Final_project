@@ -239,7 +239,8 @@ public class PostPage extends AppCompatActivity {
 
                                     //채팅방을 생성하여서 넣어준다.
                                     String product_key = documentReference.getId();
-                                    chatInfo = new ChatInfo(mykey, nickname);
+                                    chatInfo = new ChatInfo(nickname);
+                                    //Realtime-Database에 채팅내용테이블을 생성한다.
                                     myRef.child("Chatting").child(product_key)
                                             .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
@@ -251,6 +252,7 @@ public class PostPage extends AppCompatActivity {
                                             if(productInfo.pictures.size() != 0){
                                                 chattingRoomInfo.product_imgkey = productInfo.pictures.get(0);      //첫 번째 사진 저장
                                             }
+                                            chattingRoomInfo.chat_key = product_key;
                                             firestore.collection("ChattingRoom").add(chattingRoomInfo)
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override
