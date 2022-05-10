@@ -40,12 +40,14 @@ public class MainActivity extends AppCompatActivity {
         mykey = "io2IeEjLYV5ERxhyBqdd";
         nickname = "admin1234";
         myUniv = "선문대학교";
+        myimg = "io2IeEjLYV5ERxhyBqdd";
         */
 
 
         Sell();
         Share();
         All();
+        chat();
         Post();
         Setting();
     }
@@ -110,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    void chat(){    //채팅 목록 화면으로 이동한다.
+
+
     }
 
     void Setting(){ //설정 버튼 클릭 시 화면 이동

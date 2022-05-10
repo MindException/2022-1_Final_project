@@ -246,6 +246,8 @@ public class PostPage extends AppCompatActivity {
                                         public void onSuccess(Void unused) {    //실시간 데이터베이스에 성공적으로 만들었을 경우
 
                                             ChattingRoomInfo chattingRoomInfo = new ChattingRoomInfo(mykey, nickname, chatInfo.start_time);
+                                            //모든 이미지 파일은 유저키로 할 것이다. profile/유저키
+                                            chattingRoomInfo.customer_images.add(mykey);        //사진을 넣어준다.
                                             firestore.collection("ChattingRoom").add(chattingRoomInfo)
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override

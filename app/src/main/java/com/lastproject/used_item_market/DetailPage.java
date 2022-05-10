@@ -101,7 +101,7 @@ public class DetailPage extends AppCompatActivity {
         text_view = (TextView)findViewById(R.id.detail_text);
         chat_btn = (TextView)findViewById(R.id.go_chatting);
         map_btn = (TextView)findViewById(R.id.go_transaction_map);
-        back();     //Tmap 세팅이 제일 뒤에 있어야 한다 tmap이 송출되면 버튼리스너가 안먹힌다.
+        back();
 
         //이미지 관련 위젯
         recyclerView = (RecyclerView)findViewById(R.id.product_imges);
@@ -263,7 +263,7 @@ public class DetailPage extends AppCompatActivity {
 
     void SellPlace(){
 
-        setContentView(R.layout.detail_page);
+        //setContentView(R.layout.detail_page);
         mapView = (TMapView) findViewById(R.id.map_reserve);
         mapView.setUserScrollZoomEnable(true);     //지도 고정
         TMapMarkerItem item = new TMapMarkerItem();

@@ -17,12 +17,18 @@ public class ChattingRoomInfo {
     public String last_time;                        //채팅의 마지막 시간을 저장한다.
     public String chat_key;                         //Raaltime-Database에서의 키갑을 가지고 있는다.
 
+    //채팅방 만들때 주의할 점!!
+    //프로필 사진 불러올 경우에 이미지가 있으면 onSuccessListener에서 코딩하고
+    //실패한 경우에는 onFailureListener에서 작업하는 방식으로 코딩한다.
+
+
     public ChattingRoomInfo(){}
 
     public ChattingRoomInfo(String seller_key, String nickname, String time){
 
         customerList = new ArrayList<String>();
         customer_nicknames = new ArrayList<String>();
+        customer_images = new ArrayList<String>();
         customerList.add(seller_key);
         customer_nicknames.add(nickname);
         start_time = time;
