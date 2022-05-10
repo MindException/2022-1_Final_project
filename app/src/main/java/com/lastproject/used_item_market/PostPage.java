@@ -248,6 +248,9 @@ public class PostPage extends AppCompatActivity {
                                             ChattingRoomInfo chattingRoomInfo = new ChattingRoomInfo(mykey, nickname, chatInfo.start_time);
                                             //모든 이미지 파일은 유저키로 할 것이다. profile/유저키
                                             chattingRoomInfo.customer_images.add(mykey);        //사진을 넣어준다.
+                                            if(productInfo.pictures.size() != 0){
+                                                chattingRoomInfo.product_imgkey = productInfo.pictures.get(0);      //첫 번째 사진 저장
+                                            }
                                             firestore.collection("ChattingRoom").add(chattingRoomInfo)
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override
