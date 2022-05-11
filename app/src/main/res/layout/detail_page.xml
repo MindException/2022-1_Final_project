@@ -4,61 +4,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#4A3424"
+    android:background="#745641"
     tools:context=".DetailPage">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30px"
+        android:layout_margin="45px"
         android:background="#2A5237">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/img_view_chalk_logo"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal"
-                android:weightSum="10">
-                <ImageButton
-                    android:id="@+id/back_login"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:src="@drawable/ic_back2"
-                    android:scaleType="fitStart"
-                    android:background="#00ff0000"
-                    android:padding="3dp"
-                    android:layout_margin="3dp"></ImageButton>
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7"
-                    android:src="@drawable/logo"
-                    android:scaleType="fitCenter"
-                    android:background="#00ff0000"
-                    android:padding="3dp"></ImageView>
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:background="#00ff0000"
-                    android:padding="3dp"
-                    android:scaleType="fitEnd"
-                    android:src="@drawable/ic_complete3"
-                    android:layout_margin="3dp"></ImageButton>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#ffffff"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="0dp"></View>
+            android:layout_height="0dp"
+            android:layout_weight="5">
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -67,10 +25,43 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <LinearLayout
-                        android:layout_width="280dp"
-                        android:layout_height="280dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+                        <ImageButton
+                            android:id="@+id/back_list"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:src="@drawable/ic_back2"
+                            android:scaleType="fitStart"
+                            android:background="#00ff0000"
+                            android:padding="3dp"
+                            android:layout_margin="3dp"></ImageButton>
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:src="@drawable/logo"
+                            android:scaleType="fitCenter"
+                            android:background="#00ff0000"
+                            android:padding="3dp"></ImageView>
+
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:background="#00ff0000"
+                            android:padding="3dp"
+                            android:scaleType="fitEnd"
+                            android:src="@drawable/ic_complete3"
+                            android:layout_margin="3dp"></ImageButton>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="350dp"
+                        android:layout_height="350dp"
                         android:layout_gravity="center"
-                        android:layout_margin="20dp"
                         android:background="@drawable/img_view_round">
                         <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
@@ -78,7 +69,7 @@
                             app:cardCornerRadius="25dp"
                             app:cardElevation="5dp"
                             android:layout_gravity="center"
-                            android:layout_margin="1dp">
+                            android:layout_margin="2dp">
                             <ImageButton
                                 android:id="@+id/detail_page_main_img1"
                                 android:layout_width="match_parent"
@@ -94,11 +85,12 @@
                         android:id="@+id/product_imges"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:layout_marginTop="5dp"></androidx.recyclerview.widget.RecyclerView>
+                        android:layout_marginTop="5dp">
+                    </androidx.recyclerview.widget.RecyclerView>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2dp"
                         android:background="#ffffff"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -107,18 +99,18 @@
                     <TextView
                         android:id="@+id/product_name"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="50dp"
                         android:text="여기 품명"
                         android:fontFamily="@font/font_5"
                         android:textColor="#ffffff"
-                        android:textSize="20dp"
+                        android:textSize="30dp"
                         android:gravity="center">
                     </TextView>
 
                     <TextView
                         android:id="@+id/category_name"
                         android:layout_width="match_parent"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
                         android:text="여기 카테고리 명"
                         android:fontFamily="@font/font_1"
                         android:textColor="#ffffff"
@@ -128,7 +120,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2dp"
                         android:background="#ffffff"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -136,27 +128,27 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:weightSum="2.7"
+                        android:layout_height="50dp"
+                        android:weightSum="4"
                         android:orientation="horizontal">
                         <TextView
                             android:id="@+id/purpose"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.7"
+                            android:layout_weight="1"
                             android:text="무료나눔"
                             android:fontFamily="@font/font_5"
-                            android:textSize="18dp"
+                            android:textSize="20dp"
                             android:textColor="#ffffff"
                             android:gravity="center"></TextView>
                         <TextView
                             android:id="@+id/money"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="3"
                             android:text="99,999,999 원"
                             android:fontFamily="@font/font_5"
-                            android:textSize="18dp"
+                            android:textSize="20dp"
                             android:textColor="#ffffff"
                             android:gravity="center|right"
                             android:paddingRight="15dp">
@@ -164,7 +156,7 @@
                     </LinearLayout>
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2dp"
                         android:background="#ffffff"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -177,45 +169,27 @@
                         android:paddingLeft="100dp"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp">
-                        <TextView
-                            android:id="@+id/go_transaction_map"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="지정된 거래장소 보기"
-                            android:fontFamily="@font/font_6"
-                            android:textSize="15dp"
-                            android:textColor="#ffffff"
-                            android:gravity="center"
-                            android:background="@drawable/bt_tumyeong_sty"></TextView>
+                            <TextView
+                                android:id="@+id/go_transaction_map"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="지정된 거래장소 보기"
+                                android:fontFamily="@font/font_6"
+                                android:textSize="15dp"
+                                android:textColor="#ffffff"
+                                android:gravity="center"
+                                android:background="@drawable/bt_tumyeong_sty">
+                            </TextView>
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2dp"
                         android:background="#ffffff"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="5dp"></View>
-                    <!-- 지도 뚫어놓은거  (여기부터)-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp">
-                        <com.skt.Tmap.TMapView
-                            android:id="@+id/map_reserve"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-                        </com.skt.Tmap.TMapView>
-                    </LinearLayout>
-                    <!-- 지도 뚫어놓은거  (여기까지)-->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#ffffff"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginBottom="5dp"></View>
+
                     <TextView
                         android:id="@+id/detail_text"
                         android:layout_width="match_parent"
@@ -227,32 +201,32 @@
                         android:textSize="18dp"></TextView>
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="2dp"
                         android:background="#ffffff"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="5dp"></View>
-                    <LinearLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal"
+                    android:paddingRight="120dp"
+                    android:paddingLeft="120dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:id="@+id/go_chatting"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:orientation="horizontal"
-                        android:paddingRight="120dp"
-                        android:paddingLeft="120dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:layout_marginBottom="10dp">
-                        <TextView
-                            android:id="@+id/go_chatting"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="채팅하기"
-                            android:fontFamily="@font/font_6"
-                            android:textSize="22dp"
-                            android:textColor="#ffffff"
-                            android:gravity="center"
-                            android:background="@drawable/bt_tumyeong_sty"
-                            ></TextView>
-                    </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:text="채팅하기"
+                        android:fontFamily="@font/font_6"
+                        android:textSize="22dp"
+                        android:textColor="#ffffff"
+                        android:gravity="center"
+                        android:background="@drawable/bt_tumyeong_sty"
+                        ></TextView>
+                </LinearLayout>
 
 
 

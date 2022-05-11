@@ -16,18 +16,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
@@ -43,26 +33,10 @@ public class TradeMap extends AppCompatActivity {
 
     String latitude = "";            //위도
     String longtitude = "";          //경도
-    String email;
-    String mykey;
-    String nickname;
-    String myUniv;
-    String myimg;
-
-    University university;
-
-    //파이어베이스
-    private FirebaseFirestore firestore;
-    private CollectionReference universityRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        email = getIntent().getStringExtra("email");
-        mykey = getIntent().getStringExtra("mykey");
-        nickname = getIntent().getStringExtra("nickname");
-        myUniv = getIntent().getStringExtra("myUniv");
-        myimg = getIntent().getStringExtra("myimg");
 
         Mapsetting();
 
@@ -71,144 +45,116 @@ public class TradeMap extends AppCompatActivity {
 
 
     void Mapsetting() {
-        firestore = FirebaseFirestore.getInstance();
-        universityRef = firestore.collection("University");
+        //티맵 뷰
+        setContentView(R.layout.trade_map);
+        mLM = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        mapView = (TMapView) findViewById(R.id.trade_map_view);
+        TMapMarkerItem item = new TMapMarkerItem();
+        University university = new University();
+        //기본 위치를 사용자가 지정한 학교로 한다.
 
-        DocumentReference documentReference = universityRef.document(myUniv);
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        double lng = Double.parseDouble(university.longtitude);
+        double lat = Double.parseDouble(university.latitude);
+        mapView.setCenterPoint(lng, lat);
+        mapView.setOnApiKeyListener(new TMapView.OnApiKeyListenerCallback() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot documentSnapshot = task.getResult();
-                if(documentSnapshot.exists()){
-                    university = documentSnapshot.toObject(University.class);
+            public void SKTMapApikeySucceed() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setupMap();
+                    }
+                });
+            }
 
-                    //티맵 뷰
-                    setContentView(R.layout.trade_map);
-                    mLM = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                    mapView = (TMapView) findViewById(R.id.trade_map_view);
-                    TMapMarkerItem item = new TMapMarkerItem();
-                    //기본 위치를 사용자가 지정한 학교로 한다.
+            @Override
+            public void SKTMapApikeyFailed(String s) {
 
-                    double lng = Double.parseDouble(university.longtitude);
-                    double lat = Double.parseDouble(university.latitude);
-                    System.out.println("위도 : " + lng);
-                    System.out.println("경도 : " + lat);
-                    mapView.setCenterPoint(lng, lat);
-                    mapView.setOnApiKeyListener(new TMapView.OnApiKeyListenerCallback() {
-                        @Override
-                        public void SKTMapApikeySucceed() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setupMap();
-                                }
-                            });
+            }
+
+        });
+
+        //맵 SDK Key
+        mapView.setSKTMapApiKey("l7xx303267b599d441eb85003eeddd7b4d4c");
+        mapView.setLanguage(TMapView.LANGUAGE_KOREAN);
+
+
+        // 지도 움직이고 나면 중앙에 마커 생성
+        mapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
+            @Override
+            public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
+                latitude = "";            //위도
+                longtitude = "";          //경도
+
+                item.setTMapPoint(centerPoint);//마커위치 포인트 설정
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blue); //마커 비트맵
+                Bitmap checkbitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.mapcheck); //체크이미지 비트맵
+                item.setIcon(bitmap);//마커 아이콘
+                item.setPosition(0.5f, 1);//마커 중앙위치
+                mapView.addMarkerItem("item", item); //마커 추가
+
+                TMapData tmapdata = new TMapData();
+                tmapdata.reverseGeocoding(centerPoint.getLatitude(), centerPoint.getLongitude(), "A04", new TMapData.reverseGeocodingListenerCallback() {
+                    @Override
+                    public void onReverseGeocoding(TMapAddressInfo addressInfo) {
+                        if(addressInfo.strBuildingName.toString().equals("")){
+                            try {
+                                latitude = Double.toString(centerPoint.getLatitude());
+                                longtitude = Double.toString(centerPoint.getLongitude());
+                                item.setCalloutTitle(addressInfo.strRoadName);
+                            }catch (Exception e){
+                                item.setCalloutTitle("없는 주소");
+                            }
+                        }else{
+                            try {
+                                latitude = Double.toString(centerPoint.getLatitude());
+                                longtitude = Double.toString(centerPoint.getLongitude());
+                                item.setCalloutTitle(addressInfo.strBuildingName);
+                            }catch (Exception e){
+                                item.setCalloutTitle("없는 주소");
+                            }
                         }
+                    }
+                });
 
-                        @Override
-                        public void SKTMapApikeyFailed(String s) {
+                item.setCanShowCallout(true);//풍선뷰 사용여부
+                item.setCalloutRightButtonImage(checkbitmap);//풍선뷰 오른쪽 이미지 사용
+                mapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback(){//풍선뷰 오른쪽 이미지 사용 이벤트 리스너
+                    @Override
+                    public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
+                        AlertDialog.Builder dlg = new AlertDialog.Builder(TradeMap.this);
+                        Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
 
-                        }
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                dlg.setTitle("해당 위치로 지정하시겠습니까?");
+                                dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {  // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
+                                        //System.out.println("선택 : " + univ.get(selecteduniv[0]));
+                                        nextInfo();
 
-                    });
-
-                    //맵 SDK Key
-                    mapView.setSKTMapApiKey("l7xx303267b599d441eb85003eeddd7b4d4c");
-                    mapView.setLanguage(TMapView.LANGUAGE_KOREAN);
-
-
-                    // 지도 움직이고 나면 중앙에 마커 생성
-                    mapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
-                        @Override
-                        public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
-                            latitude = "";            //위도
-                            longtitude = "";          //경도
-
-                            item.setTMapPoint(centerPoint);//마커위치 포인트 설정
-                            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blue); //마커 비트맵
-                            Bitmap checkbitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.mapcheck); //체크이미지 비트맵
-                            item.setIcon(bitmap);//마커 아이콘
-                            item.setPosition(0.5f, 1);//마커 중앙위치
-                            mapView.addMarkerItem("item", item); //마커 추가
-
-                            TMapData tmapdata = new TMapData();
-                            tmapdata.reverseGeocoding(centerPoint.getLatitude(), centerPoint.getLongitude(), "A04", new TMapData.reverseGeocodingListenerCallback() {
-                                @Override
-                                public void onReverseGeocoding(TMapAddressInfo addressInfo) {
-                                    if(addressInfo.strBuildingName.toString().equals("")){
-                                        try {
-                                            latitude = Double.toString(centerPoint.getLatitude());
-                                            longtitude = Double.toString(centerPoint.getLongitude());
-                                            item.setCalloutTitle(addressInfo.strRoadName);
-                                        }catch (Exception e){
-                                            item.setCalloutTitle("없는 주소");
-                                        }
-                                    }else{
-                                        try {
-                                            latitude = Double.toString(centerPoint.getLatitude());
-                                            longtitude = Double.toString(centerPoint.getLongitude());
-                                            item.setCalloutTitle(addressInfo.strBuildingName);
-                                        }catch (Exception e){
-                                            item.setCalloutTitle("없는 주소");
-                                        }
                                     }
-                                }
-                            });
+                                }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                            item.setCanShowCallout(true);//풍선뷰 사용여부
-                            item.setCalloutRightButtonImage(checkbitmap);//풍선뷰 오른쪽 이미지 사용
-                            mapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback(){//풍선뷰 오른쪽 이미지 사용 이벤트 리스너
-                                @Override
-                                public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
-                                    AlertDialog.Builder dlg = new AlertDialog.Builder(TradeMap.this);
-                                    Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
-
-                                    mHandler.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            dlg.setTitle("해당 위치로 지정하시겠습니까?");
-                                            dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {  // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
-                                                    //System.out.println("선택 : " + univ.get(selecteduniv[0]));
-                                                    nextInfo();
-
-                                                }
-                                            }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                }
-                                            });
-                                            dlg.show();
-                                        }
-                                    }, 0);
-                                }
-                            });
+                                    }
+                                });
+                                dlg.show();
+                            }
+                        }, 0);
+                    }
+                });
 
 
 
-                        }
-                    });
-
-
-
-
-
-                }
             }
         });
 
-        /*
-        Query query = universityRef.whereEqualTo("university", myUniv);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                QuerySnapshot documentSnapshot = task.getResult();
-                university = (University) documentSnapshot.toObjects(University.class);
-            }
-        });
-*/
+
+
 
 
     }
@@ -268,16 +214,12 @@ public class TradeMap extends AppCompatActivity {
 
     void nextInfo(){        //다음으로 넘어갈 경우 줘야하는 정보
 
-        Intent PostPage_intent = new Intent(TradeMap.this, PostPage.class);
+        Intent PostPage_intent = new Intent(com.lastproject.used_item_market.TradeMap.this, SetInFo.class);
         PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PostPage_intent.putExtra("latitude", latitude);
         PostPage_intent.putExtra("longtitude", longtitude);
-        PostPage_intent.putExtra("email", email);
-        PostPage_intent.putExtra("mykey", mykey);
-        PostPage_intent.putExtra("nickname", nickname);
-        PostPage_intent.putExtra("myUniv", myUniv);
-        PostPage_intent.putExtra("myimg", myimg);
+
         startActivity(PostPage_intent);
         finish();
 

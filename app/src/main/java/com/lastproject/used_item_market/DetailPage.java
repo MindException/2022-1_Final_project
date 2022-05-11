@@ -31,9 +31,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StreamDownloadTask;
-import com.skt.Tmap.TMapMarkerItem;
-import com.skt.Tmap.TMapPoint;
-import com.skt.Tmap.TMapView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +45,6 @@ public class DetailPage extends AppCompatActivity {
     String myUniv = "";
     String product_key = "";
     String wherefrom = "";
-    String myimg = "";
 
     //파이어베이스
     private FirebaseFirestore firestore;
@@ -74,10 +70,6 @@ public class DetailPage extends AppCompatActivity {
 
     private Product product;
 
-    //맵
-    TMapView mapView;
-    Context context = this;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,18 +82,16 @@ public class DetailPage extends AppCompatActivity {
         myUniv = getIntent().getStringExtra("myUniv");
         product_key = getIntent().getStringExtra("productkey");
         wherefrom = getIntent().getStringExtra("wherefrom");        //이것으로 다시 돌아간다.
-        myimg = getIntent().getStringExtra("myimg");
 
         //위젯 생성
-        back_btn = (ImageButton)findViewById(R.id.back_login);
+        back_btn = (ImageButton)findViewById(R.id.back_list);
         title_view = (TextView)findViewById(R.id.product_name);
         purpose_view = (TextView)findViewById(R.id.purpose);
         category_view = (TextView)findViewById(R.id.category_name);
         cost_view = (TextView)findViewById(R.id.money);
         text_view = (TextView)findViewById(R.id.detail_text);
         chat_btn = (TextView)findViewById(R.id.go_chatting);
-        map_btn = (TextView)findViewById(R.id.go_transaction_map);
-        back();
+        //map_btn <- 맵은 아직 연결안함
 
         //이미지 관련 위젯
         recyclerView = (RecyclerView)findViewById(R.id.product_imges);
@@ -121,12 +111,6 @@ public class DetailPage extends AppCompatActivity {
                     if (document.exists()) {    //문서를 가져오는데 성공
 
                         product = document.toObject(Product.class);     //상품을 가져온다.
-                        if(product.destination_latitude != null && product.destination_longtitude != null){
-
-                            SellPlace();
-
-                        }
-
                         if(product.pictures != null){   //이미지가 있을 경우 세팅
 
                             for(int i = 0; i < product.pictures.size(); i++){       //이미지만큼 가져온다.
@@ -163,6 +147,8 @@ public class DetailPage extends AppCompatActivity {
             }
         });
 
+
+        back();
         detailSelect();
         chatting();
 
@@ -174,7 +160,7 @@ public class DetailPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               switch (wherefrom){         //어디로 다시 돌아가야할지 정해야한다.
+                switch (wherefrom){         //어디로 다시 돌아가야할지 정해야한다.
 
                     case "SellPage":
                         Intent intent = new Intent(DetailPage.this, SellPage.class);
@@ -184,7 +170,6 @@ public class DetailPage extends AppCompatActivity {
                         intent.putExtra("mykey", mykey);
                         intent.putExtra("nickname", nickname);
                         intent.putExtra("myUniv", myUniv);
-                        intent.putExtra("myimg", myimg);
                         startActivity(intent);
                         System.exit(0);
                         break;
@@ -196,7 +181,6 @@ public class DetailPage extends AppCompatActivity {
                         intent2.putExtra("mykey", mykey);
                         intent2.putExtra("nickname", nickname);
                         intent2.putExtra("myUniv", myUniv);
-                        intent2.putExtra("myimg", myimg);
                         startActivity(intent2);
                         System.exit(0);
                         break;
@@ -208,7 +192,6 @@ public class DetailPage extends AppCompatActivity {
                         intent3.putExtra("mykey", mykey);
                         intent3.putExtra("nickname", nickname);
                         intent3.putExtra("myUniv", myUniv);
-                        intent3.putExtra("myimg", myimg);
                         startActivity(intent3);
                         System.exit(0);
                         break;
@@ -260,54 +243,5 @@ public class DetailPage extends AppCompatActivity {
 
 
     }
-
-    void SellPlace(){
-
-        //setContentView(R.layout.detail_page);
-        mapView = (TMapView) findViewById(R.id.map_reserve);
-        mapView.setUserScrollZoomEnable(true);     //지도 고정
-        TMapMarkerItem item = new TMapMarkerItem();
-
-        double lng = Double.parseDouble(product.destination_longtitude);    //파이어베이스에서 받아온 경도값
-        double lat = Double.parseDouble(product.destination_latitude);    //파이어베이스에서 받아온 위도값
-        mapView.setCenterPoint(lng, lat); //sellpage에서 설정된 위도 경도 값을 받아온 상태이면 주석을 풀면된다.
-        TMapPoint centerPoint = new TMapPoint(lat, lng);
-        item.setTMapPoint(centerPoint);//마커위치 포인트 설정
-        item.setVisible(TMapMarkerItem.VISIBLE);
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.blue); //마커 비트맵
-        item.setIcon(bitmap);//마커 아이콘
-        item.setPosition(0.5f, 1);//마커 중앙위치
-        mapView.addMarkerItem("item", item); //마커 추가
-        mapView.setOnApiKeyListener(new TMapView.OnApiKeyListenerCallback() {
-            @Override
-            public void SKTMapApikeySucceed() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setupMap();
-                    }
-                });
-            }
-
-            @Override
-            public void SKTMapApikeyFailed(String s) {
-
-            }
-
-        });
-
-
-
-
-        //맵 SDK Key
-        mapView.setSKTMapApiKey("l7xx303267b599d441eb85003eeddd7b4d4c");
-        mapView.setLanguage(TMapView.LANGUAGE_KOREAN);
-
-    }
-    private void setupMap() {
-        mapView.setMapType(TMapView.MAPTYPE_STANDARD); //Tmap Type설정
-    }
-
-
 
 }
