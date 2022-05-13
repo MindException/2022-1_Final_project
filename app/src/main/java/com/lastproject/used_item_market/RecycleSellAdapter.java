@@ -96,6 +96,12 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
+    //이게 매우 중요 이거 없으면 다 날라간다.
+    @Override
+    public int getItemViewType(int position) {      //리사이클뷰에 재활용을 막는다.
+        return position;
+    }
+
     //아이템 저장하는 클래스
     class ViewHolderSellProduct extends RecyclerView.ViewHolder{
 
