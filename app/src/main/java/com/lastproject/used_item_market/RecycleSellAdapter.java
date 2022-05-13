@@ -72,9 +72,6 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.market_list_itme, parent, false);
         ViewHolderSellProduct viewHolderSellProduct = new ViewHolderSellProduct(view);
-        viewHolderSellProduct.setIsRecyclable(false);       //이거를 넣어줘야 한다.
-        //.setIsRecyclable은 리사이클뷰가 재활용할 것인가 아닌가를 하는것인데 재활용할 경우
-        //grilde에서 사진이 변하기는 하지만 기존에 다른 사진을 내놓고 있다가 원래 사진을 출력한다.
 
         return viewHolderSellProduct;
     }
@@ -97,6 +94,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     //이게 매우 중요 이거 없으면 다 날라간다.
+
     @Override
     public int getItemViewType(int position) {      //리사이클뷰에 재활용을 막는다.
         return position;
@@ -163,9 +161,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                             Glide.with(itemview)
                                     .load(uri)
-                                    .placeholder(R.drawable.ic_setimg)      //로딩하기 전 보여줄 이미지
-                                    .error(R.drawable.ic_setimg)            //에러 발생시 보여줄 이미지
-                                    .fallback(R.drawable.ic_setimg)         //url이 비어있을 경우 보여줄 이미지
+                                    .override(150, 150)
                                     .into(iv);
 
                         }catch (Exception e){
