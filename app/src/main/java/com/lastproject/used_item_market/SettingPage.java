@@ -44,6 +44,7 @@ public class SettingPage extends AppCompatActivity {
     String mykey = "";
     String nickname = "";
     String myUniv = "";
+    String myimg = "";
 
     //위젯 모음
     TextView selling;
@@ -88,6 +89,7 @@ public class SettingPage extends AppCompatActivity {
         mykey = getIntent().getStringExtra("mykey");
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
+        myimg = getIntent().getStringExtra("myimg");
 
         //프로필 사진
         imageView = findViewById(R.id.mypage_profile);
@@ -131,7 +133,9 @@ public class SettingPage extends AppCompatActivity {
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
+                intent.putExtra("myimg", myimg);
                 startActivity(intent);
+                finish();
                 System.exit(0);
             }
         });
@@ -315,15 +319,15 @@ public class SettingPage extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            String nowTime = mykey + Time.nowNewTime();
+            String imgkey = mykey;
 
-            StorageReference deserRef = storageRef.child("images").
-                    child(nowTime);    //이미지 조회
+            StorageReference deserRef = storageRef.child("profiles").
+                    child(imgkey);    //이미지 조회
             UploadTask uploadTask = (UploadTask) deserRef.putFile(uri); //이미지 서버에 uri로 저장
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    user.img = nowTime;
+                    user.img = imgkey;
                     UserRef.document(mykey).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
@@ -355,7 +359,7 @@ public class SettingPage extends AppCompatActivity {
                         user = documentSnapshot.toObject(User.class);
                         System.out.println(user.img);
                         if(user.img != null){
-                            StorageReference deserRef = storageRef.child("images").
+                            StorageReference deserRef = storageRef.child("profiles").
                                     child(user.img);    //이미지 조회
                             deserRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
