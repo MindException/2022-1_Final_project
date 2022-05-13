@@ -198,6 +198,7 @@
                         android:layout_marginBottom="5dp"></View>
                     <!-- 지도 뚫어놓은거  (여기부터)-->
                     <LinearLayout
+                        android:id="@+id/map_control"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginLeft="5dp"

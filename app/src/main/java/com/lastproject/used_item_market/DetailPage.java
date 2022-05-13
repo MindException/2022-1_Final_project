@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +49,6 @@ public class DetailPage extends AppCompatActivity {
     String myUniv = "";
     String product_key = "";
     String wherefrom = "";
-    String myimg = "";
 
     //파이어베이스
     private FirebaseFirestore firestore;
@@ -77,6 +77,7 @@ public class DetailPage extends AppCompatActivity {
     //맵
     TMapView mapView;
     Context context = this;
+    LinearLayout map_control;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,6 @@ public class DetailPage extends AppCompatActivity {
         myUniv = getIntent().getStringExtra("myUniv");
         product_key = getIntent().getStringExtra("productkey");
         wherefrom = getIntent().getStringExtra("wherefrom");        //이것으로 다시 돌아간다.
-        myimg = getIntent().getStringExtra("myimg");
 
         //위젯 생성
         back_btn = (ImageButton)findViewById(R.id.back_login);
@@ -100,8 +100,7 @@ public class DetailPage extends AppCompatActivity {
         cost_view = (TextView)findViewById(R.id.money);
         text_view = (TextView)findViewById(R.id.detail_text);
         chat_btn = (TextView)findViewById(R.id.go_chatting);
-        map_btn = (TextView)findViewById(R.id.go_transaction_map);
-        back();
+        map_btn = (TextView) findViewById(R.id.go_transaction_map);
 
         //이미지 관련 위젯
         recyclerView = (RecyclerView)findViewById(R.id.product_imges);
@@ -121,12 +120,9 @@ public class DetailPage extends AppCompatActivity {
                     if (document.exists()) {    //문서를 가져오는데 성공
 
                         product = document.toObject(Product.class);     //상품을 가져온다.
-                        if(product.destination_latitude != null && product.destination_longtitude != null){
-
+                        if(product.destination_latitude != null && product.destination_longtitude != null) {
                             SellPlace();
-
                         }
-
                         if(product.pictures != null){   //이미지가 있을 경우 세팅
 
                             for(int i = 0; i < product.pictures.size(); i++){       //이미지만큼 가져온다.
@@ -163,8 +159,10 @@ public class DetailPage extends AppCompatActivity {
             }
         });
 
+        back();
         detailSelect();
         chatting();
+        mapVisibility();
 
     }
 
@@ -174,7 +172,7 @@ public class DetailPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               switch (wherefrom){         //어디로 다시 돌아가야할지 정해야한다.
+                switch (wherefrom){         //어디로 다시 돌아가야할지 정해야한다.
 
                     case "SellPage":
                         Intent intent = new Intent(DetailPage.this, SellPage.class);
@@ -184,7 +182,6 @@ public class DetailPage extends AppCompatActivity {
                         intent.putExtra("mykey", mykey);
                         intent.putExtra("nickname", nickname);
                         intent.putExtra("myUniv", myUniv);
-                        intent.putExtra("myimg", myimg);
                         startActivity(intent);
                         System.exit(0);
                         break;
@@ -196,7 +193,6 @@ public class DetailPage extends AppCompatActivity {
                         intent2.putExtra("mykey", mykey);
                         intent2.putExtra("nickname", nickname);
                         intent2.putExtra("myUniv", myUniv);
-                        intent2.putExtra("myimg", myimg);
                         startActivity(intent2);
                         System.exit(0);
                         break;
@@ -208,7 +204,6 @@ public class DetailPage extends AppCompatActivity {
                         intent3.putExtra("mykey", mykey);
                         intent3.putExtra("nickname", nickname);
                         intent3.putExtra("myUniv", myUniv);
-                        intent3.putExtra("myimg", myimg);
                         startActivity(intent3);
                         System.exit(0);
                         break;
@@ -223,6 +218,21 @@ public class DetailPage extends AppCompatActivity {
 
 
 
+    }
+
+    void mapVisibility(){
+        map_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("눌림");
+                if(map_control.getVisibility() == View.GONE){
+                    map_control.setVisibility(View.VISIBLE);
+                }
+                if(map_control.getVisibility() == View.VISIBLE){
+                    map_control.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     void chatting(){        //채팅 방 이동
@@ -263,10 +273,13 @@ public class DetailPage extends AppCompatActivity {
 
     void SellPlace(){
 
-        //setContentView(R.layout.detail_page);
         mapView = (TMapView) findViewById(R.id.map_reserve);
         mapView.setUserScrollZoomEnable(true);     //지도 고정
         TMapMarkerItem item = new TMapMarkerItem();
+        System.out.println("맵 : " + mapView.getVisibility());
+
+        map_control = (LinearLayout) findViewById(R.id.map_control);
+        map_control.setVisibility(View.GONE);
 
         double lng = Double.parseDouble(product.destination_longtitude);    //파이어베이스에서 받아온 경도값
         double lat = Double.parseDouble(product.destination_latitude);    //파이어베이스에서 받아온 위도값
@@ -296,12 +309,10 @@ public class DetailPage extends AppCompatActivity {
 
         });
 
-
-
-
         //맵 SDK Key
         mapView.setSKTMapApiKey("l7xx303267b599d441eb85003eeddd7b4d4c");
         mapView.setLanguage(TMapView.LANGUAGE_KOREAN);
+
 
     }
     private void setupMap() {

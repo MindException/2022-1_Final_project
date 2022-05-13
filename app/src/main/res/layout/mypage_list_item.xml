@@ -46,6 +46,7 @@
             android:scaleType="fitEnd"
             android:background="#00ff0000"
             android:src="@drawable/ic_set"></ImageButton>
+
         <TextView
             android:id="@+id/mypage_list_title"
             android:layout_width="match_parent"
