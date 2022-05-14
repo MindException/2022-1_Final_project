@@ -1,6 +1,8 @@
 package com.lastproject.used_item_market;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +90,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
         LinearLayout back_red_circle;       //알림 뒤에 빨간색
         TextView alramnum;
 
+        int myindex;
 
 
         public ViewHolderChatRoom(@NonNull View itemView) {
@@ -121,6 +124,14 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         public void onBind(ChattingRoomInfo chattingRoomInfo) {
 
+            //나의 인덱스 번호 구하기
+            for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
+                if(chattingRoomInfo.customerList.get(i).equals(mykey)){
+                    myindex = i;
+                    break;
+                }
+            }
+
             //상품 이미지 처리
             if (chattingRoomInfo.product_imgkey != null) {       //상품에 사진이 있는 경우
 
@@ -151,7 +162,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             //프로필 이미지 처리
             StorageReference sellerimgRef = storageRef.child("images")
-                    .child(chattingRoomInfo.customer_images.get(0));
+                    .child(chattingRoomInfo.customer_images.get(myindex));
             sellerimgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -176,17 +187,31 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
             int count = 0;
             for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
 
-
-
+                if(chattingRoomInfo.out_customer_index.get(i) == 0){            //나가지 않은 인원은 0으로 설정되어 있다.
+                    ++count;
+                }
             }
+            chattingRoom_counts.setText(Integer.toString(count));
+            //채팅 마지막 시간
+            time.setText(chattingRoomInfo.last_time);
+            //채팅 마지막 기록
+            last_text.setText(chattingRoomInfo.last_text);
+            //빨간 원 && 안 읽은 메시지
+            if(chattingRoomInfo.last_SEE.get(myindex) != chattingRoomInfo.last_index){      //확인하지 않은 채팅이 있는 경우
 
+                int num = chattingRoomInfo.last_index - chattingRoomInfo.last_SEE.get(myindex);
+
+
+            }else{      //다 읽은 경우
+                back_red_circle.setBackground(new ColorDrawable(Color.TRANSPARENT));        //배경(빨간 원) 지우기
+            }
 
         }//onBind 끝
     }
 }
 
 /*
-chattimg_home_product_img - 상품 이미지
+c우attimg_home_product_img - 상품 이미지
 chattimg_home_user_profile - 유저 프로필
 chattimg_home_title - 타이틀
 chatting_home_peoples - 채팅방 안에 사람수
