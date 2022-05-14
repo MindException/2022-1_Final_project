@@ -152,7 +152,7 @@ public class DetailPage extends AppCompatActivity {
                         }//if문끝
 
                         //나머지 상품정보 세팅
-
+                        chatting();     //여기서 돌려야 상품을 가져올 수 있다.
 
                     } else {        //문서를 가져오는데 실패
                         Toast.makeText(DetailPage.this, "상품 없음", Toast.LENGTH_SHORT).show();
@@ -163,7 +163,6 @@ public class DetailPage extends AppCompatActivity {
 
         back();
         detailSelect();
-        chatting();
         mapVisibility();
 
     }
@@ -246,8 +245,8 @@ public class DetailPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                System.out.println(product_key);
 
-                //오픈 채팅으로할지 개인 채팅으로 할지 정하고 생각하기
 
 
             }

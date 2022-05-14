@@ -24,6 +24,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class ChattingListPage extends AppCompatActivity {
 
@@ -82,14 +83,28 @@ public class ChattingListPage extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
 
-                System.out.println(snapshots.size());
+                for(DocumentChange dc : snapshots.getDocumentChanges()){     //신기하다
 
-               for(DocumentChange dc : snapshots.getDocumentChanges()){
-                    String chatRoomID = dc.getDocument().getId();
-                    System.out.println(chatRoomID);
+                    boolean trigger = false;        //이미 추가하면 Arraylist에 추가안하게 한다.
+
                     ChattingRoomInfo chattingRoomInfo = dc.getDocument().toObject(ChattingRoomInfo.class);
-                    chattingRoomInfoArrayList.add(chattingRoomInfo);
+                    for(int i = 0; i < chattingRoomInfoArrayList.size(); i++){
+                        //제목과 시간이 같은 것으로 찾을 수 있다.
+                        if (chattingRoomInfo.title.equals(chattingRoomInfoArrayList.get(i).title)
+                                && chattingRoomInfo.start_time.equals(chattingRoomInfoArrayList.get(i).start_time)){
+                            System.out.println("들어옴?");
+                            chattingRoomInfoArrayList.set(i,chattingRoomInfo);
+                            trigger = true;
+                        }
+                    }
+
+                    if (trigger != true){       //추가 못하였으니 추가한다.
+                        chattingRoomInfoArrayList.add(chattingRoomInfo);    //기존의 것이 없으면  추가
+                    }
                 }
+                //이거 정렬형태로 가야한다.
+                chattingRoomInfoArrayList.sort(new CompareChatList<ChattingRoomInfo>());
+
                 init();
             }
         });
