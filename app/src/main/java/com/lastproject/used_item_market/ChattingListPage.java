@@ -76,13 +76,17 @@ public class ChattingListPage extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.chatting_home_list);
         imageButton = (ImageButton)findViewById(R.id.chatting_home_back);
 
-        Query query = chatRoomRef.whereIn("customerList", Arrays.asList(mykey))
-                .whereEqualTo("last_time", Query.Direction.DESCENDING);
+        Query query = chatRoomRef.whereArrayContains("customerList", mykey)
+                .orderBy("last_time", Query.Direction.DESCENDING);
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {      //변동 실시간 수신
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
 
-                for(DocumentChange dc : snapshots.getDocumentChanges()){
+                System.out.println(snapshots.size());
+
+               for(DocumentChange dc : snapshots.getDocumentChanges()){
+                    String chatRoomID = dc.getDocument().getId();
+                    System.out.println(chatRoomID);
                     ChattingRoomInfo chattingRoomInfo = dc.getDocument().toObject(ChattingRoomInfo.class);
                     chattingRoomInfoArrayList.add(chattingRoomInfo);
                 }

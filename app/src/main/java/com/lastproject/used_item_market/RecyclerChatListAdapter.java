@@ -39,6 +39,8 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerChatListAdapter(ArrayList<ChattingRoomInfo> chattingRoomInfoArrayList, String mykey){
         this.chattingRoomInfoList = chattingRoomInfoArrayList;
         this.mykey = mykey;
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
     }
 
     public interface OnItemClickListener            //아이템이 눌린
@@ -124,6 +126,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         public void onBind(ChattingRoomInfo chattingRoomInfo) {
 
+
             //나의 인덱스 번호 구하기
             for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
                 if(chattingRoomInfo.customerList.get(i).equals(mykey)){
@@ -131,6 +134,9 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 }
             }
+
+
+            System.out.println("내 인덱스" + myindex);
 
             //상품 이미지 처리
             if (chattingRoomInfo.product_imgkey != null) {       //상품에 사진이 있는 경우
@@ -160,8 +166,10 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
                 });
             }//상품 이미지 처리 끝
 
+            System.out.println(chattingRoomInfo.customer_images.get(myindex));
+
             //프로필 이미지 처리
-            StorageReference sellerimgRef = storageRef.child("images")
+            StorageReference sellerimgRef = storageRef.child("profiles")
                     .child(chattingRoomInfo.customer_images.get(myindex));
             sellerimgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
