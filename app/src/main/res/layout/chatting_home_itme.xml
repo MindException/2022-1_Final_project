@@ -29,7 +29,7 @@
                     android:layout_margin="1dp">
                     <!-- 상품 사진 -->
                     <ImageView
-                        android:id="@+id/chattimg_home_product_img"
+                        android:id="@+id/chatting_home_product_img"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"

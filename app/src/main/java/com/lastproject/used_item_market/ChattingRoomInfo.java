@@ -12,13 +12,15 @@ public class ChattingRoomInfo {
     public List<String> customerList;               //사용자들의 키값을 가지고 있는다.
     public List<String> customer_nicknames;         //사용자들의 닉네임 값을 가지고 있는다.
     public List<String> customer_images;            //사용자들의 이미지 키값을 가지고 있는다.
-    public List<Integer> out_customer_index;        //나간 사용자의 인덱스 번호를 기억한다.
+    public List<Integer> out_customer_index;        //나간 사용자의 인덱스 번호를 기억한다.(안나가면 0번)
     public String start_time;                       //채팅의 처음 시작 시간을 정한다.
     public String last_time;                        //채팅의 마지막 시간을 저장한다.
     public String chat_key;                         //Realtime-Database에서의 키값을 가지고 있는다.
     public String product_imgkey;                   //상품 이미지
     public List<Integer> last_SEE;                  //사용자들이 마지막으로 읽은 채팅의 인덱스번호를 저장한다.
-    public String last_index;                       //제일 마지막으로 보낸 채팅의 행을 저장
+    public int last_index;                          //제일 마지막으로 보낸 채팅의 행을 저장
+    public String last_text;                        //제일 마지막으로 보낸 문자
+    public String title;                            //상품 제목
 
 
     //채팅방 만들때 주의할 점!!
@@ -33,7 +35,7 @@ public class ChattingRoomInfo {
 
     public ChattingRoomInfo(){}
 
-    public ChattingRoomInfo(String seller_key, String nickname, String time){
+    public ChattingRoomInfo(String seller_key, String nickname, String time, String title){
 
         customerList = new ArrayList<String>();
         customer_nicknames = new ArrayList<String>();
@@ -42,6 +44,9 @@ public class ChattingRoomInfo {
         customer_nicknames.add(nickname);
         start_time = time;
         last_time = time;
+        last_SEE = new ArrayList<Integer>();
+        this.title = title;
+        out_customer_index = new ArrayList<Integer>();
 
     }
 

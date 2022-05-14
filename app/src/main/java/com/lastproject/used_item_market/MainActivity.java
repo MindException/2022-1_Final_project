@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     void Sell(){ //판매 버튼 클릭 시 화면 이동
         ImageButton sell = (ImageButton)findViewById(R.id.Sell);
-
         sell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void Share(){ //무료나눔 버튼 클릭 시 화면 이동
-        ImageButton share = (ImageButton)findViewById(R.id.Share);
-
+        ImageButton share = (ImageButton)findViewById(R.id.share);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,7 +113,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void chat(){    //채팅 목록 화면으로 이동한다.
-
+        ImageButton chat = (ImageButton)findViewById(R.id.chat);
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ChattingListPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
+                intent.putExtra("myimg", myimg);
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
 
