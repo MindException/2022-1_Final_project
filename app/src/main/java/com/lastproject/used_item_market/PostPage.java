@@ -257,25 +257,25 @@ public class PostPage extends AppCompatActivity {
                                             chattingRoomInfo.last_SEE.add(0);
                                             chattingRoomInfo.last_index = 0;
                                             chattingRoomInfo.out_customer_index.add(0);
-                                            firestore.collection("ChattingRoom").add(chattingRoomInfo)
-                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                @Override
-                                                public void onSuccess(DocumentReference documentReference) {        //채팅룸도 성공
+                                            firestore.collection("ChattingRoom").document(product_key).set(chattingRoomInfo)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
 
-                                                    //저장되었으니 인탠트로 넘어간다.
-                                                    Intent intent = new Intent(PostPage.this, MainActivity.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    intent.putExtra("email", email);
-                                                    intent.putExtra("mykey", mykey);
-                                                    intent.putExtra("nickname", nickname);
-                                                    intent.putExtra("myUniv", myUniv);
-                                                    intent.putExtra("myimg", myimg);
-                                                    startActivity(intent);
-                                                    finish();
+                                                            //저장되었으니 인탠트로 넘어간다.
+                                                            Intent intent = new Intent(PostPage.this, MainActivity.class);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            intent.putExtra("email", email);
+                                                            intent.putExtra("mykey", mykey);
+                                                            intent.putExtra("nickname", nickname);
+                                                            intent.putExtra("myUniv", myUniv);
+                                                            intent.putExtra("myimg", myimg);
+                                                            startActivity(intent);
+                                                            finish();
 
-                                                }
-                                            });
+                                                        }
+                                                    });
                                         }
                                     });
 

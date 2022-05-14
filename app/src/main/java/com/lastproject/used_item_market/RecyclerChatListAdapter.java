@@ -60,13 +60,17 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.chatting_home_itme, parent, false);
         RecyclerChatListAdapter.ViewHolderChatRoom viewHolderChatRoom = new RecyclerChatListAdapter.ViewHolderChatRoom(view);
-        viewHolderChatRoom.setIsRecyclable(false);       //글라이드 상황에 따라 넣기
+
         return viewHolderChatRoom;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((RecyclerChatListAdapter.ViewHolderChatRoom)holder).onBind(chattingRoomInfoList.get(position));
+
+
+
+
     }
 
     @Override
@@ -114,8 +118,11 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
             });
 
             product_img = (ImageView)itemView.findViewById(R.id.chatting_home_product_img);
+            product_img.setImageDrawable(null);
             profile = (ImageView)itemView.findViewById(R.id.chattimg_home_user_profile);
+            profile.setImageDrawable(null);
             title = (TextView)itemView.findViewById(R.id.chattimg_home_title);
+            title.setSelected(true);
             chattingRoom_counts = (TextView)itemView.findViewById(R.id.chatting_home_peoples);
             time = (TextView)itemView.findViewById(R.id.chatting_home_time);
             last_text = (TextView)itemView.findViewById(R.id.chattimg_home_lasttext);
@@ -134,9 +141,6 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 }
             }
-
-
-            System.out.println("내 인덱스" + myindex);
 
             //상품 이미지 처리
             if (chattingRoomInfo.product_imgkey != null) {       //상품에 사진이 있는 경우
@@ -165,6 +169,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 });
             }//상품 이미지 처리 끝
+
 
             //프로필 이미지 처리
             StorageReference sellerimgRef = storageRef.child("profiles")

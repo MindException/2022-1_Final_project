@@ -245,7 +245,7 @@ public class DetailPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println(product_key);
+                System.out.println(product);
 
 
 

@@ -70,7 +70,6 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
 
        //리사이클 뷰 기초세팅
        recyclerView = (RecyclerView)findViewById(R.id.selllist);
-       //recyclerView.setItemAnimator(null);
        recyclerView.setLayoutManager(new LinearLayoutManager(this));
        recycleSellAdapter = new RecycleSellAdapter(productList);
        recycleSellAdapter.setOnItemClickListener(new RecycleSellAdapter.OnItemClickListener() {

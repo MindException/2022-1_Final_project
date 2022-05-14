@@ -109,7 +109,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView title;
         TextView price;
         TextView date;
-        ContentResolver cr;
+        //ContentResolver cr;
 
         public ViewHolderSellProduct(@NonNull View itemView) {
 

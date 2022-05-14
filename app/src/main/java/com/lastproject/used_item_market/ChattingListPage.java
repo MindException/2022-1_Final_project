@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class ChattingListPage extends AppCompatActivity {
+public class ChattingListPage extends AppCompatActivity{
 
     //기본 나의 정보
     String email = "";
@@ -77,6 +79,20 @@ public class ChattingListPage extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.chatting_home_list);
         imageButton = (ImageButton)findViewById(R.id.chatting_home_back);
 
+        //리사이클뷰 세팅
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerChatListAdapter = new RecyclerChatListAdapter(chattingRoomInfoArrayList, mykey);
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //채팅 입장 코드 작성
+
+            }
+        });
+
+        recyclerView.setAdapter(recyclerChatListAdapter);
+
         Query query = chatRoomRef.whereArrayContains("customerList", mykey)
                 .orderBy("last_time", Query.Direction.DESCENDING);
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {      //변동 실시간 수신
@@ -104,8 +120,8 @@ public class ChattingListPage extends AppCompatActivity {
                 }
                 //이거 정렬형태로 가야한다.
                 chattingRoomInfoArrayList.sort(new CompareChatList<ChattingRoomInfo>());
+                recyclerChatListAdapter.notifyDataSetChanged();
 
-                init();
             }
         });
 
@@ -130,24 +146,6 @@ public class ChattingListPage extends AppCompatActivity {
                 System.exit(0);
             }
         });
-    }
-
-    void init(){
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerChatListAdapter = new RecyclerChatListAdapter(chattingRoomInfoArrayList, mykey);
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //채팅 입장 코드 작성
-
-            }
-        });
-        recyclerView.setAdapter(recyclerChatListAdapter);
-
     }
 
 }
