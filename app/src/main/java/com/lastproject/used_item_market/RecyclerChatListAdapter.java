@@ -33,6 +33,8 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
     private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
 
+    private int myindex = 0;
+
     //생성자
     public RecyclerChatListAdapter(){}
 
@@ -66,8 +68,24 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((RecyclerChatListAdapter.ViewHolderChatRoom)holder).onBind(chattingRoomInfoList.get(position));
 
+        //자신이 나간 채팅방은 구현하지 않는다.
+
+        ChattingRoomInfo chattingRoomInfo = chattingRoomInfoList.get(position);
+        //나의 인덱스 번호 구하기
+        for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
+            if(chattingRoomInfo.customerList.get(i).equals(mykey)){
+                myindex = i;
+                break;
+            }
+        }
+
+        if(chattingRoomInfo.out_customer_index.get(myindex) == 0){       //채팅방을 나가지 않은 경우
+
+            ((RecyclerChatListAdapter.ViewHolderChatRoom)holder).onBind(chattingRoomInfo);
+
+        }
+        //채팅
 
 
 
@@ -95,9 +113,6 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView last_text;
         LinearLayout back_red_circle;       //알림 뒤에 빨간색
         TextView alramnum;
-
-        int myindex;
-
 
         public ViewHolderChatRoom(@NonNull View itemView) {
             super(itemView);
@@ -132,15 +147,6 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         public void onBind(ChattingRoomInfo chattingRoomInfo) {
-
-
-            //나의 인덱스 번호 구하기
-            for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
-                if(chattingRoomInfo.customerList.get(i).equals(mykey)){
-                    myindex = i;
-                    break;
-                }
-            }
 
             //상품 이미지 처리
             if (chattingRoomInfo.product_imgkey != null) {       //상품에 사진이 있는 경우

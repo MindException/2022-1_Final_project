@@ -24,6 +24,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -57,6 +62,10 @@ public class DetailPage extends AppCompatActivity {
     private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
 
+    //Realtime-Database
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+
     //위젯모음
     ImageButton back_btn;
     TextView title_view;
@@ -74,6 +83,7 @@ public class DetailPage extends AppCompatActivity {
     ImageView mainImg;
 
     private Product product;
+    private ChattingRoomInfo chattingRoomInfo;
 
     //맵
     TMapView mapView;
@@ -108,8 +118,11 @@ public class DetailPage extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.product_imges);
         mainImg = (ImageView)findViewById(R.id.detail_page_main_img1);
 
+        //파이어 베이스 리얼 타임 데이터베이스 연동
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
-        //서버
+       //서버
         firestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
@@ -245,10 +258,95 @@ public class DetailPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println(product);
+                DocumentReference chattingRoomRef = firestore.collection("ChattingRoom").document(product_key);
+                chattingRoomRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {      //수송신 성공
+                            DocumentSnapshot document = task.getResult();
+                            if(document.exists()){      //값이 존재하는 경우
+                                chattingRoomInfo = document.toObject(ChattingRoomInfo.class);       //채팅방을 가져온다.
+                                //채팅방에 이미 있나 없나 검사
+                                Boolean trigger = false;
+                                for (int i = 0; i < chattingRoomInfo.customerList.size(); i++){
+                                    if (mykey.equals(chattingRoomInfo.customerList.get(i))){
+                                        trigger = true;
+                                    }
+                                }
+
+                                if(trigger == true){        //채팅방에 이미 존재
+                                    //이거 나중에는 채팅방 이동으로 바꾸기
+                                    Toast.makeText(DetailPage.this, "이미 채팅방 존재(나중에 수정)", Toast.LENGTH_SHORT).show();
 
 
+                                }else{      //채팅방에 처음 입장
+                                    chattingRoomInfo = document.toObject(ChattingRoomInfo.class);       //채팅방을 가져온다.
+                                    //입장 기본 세팅
+                                    chattingRoomInfo.customerList.add(mykey);
+                                    chattingRoomInfo.customer_nicknames.add(nickname);
+                                    chattingRoomInfo.customer_images.add(mykey);
+                                    chattingRoomInfo.out_customer_index.add(0);
 
+                                    //시간 관련 세팅
+                                    String nowTime = Time.nowNewTime();
+                                    String lastmsg = "System" + "/%%/" + nickname + "님이 대화방에 참가하셨습니다."
+                                            + "/%%/" + nowTime;
+
+                                    //채팅 정보를 가져온다.
+                                    myRef.child("Chatting").child(product_key)
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            ChatInfo chatInfo = null;
+                                            chatInfo = snapshot.getValue(ChatInfo.class);
+
+                                            chatInfo.chatList.add(lastmsg);         //채팅을 저장한다.
+                                            int chatting_lastindex = chatInfo.chatList.size() - 1;
+                                            myRef.child("Chatting").child(product_key)
+                                                    .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {        //채팅을 저장한 후에 성공한 경우
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    //채팅 내용 저장에 성공하였으니 다시 채팅방 정보를 업데이트한다.
+                                                    chattingRoomInfo.last_time = nowTime;
+                                                    chattingRoomInfo.last_index = chatting_lastindex;
+                                                    chattingRoomInfo.last_SEE.add(chatting_lastindex);
+                                                    chattingRoomInfo.last_text = lastmsg;
+
+                                                    //이제 서버에 저장
+                                                    firestore.collection("ChattingRoom").document(product_key)
+                                                            .set(chattingRoomInfo)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {        //저장이 성공한 경우
+
+                                                                    //이거 나중에는 채팅방 이동으로 바꾸기
+                                                                    Intent intent = new Intent(DetailPage.this, MainActivity.class);
+                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    intent.putExtra("email", email);
+                                                                    intent.putExtra("mykey", mykey);
+                                                                    intent.putExtra("nickname", nickname);
+                                                                    intent.putExtra("myUniv", myUniv);
+                                                                    intent.putExtra("myimg", myimg);
+                                                                    startActivity(intent);
+                                                                    finish();
+
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                }
+                            }//document 끝
+                        }
+                    }
+                });
             }
         });
 
