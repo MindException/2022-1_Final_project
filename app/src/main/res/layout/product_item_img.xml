@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/img"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:background="@drawable/postimageshape">
-    </ImageView>
-
+        android:background="@drawable/postimageshape"
+        android:layout_marginLeft="5dp"
+        >
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_margin="1dp"
+            android:background="@drawable/postimageshape">
+        </ImageView>
+    </LinearLayout>
 </LinearLayout>

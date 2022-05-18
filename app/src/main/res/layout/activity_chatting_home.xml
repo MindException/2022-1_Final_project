@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/img_view_chalk_logo"
+        android:background="@drawable/img_view_chalk_defalt2"
         android:layout_margin="30px">
         <LinearLayout
             android:layout_width="match_parent"

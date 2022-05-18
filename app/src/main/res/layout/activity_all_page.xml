@@ -8,83 +8,84 @@
     tools:context=".AllPage"
     android:background="#4A3424"
     android:orientation="vertical">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="10"
-        android:background="@drawable/img_view_chalk5"
-        android:layout_margin="30px">
+        android:background="@drawable/img_view_chalk_defalt2"
+        android:layout_margin="30px"
+        android:weightSum="100">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="673dp"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="95"
+            android:weightSum="5.3">
             <LinearLayout
                 android:orientation="horizontal"
-                android:weightSum="5"
+                android:weightSum="10"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
-
+                android:layout_weight="0.3">
                 <ImageButton
                     android:id="@+id/xbtn"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="0.5"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:scaleType="fitCenter"
                     android:layout_margin="5dp"
-                    android:background="@drawable/ic_back2">
+                    android:src="@drawable/ic_back2"
+                    android:background="#00ff0000">
                 </ImageButton>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5">
-                </TextView>
-
                 <TextView
                     android:layout_height="match_parent"
                     android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:textSize="25dp"
+                    android:layout_weight="7"
+                    android:textSize="20dp"
                     android:textAlignment="center"
-                    android:layout_gravity="center"
-                    android:text="모두 보기"
+                    android:gravity="center"
+                    android:text="판매 목록"
                     android:textColor="@color/white">
                 </TextView>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5">
-                </TextView>
-
                 <ImageButton
                     android:id="@+id/menubtn"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="0.5"
-                    android:background="@drawable/menu"
-                    android:layout_margin="5dp"
-                    android:gravity="center">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:background="#00ff0000"
+                    android:src="@drawable/menu"
+                    android:scaleType="fitCenter"
+                    android:layout_margin="5dp">
                 </ImageButton>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#ffffff"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"></View>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:orientation="horizontal"
-                android:layout_weight="9"
+                android:layout_weight="5"
                 android:weightSum="10">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/alllist"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/allpage_swipelayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/alllist"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    </androidx.recyclerview.widget.RecyclerView>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </LinearLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>

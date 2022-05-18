@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#745641"
+    android:background="#4A3424"
     tools:context=".SettingPage">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="45px"
+        android:layout_margin="30px"
         android:background="@drawable/img_view_chalk_defalt2"
         android:weightSum="5.3">
         <LinearLayout
@@ -52,11 +52,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="2.5"
+                android:layout_weight="2"
                 android:orientation="horizontal">
                 <LinearLayout
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp">
                     <LinearLayout
@@ -89,8 +89,8 @@
                     android:orientation="vertical">
                     <ImageButton
                         android:id="@+id/mypage_button"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="right"
                         android:layout_marginTop="10dp"
                         android:scaleType="fitEnd"
@@ -99,21 +99,26 @@
                     <TextView
                         android:id="@+id/mypage_name"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="30dp"
                         android:text="name"
                         android:fontFamily="@font/font_7"
                         android:textColor="#ffffff"
                         android:textSize="20dp"
-                        android:layout_marginLeft="15dp"></TextView>
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:maxEms="10"
+                        android:maxLines="1"
+                        android:ellipsize="end"></TextView>
                     <TextView
                         android:id="@+id/mypage_email"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="15dp"
                         android:text="2xrwc234x2@gmail.com"
                         android:fontFamily="@font/font_3"
                         android:textColor="#ffffff"
                         android:textSize="14dp"
-                        android:layout_marginLeft="15dp"></TextView>
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"></TextView>
                 </LinearLayout>
             </LinearLayout>
 
@@ -131,53 +136,69 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.5"
                 android:orientation="horizontal"
-                android:weightSum="10">
-
-                <TextView
+                android:weightSum="3">
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5">
-                </TextView>
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/selling"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="판매중"
+                        android:textSize="15dp"
+                        android:textColor="#ffffff"
+                        android:gravity="center"
+                        android:fontFamily="@font/font_5"
+                        android:background="@drawable/mypage_chack_view_round"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"></TextView>
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/selling"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:text="판매 중"
-                    android:textSize="20dp"
-                    android:textColor="#ffffff"
-                    android:gravity="center"
-                    android:fontFamily="@font/font_5"></TextView>
-
-                <TextView
-                    android:id="@+id/trans_complete"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/trans_complete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="거래중"
+                        android:textSize="15dp"
+                        android:textColor="#ffffff"
+                        android:gravity="center"
+                        android:fontFamily="@font/font_5"
+                        android:background="@drawable/mypage_nochack_view_round"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"></TextView>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:text="거래 완료"
-                    android:textSize="20dp"
-                    android:textColor="#ffffff"
-                    android:gravity="center"
-                    android:fontFamily="@font/font_5"></TextView>
-
-                <TextView
-                    android:id="@+id/www"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:text="******"
-                    android:textSize="20dp"
-                    android:textColor="#ffffff"
-                    android:gravity="center"
-                    android:fontFamily="@font/font_5"></TextView>
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/www"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="거래완료"
+                        android:textSize="15dp"
+                        android:textColor="#ffffff"
+                        android:gravity="center"
+                        android:fontFamily="@font/font_5"
+                        android:background="@drawable/mypage_nochack_view_round"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"></TextView>
+                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="6.47">
+                android:layout_weight="6.97">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mp_rv"
                     android:layout_width="match_parent"
