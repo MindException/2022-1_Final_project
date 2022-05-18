@@ -22,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Used_item_market">
         <activity
+            android:name=".ChatPage"
+            android:exported="false" />
+        <activity
             android:name=".ChattingListPage"
             android:exported="false" />
         <activity

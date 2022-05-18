@@ -50,7 +50,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
         void onItemClick(View v, int pos);
     }
 
-    public void setOnItemClickListener(RecyclerChatListAdapter.OnItemClickListener rclistener)
+    public void setOnItemClickListener(OnItemClickListener rclistener)
     {
         this.rcListener = rclistener;
     }

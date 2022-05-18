@@ -82,15 +82,22 @@ public class ChattingListPage extends AppCompatActivity{
         //리사이클뷰 세팅
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerChatListAdapter = new RecyclerChatListAdapter(chattingRoomInfoArrayList, mykey);
-        recyclerView.setOnClickListener(new View.OnClickListener() {
+        recyclerChatListAdapter.setOnItemClickListener(new RecyclerChatListAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-
-                //채팅 입장 코드 작성
-
+            public void onItemClick(View v, int pos) {
+                Intent intent = new Intent(ChattingListPage.this, ChatPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
+                intent.putExtra("myimg", myimg);
+                intent.putExtra("chatkey", chattingRoomInfoArrayList.get(pos).chat_key);
+                startActivity(intent);
+                System.exit(0);
             }
         });
-
         recyclerView.setAdapter(recyclerChatListAdapter);
 
         Query query = chatRoomRef.whereArrayContains("customerList", mykey)
