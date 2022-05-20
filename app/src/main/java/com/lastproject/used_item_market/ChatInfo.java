@@ -15,7 +15,7 @@ public class ChatInfo {     //실제 채팅
         chatList = new ArrayList<String>();
         start_time = Time.nowNewTime();
         String first_chat = "System" + "/%%/" + seller_nickname + "님이 대화방에 참가하셨습니다."
-                                    + "/%%/" + start_time;
+                                    + "/%%/" + start_time + "/%%/";
         chatList.add(first_chat);
 
     }

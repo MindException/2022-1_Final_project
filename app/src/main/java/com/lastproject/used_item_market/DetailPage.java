@@ -290,7 +290,7 @@ public class DetailPage extends AppCompatActivity {
                                     //시간 관련 세팅
                                     String nowTime = Time.nowNewTime();
                                     String lastmsg = "System" + "/%%/" + nickname + "님이 대화방에 참가하셨습니다."
-                                            + "/%%/" + nowTime;
+                                            + "/%%/" + nowTime + "/%%/";
 
                                     //채팅 정보를 가져온다.
                                     myRef.child("Chatting").child(product_key)

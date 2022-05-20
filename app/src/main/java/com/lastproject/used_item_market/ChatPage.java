@@ -75,6 +75,10 @@ public class ChatPage extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
+        //어뎁터
+
+
+
         //서버 연동
         firestore = FirebaseFirestore.getInstance();
         chatRoomRef = firestore.collection("ChattingRoom");
