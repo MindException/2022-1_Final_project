@@ -23,13 +23,14 @@
         android:theme="@style/Theme.Used_item_market">
         <activity
             android:name=".ChatPage"
-            android:exported="false" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ChattingListPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".DetailPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SettingPage"
             android:exported="true" />

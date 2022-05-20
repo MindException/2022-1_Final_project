@@ -115,7 +115,6 @@ public class ChattingListPage extends AppCompatActivity{
                         //제목과 시간이 같은 것으로 찾을 수 있다.
                         if (chattingRoomInfo.title.equals(chattingRoomInfoArrayList.get(i).title)
                                 && chattingRoomInfo.start_time.equals(chattingRoomInfoArrayList.get(i).start_time)){
-                            System.out.println("들어옴?");
                             chattingRoomInfoArrayList.set(i,chattingRoomInfo);
                             trigger = true;
                         }

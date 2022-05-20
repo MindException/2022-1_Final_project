@@ -59,6 +59,7 @@
                 android:scaleType="fitCenter"
                 ></TextView>
             <EditText
+                android:id="@+id/insert_chat_editText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="8.6"

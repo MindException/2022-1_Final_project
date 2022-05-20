@@ -17,22 +17,25 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     ChattingRoomInfo chattingRoomInfo;
     String mykey;
-    ArrayList<String> chatting = new ArrayList<>();
+    List<String> chatting = new ArrayList<>();
 
     //이미지 DB
     private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
 
-    RecyclerChatAdapter(ArrayList<String> chatting, String mykey, ChattingRoomInfo chattingRoomInfo){
+    RecyclerChatAdapter(List<String> chatting, String mykey, ChattingRoomInfo chattingRoomInfo){
         this.mykey = mykey;
         this.chatting = chatting;
         this.chattingRoomInfo = chattingRoomInfo;
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
     }
 
     @NonNull
@@ -113,7 +116,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class ViewHolderNotMe extends RecyclerView.ViewHolder{
 
         ImageView profile;
-        TextView nickname;
+        TextView nicknameView;
         TextView chatView;
         TextView time;
         View itemview;
@@ -124,7 +127,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.itemview = itemView;
 
             profile = (ImageView)itemView.findViewById(R.id.chattimg_item_you_profile);
-            nickname = (TextView)itemView.findViewById(R.id.chattimg_item_i_neme);
+            nicknameView = (TextView)itemView.findViewById(R.id.chattimg_item_i_neme);
             chatView = (TextView)itemView.findViewById(R.id.chattimg_item_you_text);
             time = (TextView)itemView.findViewById(R.id.chatting_item_you_time);
 
@@ -168,8 +171,10 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }); //프로필 이미지 처리 끝
 
-
-
+            //기본세팅
+            nicknameView.setText(nickname);
+            chatView.setText(text);
+            time.setText(chat_time);
 
         }
     }
@@ -178,7 +183,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     class ViewHolderMe extends RecyclerView.ViewHolder{
 
         ImageView profile;
-        TextView nickname;
+        TextView nicknameView;
         TextView chatView;
         TextView time;
         View itemView;
@@ -186,12 +191,56 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public ViewHolderMe(@NonNull View itemView) {
             super(itemView);
 
-
-
+            this.itemView = itemView;
+            profile = (ImageView)itemView.findViewById(R.id.chattimg_item_i_profile);
+            nicknameView = (TextView)itemView.findViewById(R.id.chattimg_item_i_neme);
+            chatView = (TextView)itemView.findViewById(R.id.chattimg_item_i_text);
+            time = (TextView)itemView.findViewById(R.id.chatting_item_i_time);
 
         }
 
         public void onBind(String chat) {
+
+            StringTokenizer st = new StringTokenizer(chat, "/%%/");
+            String key = st.nextToken();
+            String nickname = st.nextToken();
+            String text = st.nextToken();
+            String chat_time = st.nextToken();
+
+            //인덱스 저장
+            int index = 0;
+            for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
+                if(key.equals(chattingRoomInfo.customerList.get(i))){
+                    index = i;
+                    break;
+                }
+            }
+
+            //프로필 이미지 처리
+            StorageReference sellerimgRef = storageRef.child("profiles")
+                    .child(chattingRoomInfo.customer_images.get(index));
+            sellerimgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+
+                    try {
+
+                        Glide.with(itemView)
+                                .load(uri)
+                                .override(150, 150)
+                                .into(profile);
+
+                    } catch (Exception e) {
+                        System.out.println("view holder binding 실패");
+                    }
+
+                }
+            }); //프로필 이미지 처리 끝
+
+            //기본세팅
+            nicknameView.setText(nickname);
+            chatView.setText(text);
+            time.setText(chat_time);
 
         }
     }
