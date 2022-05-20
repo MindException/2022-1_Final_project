@@ -127,7 +127,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.itemview = itemView;
 
             profile = (ImageView)itemView.findViewById(R.id.chattimg_item_you_profile);
-            nicknameView = (TextView)itemView.findViewById(R.id.chattimg_item_i_neme);
+            nicknameView = (TextView)itemView.findViewById(R.id.chattimg_item_you_neme);
             chatView = (TextView)itemView.findViewById(R.id.chattimg_item_you_text);
             time = (TextView)itemView.findViewById(R.id.chatting_item_you_time);
 
