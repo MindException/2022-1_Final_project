@@ -58,10 +58,8 @@ dependencies {
     //url 관련 gradle
     implementation 'com.github.bumptech.glide:glide:4.11.0'           //글라이드 이미지 로딩
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'   //글라이드 이미지 로딩2
-
-    //뷰페이저 ...
-    //implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    //implementation 'me.relex:circleindicator:2.1.4'
+    //리사이클 뷰
+    implementation "androidx.recyclerview:recyclerview:1.3.0-alpha02"
 
 }
 

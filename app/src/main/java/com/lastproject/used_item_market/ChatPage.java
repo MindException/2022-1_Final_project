@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -59,11 +60,16 @@ public class ChatPage extends AppCompatActivity {
     //채팅
     List<String> chatList = new ArrayList<>();
 
-    //어뎁터
+    //리사이클러뷰 관련
     RecyclerChatAdapter adapter;
+    LinearLayoutManager linearLayoutManager;
 
     //나의 인덱스 번호(채팅방)
-    int myindex = 100;
+    int myindex = 1000;    //1000은 초기화 값
+
+    //현재 여기서의 마지막 본 행
+    int readLastIndex = 0;
+    int nowReadIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +95,8 @@ public class ChatPage extends AppCompatActivity {
         myRef = database.getReference();
 
         //리사이클뷰 레이아웃
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         //서버 연동
         firestore = FirebaseFirestore.getInstance();
@@ -103,13 +110,45 @@ public class ChatPage extends AppCompatActivity {
                     if(document.exists()){
                         chattingRoomInfo = document.toObject(ChattingRoomInfo.class);       //채팅방 정보 가져옴
 
-                        //인덱스 번호 찾기
-                        for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
-                            if(mykey.equals(chattingRoomInfo.customerList.get(i))){
-                                myindex = i;
-                                break;
+                        if(myindex == 1000){        //인덱스 번호를 이미 찾은 경우
+                            //인덱스 번호 찾기
+                            for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
+                                if(mykey.equals(chattingRoomInfo.customerList.get(i))){
+                                    myindex = i;
+                                    break;
+                                }
                             }
+                            readLastIndex = chattingRoomInfo.last_SEE.get(myindex);
                         }
+
+                        //마지막 본 인덱스 업데이트
+                        recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                            @Override
+                            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+
+                                //스크롤하면서 읽은 행(제일 마지막 기준)
+                                nowReadIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                                System.out.println("현재 위치: " +  nowReadIndex);
+                                if(readLastIndex < nowReadIndex){           //더 읽었기 때문에 기준을 표시한다.
+                                    readLastIndex = nowReadIndex;
+                                    //마지막 본 인덱스 변화
+                                    chattingRoomInfo.last_SEE.set(myindex, readLastIndex);
+
+                                    //서버에 저장 - 자신이 마지막까지 읽은 부분을 저장(성공)
+                                    DocumentReference update_LastSEE = firestore.collection("ChattingRoom")
+                                            .document(chattingRoomInfo.chat_key);
+                                    update_LastSEE.update("last_SEE", chattingRoomInfo.last_SEE).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            System.out.println("마지막 읽은 횟수 업데이트");
+                                        }
+                                    });
+
+
+                                }
+
+                            }
+                        });
 
                         myRef.child("Chatting").child(chatkey)
                                 .addValueEventListener(new ValueEventListener() {    //실시간 채팅
@@ -119,13 +158,28 @@ public class ChatPage extends AppCompatActivity {
                                 chatInfo = snapshot.getValue(ChatInfo.class);
                                 chatList = chatInfo.chatList;       //채팅을 여기다가 저장
 
+                                /*
                                 //어뎁터 설정
                                 adapter = new RecyclerChatAdapter(chatList, mykey, chattingRoomInfo);
                                 recyclerView.setAdapter(adapter);
+                                */
 
                                 //리사이클 뷰 보던 위치 고정 세팅
+                                linearLayoutManager.scrollToPosition(readLastIndex);       //채팅 마지막에 보던 위치로 이동
+                                //리사이클 뷰에 맨 상이 시작 위치가 된다.
 
 
+                                //자신이 읽은 부분 위치로 리사이클뷰 이동만하면 끝
+                                if(chatInfo.chatList.size() - 2 == nowReadIndex){       //마지막 채팅 보고 있는데 채팅이 추가된 경우
+
+                                    //위치
+
+                                }else{      //위에 채팅 보고 있다가 채팅이 추가된 경우
+
+                                    Toast.makeText(ChatPage.this, "새로운 채팅", Toast.LENGTH_SHORT).show();
+                                    //위치
+
+                                }
                             }
 
                             @Override

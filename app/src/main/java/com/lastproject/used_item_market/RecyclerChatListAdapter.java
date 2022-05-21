@@ -217,11 +217,12 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
             //빨간 원 && 안 읽은 메시지
             if(chattingRoomInfo.last_SEE.get(myindex) != chattingRoomInfo.last_index){      //확인하지 않은 채팅이 있는 경우
 
-                int num = chattingRoomInfo.last_index - chattingRoomInfo.last_SEE.get(myindex);
-
+                int nonSEE = chattingRoomInfo.last_index - chattingRoomInfo.last_SEE.get(myindex);
+                alramnum.setText(Integer.toString(nonSEE));
 
             }else{      //다 읽은 경우
                 back_red_circle.setBackground(new ColorDrawable(Color.TRANSPARENT));        //배경(빨간 원) 지우기
+                alramnum.setText("");
             }
 
         }//onBind 끝
