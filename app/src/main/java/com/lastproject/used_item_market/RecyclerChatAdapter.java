@@ -1,6 +1,8 @@
 package com.lastproject.used_item_market;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +32,21 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
 
+
     RecyclerChatAdapter(List<String> chatting, String mykey, ChattingRoomInfo chattingRoomInfo){
         this.mykey = mykey;
         this.chatting = chatting;
         this.chattingRoomInfo = chattingRoomInfo;
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+
+    }
+
+    //새로운 사용자가 생긴 경우
+    void newCustomer(ChattingRoomInfo chattingRoomInfo){
+
+        this.chattingRoomInfo = chattingRoomInfo;
+
     }
 
     @NonNull
@@ -150,6 +161,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }
 
+
             //프로필 이미지 처리
             StorageReference sellerimgRef = storageRef.child("profiles")
                     .child(chattingRoomInfo.customer_images.get(index));
@@ -161,7 +173,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                         Glide.with(itemview)
                                 .load(uri)
-                                .override(150, 150)
+                                .override(100, 100)
                                 .into(profile);
 
                     } catch (Exception e) {
@@ -170,6 +182,8 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 }
             }); //프로필 이미지 처리 끝
+
+
 
             //기본세팅
             nicknameView.setText(nickname);
@@ -216,6 +230,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }
 
+
             //프로필 이미지 처리
             StorageReference sellerimgRef = storageRef.child("profiles")
                     .child(chattingRoomInfo.customer_images.get(index));
@@ -227,7 +242,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                         Glide.with(itemView)
                                 .load(uri)
-                                .override(150, 150)
+                                .override(100, 100)
                                 .into(profile);
 
                     } catch (Exception e) {

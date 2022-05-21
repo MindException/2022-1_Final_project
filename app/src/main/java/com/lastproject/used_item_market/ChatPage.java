@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -28,6 +30,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +53,10 @@ public class ChatPage extends AppCompatActivity {
     //RealtimeDatbase
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+
+    //이미지 DB
+    private FirebaseStorage storage;            //이미지 저장소
+    private StorageReference storageRef;        //정확한 위치에 파일 저장
 
     //위젯
     RecyclerView recyclerView;
@@ -72,9 +80,14 @@ public class ChatPage extends AppCompatActivity {
 
     //현재 여기서의 마지막 본 행
     int readLastIndex = 0;
-    int nowReadIndex = 0;
+    int nowReadIndex = -1;
 
     int addTextMsg = 0;
+
+    //처음 한 번만 동작
+    Boolean trigger = false;
+
+    int num = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +112,13 @@ public class ChatPage extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
+        //이미지
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+
         //리사이클뷰 레이아웃
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new RecyclerChatAdapter(chatList, mykey, chattingRoomInfo);
-        recyclerView.setAdapter(adapter);
 
         //서버 연동
         firestore = FirebaseFirestore.getInstance();
@@ -115,6 +130,14 @@ public class ChatPage extends AppCompatActivity {
 
                 //데이터의 정보가 변동이 있을 때마다 가져온다.
                 chattingRoomInfo = value.toObject(ChattingRoomInfo.class);
+
+                //어뎁터 장착
+                if(trigger == false){       //제일 처음 한 번만 작성
+                    adapter = new RecyclerChatAdapter(chatList, mykey, chattingRoomInfo);
+                    recyclerView.setAdapter(adapter);
+                    trigger = true;
+                }
+
                 if(myindex == 1000){        //인덱스 번호를 이미 찾은 경우
                     //인덱스 번호 찾기
                     for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
@@ -125,8 +148,6 @@ public class ChatPage extends AppCompatActivity {
                     }
                     readLastIndex = chattingRoomInfo.last_SEE.get(myindex);
                 }
-
-                System.out.println( "내 인덱스" + myindex);
 
                 //마지막 본 인덱스 업데이트
                 recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -166,16 +187,22 @@ public class ChatPage extends AppCompatActivity {
 
                                 //어뎁터 정보 추가
                                 adapter.chatting = chatList;
-                                adapter.chattingRoomInfo = chattingRoomInfo;
-                                adapter.notifyDataSetChanged();
+                                if(adapter.chattingRoomInfo != chattingRoomInfo){       //새로운 사용자가 입장하여 채팅방 정보를 갱신한 경우
+                                    //이거 함수화
+                                    adapter.newCustomer(chattingRoomInfo);
+                                }
+                                adapter.notifyDataSetChanged();     //그 자리 그대로 있는다.
+
+                                if(nowReadIndex == -1){     //맨 처음 위치 초기화
+                                    nowReadIndex = chattingRoomInfo.last_SEE.get(myindex);
+                                    linearLayoutManager.scrollToPosition(nowReadIndex);
+                                }
 
                                 //자신이 읽은 부분 위치로 리사이클뷰 이동만하면 끝
                                 if(chatInfo.chatList.size() - 2 == nowReadIndex){       //마지막 채팅 보고 있는데 채팅이 추가된 경우
                                     //위치
                                     linearLayoutManager.scrollToPosition(nowReadIndex + 1);     //새로운 채팅으로 리사이클뷰 내리기
                                 }
-
-
 
                             }
 

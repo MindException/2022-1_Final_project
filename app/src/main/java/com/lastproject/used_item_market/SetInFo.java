@@ -31,6 +31,7 @@ public class SetInFo extends AppCompatActivity {
     //새서버 관련
     private FirebaseFirestore firestore;
 
+    //이미지 관련
 
     public User userinfo;                  //서버에 저장될 사용자의 정보
     public Map<String, Object> universityinfo = new HashMap<>();
@@ -82,6 +83,9 @@ public class SetInFo extends AppCompatActivity {
                } catch (Exception e) {
                    e.printStackTrace();
                }
+               //이미지 저장
+
+
                //새저장
                firestore.collection("User").add(userinfo);
                firestore.collection("University").document(university).set(universityinfo);
