@@ -22,6 +22,10 @@ public class ChattingRoomInfo {
     public String last_text;                        //제일 마지막으로 보낸 문자
     public String title;                            //상품 제목
 
+    //상품이 삭제된 경우
+    //last_text를 물품 삭제 기준으로 삼는다.
+    //앞에 오는 "System/%%/상품삭제/%%/상품이 삭제되었습니다." 이걸로 조건문을 줄 수 있다.
+
 
     //채팅방 만들때 주의할 점!!
     //프로필 사진 불러올 경우에 이미지가 있으면 onSuccessListener에서 코딩하고

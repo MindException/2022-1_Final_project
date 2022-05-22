@@ -224,6 +224,18 @@ public class DetailPage extends AppCompatActivity {
                         startActivity(intent3);
                         System.exit(0);
                         break;
+                    case "MyPage":
+                        Intent intent4 = new Intent(DetailPage.this, SettingPage.class);
+                        intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent4.putExtra("email", email);
+                        intent4.putExtra("mykey", mykey);
+                        intent4.putExtra("nickname", nickname);
+                        intent4.putExtra("myUniv", myUniv);
+                        intent4.putExtra("myimg", myimg);
+                        startActivity(intent4);
+                        System.exit(0);
+                        break;
 
                 }//switch문 끝
             }

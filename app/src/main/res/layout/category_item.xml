@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="95"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/category_item"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="5.7"
+        android:text="카테고리 종류"
+        android:textColor="#ffffff"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:fontFamily="@font/font_5"
+        android:background="@drawable/mypage_nochack_view_round"
+        android:maxLines="1"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"></TextView>
+
+</LinearLayout>

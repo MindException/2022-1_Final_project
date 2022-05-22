@@ -49,8 +49,24 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
     List<Product> productList = new ArrayList<Product>();      //여기에 모든 상품들이 들어간다.
     ArrayList<String> productKeyList = new ArrayList<String>();
 
-    //카테고리리
+    //카테고리
     String category = "모두보기";       //기본값
+    ArrayList<String> category_list = new ArrayList<String>() {{
+        add("모두보기");
+        add("남성 의류");
+        add("여성 의류");
+        add("컴퓨터");
+        add("도서");
+        add("가전제품");
+        add("상품권/티켓/쿠폰");
+        add("미용");
+        add("가구");
+        add("악세서리");
+        add("개인 이동수단");
+        add("게임 용품");
+        add("스포츠");
+        add("기타");
+    }};
 
    @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +83,10 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
        nickname = getIntent().getStringExtra("nickname");
        myUniv = getIntent().getStringExtra("myUniv");
        myimg = getIntent().getStringExtra("myimg");
+
+       //카테고리 리사이클 뷰 초기 세팅
+
+
 
        //리사이클 뷰 기초세팅
        recyclerView = (RecyclerView)findViewById(R.id.selllist);
@@ -98,7 +118,9 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
        //쿼리 시작
        productRef = firestore.collection("Product");
        Query query = productRef.whereEqualTo("university", myUniv)
-               .whereEqualTo("purpose", "판매").orderBy("time", Query.Direction.DESCENDING)
+               .whereEqualTo("purpose", "판매")
+               .whereEqualTo("success_time", "000000000000")
+               .orderBy("time", Query.Direction.DESCENDING)
                .limit(limit);
        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
            @Override
@@ -144,7 +166,9 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                                    isScrolling = false;
                                    //추가 쿼리
                                    Query nextQuery = productRef.whereEqualTo("university", myUniv)
-                                           .whereEqualTo("purpose", "판매").orderBy("time", Query.Direction.DESCENDING)
+                                           .whereEqualTo("purpose", "판매")
+                                           .whereEqualTo("success_time", "000000000000")
+                                           .orderBy("time", Query.Direction.DESCENDING)
                                            .startAfter(lastVisible).limit(limit);
                                    nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                        @Override
@@ -185,6 +209,8 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
 
 
         Back();
+        category_function();
+
     }
 
     void Back(){
@@ -242,7 +268,9 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
             //카테고리가 정해지지 않은 기본보기
             productRef = firestore.collection("Product");
             Query query =productRef.whereEqualTo("university", myUniv)
-                    .whereEqualTo("purpose", "판매").orderBy("time", Query.Direction.DESCENDING)
+                    .whereEqualTo("purpose", "판매")
+                    .whereEqualTo("success_time", "000000000000")
+                    .orderBy("time", Query.Direction.DESCENDING)
                     .limit(limit);
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -288,7 +316,9 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                                         isScrolling = false;
                                         //추가 쿼리
                                         Query nextQuery = productRef.whereEqualTo("university", myUniv)
-                                                .whereEqualTo("purpose", "판매").orderBy("time", Query.Direction.DESCENDING)
+                                                .whereEqualTo("purpose", "판매")
+                                                .whereEqualTo("success_time", "000000000000")
+                                                .orderBy("time", Query.Direction.DESCENDING)
                                                 .startAfter(lastVisible).limit(limit);
                                         nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
@@ -338,6 +368,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
             Query query = productRef.whereEqualTo("university", myUniv)
                     .whereEqualTo("purpose", "판매")
                     .whereEqualTo("category", category)
+                    .whereEqualTo("success_time", "000000000000")
                     .orderBy("time", Query.Direction.DESCENDING).limit(limit);
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -385,6 +416,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
                                         Query nextQuery = productRef.whereEqualTo("university", myUniv)
                                                 .whereEqualTo("purpose", "판매")
                                                 .whereEqualTo("category", category)
+                                                .whereEqualTo("success_time", "000000000000")
                                                 .orderBy("time", Query.Direction.DESCENDING)
                                                 .startAfter(lastVisible).limit(limit);
                                         nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -428,6 +460,14 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
             swipeRefreshLayout.setRefreshing(false);        //업데이트 끝
 
         }//if문 끝
+
+    }
+
+    void category_function(){   //카테고리가 눌려졌을 경우에 동작
+
+
+
+
 
     }
 }

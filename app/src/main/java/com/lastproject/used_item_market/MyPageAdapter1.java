@@ -38,7 +38,6 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
-
     }
 
     //클릭 리스너

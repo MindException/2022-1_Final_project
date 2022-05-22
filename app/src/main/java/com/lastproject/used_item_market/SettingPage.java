@@ -303,11 +303,27 @@ public class SettingPage extends AppCompatActivity {
 
                         switch (item.getItemId()){
                             //수정
-                            case R.id.revise:
+                            case R.id.product_detail:
+                                System.out.println("상품 키:" + productKeyList.get(pos));
+                                String path = "MyPage";
+                                Intent intent = new Intent(SettingPage.this, DetailPage.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("email", email);
+                                intent.putExtra("mykey", mykey);
+                                intent.putExtra("nickname", nickname);
+                                intent.putExtra("myUniv", myUniv);
+                                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                                intent.putExtra("wherefrom", path);
+                                intent.putExtra("myimg", myimg);
+                                startActivity(intent);
+                                finish();
                                 break;
 
                             //삭제
                             case R.id.delete:
+                                //신경써서 삭제해야할 것 2개
+                                //product 정보, 채팅에서 채팅 더 이상 못하게 막아 놓기
                                 break;
                         }
                         return false;
@@ -324,26 +340,39 @@ public class SettingPage extends AppCompatActivity {
 
     }
 
-    void init_2(){
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        //myPageAdapter2 = new MyPageAdapter2(productList);
-        //recyclerView.setAdapter(myPageAdapter2);
-    }
-
-    void init_3(){
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        //myPageAdapter3 = new MyPageAdapter1(productList);
-        //recyclerView.setAdapter(myPageAdapter3);
-    }
-
-
     void setting(){
 
         emailText.setText(email);
-        System.out.println(email);
         nicknameText.setText(nickname);
+
+        product_Ref = firestore.collection("Product");
+        Query query = product_Ref.whereEqualTo("seller_key", mykey)
+                .whereEqualTo("purpose", "판매")
+                .whereEqualTo("success_time", "000000000000")
+                .orderBy("time", Query.Direction.DESCENDING);
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    //DocumentSnapshot document = task.getResult();
+                    //System.out.println("ddd:" + document);
+                    for(DocumentSnapshot document : task.getResult()){
+                        Product product = document.toObject(Product.class);
+                        productList.add(product);
+                        productKeyList.add(document.getId());
+
+                        System.out.println("task :" + document.getId());
+                        System.out.println("plist :"+productList);
+                    }
+                    //상품 추가했으니 어뎁터 갱신
+                    //리사이클러뷰 전체 업데이트 : notifyDataSetChanged
+                    //myPageAdapter1.notifyDataSetChanged();
+                    init_1();
+                }
+
+            }
+        });
 
     }
 

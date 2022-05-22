@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/revise"
-        android:title="수정" />
+        android:title="로그아웃" />
 
 </menu>
