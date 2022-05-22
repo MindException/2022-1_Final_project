@@ -165,7 +165,7 @@
                         android:id="@+id/trans_complete"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="거래중"
+                        android:text="무료나눔중"
                         android:textSize="15dp"
                         android:textColor="#ffffff"
                         android:gravity="center"

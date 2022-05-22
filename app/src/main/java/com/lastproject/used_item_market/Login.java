@@ -157,7 +157,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                     Intent login_intent = new Intent(Login.this, MainActivity.class);
                                     login_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     login_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    login_intent.putExtra("email", email);
+                                    login_intent.putExtra("email", userinfo.google_email);
                                     login_intent.putExtra("mykey", mykey);
                                     login_intent.putExtra("nickname", userinfo.nickname);
                                     login_intent.putExtra("myUniv", userinfo.university);

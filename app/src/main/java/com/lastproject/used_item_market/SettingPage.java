@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -35,6 +36,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SettingPage extends AppCompatActivity {
@@ -48,30 +50,33 @@ public class SettingPage extends AppCompatActivity {
 
     //위젯 모음
     TextView selling;
-    TextView trans_complete;
-    TextView www;
+    TextView free_providing;
+    TextView success_deal;
+    TextView emailText;
+    TextView nicknameText;
 
     //새DB
     private FirebaseFirestore firestore;        //DB
+    CollectionReference product_Ref;
+    DocumentReference user_Ref;
+
+    //이미지 DB
     private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
-    CollectionReference product_Ref;
-    private DocumentReference user_Ref;
-    private User user;
-    private CollectionReference UserRef;
-    DocumentReference documentReference;
 
     //이미지 관련 위젯 및 어뎁터
     RecyclerView recyclerView;
     MyPageAdapter1 myPageAdapter1;
-    //MyPageAdapter2 myPageAdapter2;
-    //MyPageAdapter3 myPageAdapter3;
 
     // 상품 관련
     List<User> userList = new ArrayList<User>();
     List<Product> productList = new ArrayList<Product>();  //여기에 모든 상품들이 들어간다.
     ArrayList<String> productKeyList = new ArrayList<String>();
 
+    //유저
+    private User user;
+
+    //프로필 사진진
     ImageView imageView;
     private int requestCode;
 
@@ -91,8 +96,10 @@ public class SettingPage extends AppCompatActivity {
         myUniv = getIntent().getStringExtra("myUniv");
         myimg = getIntent().getStringExtra("myimg");
 
-        //프로필 사진
-        imageView = findViewById(R.id.mypage_profile);
+        //세팅
+        imageView = (ImageView)findViewById(R.id.mypage_profile);
+        emailText = (TextView)findViewById(R.id.mypage_email);
+        nicknameText = (TextView)findViewById(R.id.mypage_name);
 
         //프로필 버튼
         profileImageButton = (ImageButton) findViewById(R.id.mypage_button);
@@ -107,10 +114,8 @@ public class SettingPage extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
-        UserRef = firestore.collection("User");
         user_Ref = firestore.collection("User").document(mykey);
         product_Ref = firestore.collection("Product");
-        documentReference = UserRef.document(mykey);
 
         setting();
         mypage_1();
@@ -144,17 +149,23 @@ public class SettingPage extends AppCompatActivity {
     void mypage_1(){
         // 위젯 연결
         selling = (TextView)findViewById(R.id.selling);
-        trans_complete = (TextView)findViewById(R.id.trans_complete);
-        www = (TextView)findViewById(R.id.www);
-
+        free_providing = (TextView)findViewById(R.id.trans_complete);
+        success_deal = (TextView)findViewById(R.id.www);
 
         selling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("판매 중 눌림");
-                user_Ref = firestore.collection("User").document();
+                productList = new ArrayList<>();
+                productKeyList = new ArrayList<>();
+                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
+                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("seller_key", mykey)
+                        .whereEqualTo("purpose", "판매")
+                        .whereEqualTo("success_time", "000000000000")
                         .orderBy("time", Query.Direction.DESCENDING);
 
                 query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -179,20 +190,23 @@ public class SettingPage extends AppCompatActivity {
 
                     }
                 });
-
-
             }
         });
 
-        trans_complete.setOnClickListener(new View.OnClickListener() {
+        free_providing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("거래 완료 눌림");
+                System.out.println("무료 나눔 눌림");
+                productList = new ArrayList<>();
+                productKeyList = new ArrayList<>();
+                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
+                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
 
-                user_Ref = firestore.collection("User").document();
                 product_Ref = firestore.collection("Product");
-                Query query = product_Ref.whereNotEqualTo("success_time", 000000000000)
-                        //.whereNotEqualTo("success_time", 999999999999)
+                Query query = product_Ref.whereEqualTo("seller_key", mykey)
+                        .whereEqualTo("purpose", "무료나눔")
+                        .whereEqualTo("success_time", "000000000000")
                         .orderBy("time", Query.Direction.DESCENDING);
 
                 query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -217,11 +231,47 @@ public class SettingPage extends AppCompatActivity {
             }
         });
 
-        www.setOnClickListener(new View.OnClickListener() {
+        //거래 완료
+        success_deal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("*** 눌림");
-                // 어댑터 연결
+                System.out.println("거래완료 눌림");
+                productList = new ArrayList<>();
+                productKeyList = new ArrayList<>();
+                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
+                product_Ref = firestore.collection("Product");
+
+                //제외 커리는 저렇게 orderBy를 해줘야 한다.
+                Query query = product_Ref.whereEqualTo("seller_key", mykey)
+                        .orderBy("success_time", Query.Direction.ASCENDING)
+                        .whereNotIn("success_time", Arrays.asList("000000000000","999999999999"))
+                        .orderBy("time", Query.Direction.DESCENDING)
+                        .limit(100);
+
+                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            //DocumentSnapshot document = task.getResult();
+                            //System.out.println("ddd:" + document);
+                            for(DocumentSnapshot document : task.getResult()){
+                                Product product = document.toObject(Product.class);
+                                productList.add(product);
+                                productKeyList.add(document.getId());
+
+                                System.out.println("task :" + document.getId());
+                                System.out.println("plist :"+productList);
+                            }
+                            //상품 추가했으니 어뎁터 갱신
+                            //리사이클러뷰 전체 업데이트 : notifyDataSetChanged
+                            //myPageAdapter1.notifyDataSetChanged();
+                            init_1();
+                        }
+
+                    }
+                });
             }
         });
     }
@@ -291,6 +341,9 @@ public class SettingPage extends AppCompatActivity {
 
     void setting(){
 
+        emailText.setText(email);
+        System.out.println(email);
+        nicknameText.setText(nickname);
 
     }
 
@@ -328,7 +381,7 @@ public class SettingPage extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     user.img = imgkey;
-                    UserRef.document(mykey).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    user_Ref.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             InputStream inputStream = null;
@@ -349,8 +402,7 @@ public class SettingPage extends AppCompatActivity {
 
     void imagetrigger(){
 
-
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        user_Ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -372,7 +424,7 @@ public class SettingPage extends AppCompatActivity {
                                 }
                             });
                         }else{//이미지 없음
-                            //나중에 기본 사진 추가
+                            //기본 사진
                         }
 
                     }
@@ -380,8 +432,6 @@ public class SettingPage extends AppCompatActivity {
             }
         });
     }
-
-    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ   이미지 끝 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
     void profileImageButtonListener(){
         profileImageButton.setOnClickListener(new View.OnClickListener() {
@@ -416,6 +466,8 @@ public class SettingPage extends AppCompatActivity {
             }
         });
     }
+
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ   이미지 끝 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
 
 }

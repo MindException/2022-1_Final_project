@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lobby);
 
-
         //기본세팅
         email = getIntent().getStringExtra("email");
         mykey = getIntent().getStringExtra("mykey");
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         myimg = getIntent().getStringExtra("myimg");
 
         //System.out.println("이미지 결과: " + myimg);     //null값으로 가져온다.
+        System.out.println("이메일" + email);
 
         /*
         //기본세팅

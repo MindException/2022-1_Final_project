@@ -29,7 +29,8 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
 
-
+    //생성자
+    public MyPageAdapter1() { }
 
     MyPageAdapter1(List<Product> productArrayList){    //새로운 쿼리용 생성자
 
@@ -40,9 +41,7 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    public MyPageAdapter1() {
-    }
-
+    //클릭 리스너
     public interface onItemClickEventListener {
         void onItemClick(View v, int pos);
     }
@@ -52,14 +51,11 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.mItemClickListener = listener;
     }
 
-
-
-
+    //오버라이딩
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mypage_list_item, parent, false);
-
         return new MyPageAdapter1.MyPageViewHolder(view);
     }
 
@@ -79,6 +75,7 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
+    //뷰홀더
     class MyPageViewHolder extends RecyclerView.ViewHolder {
 
         ImageView iv;
