@@ -68,6 +68,10 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
         add("기타");
     }};
 
+    //카테고리 리사이클뷰
+    RecyclerView crecyclerView;
+    RecyclerCategoryAdapter categoryAdapter;
+
    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +89,21 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
        myimg = getIntent().getStringExtra("myimg");
 
        //카테고리 리사이클 뷰 초기 세팅
+       crecyclerView = (RecyclerView)findViewById(R.id.sellpage_category_list);
+       LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+       linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);             //이렇게 하면 수평으로 생성
+       crecyclerView.setLayoutManager(linearLayoutManager);
+       categoryAdapter = new RecyclerCategoryAdapter(category_list);
+       categoryAdapter.setOnItemClickListener(new RecyclerCategoryAdapter.OnItemClickListener() {
+           @Override
+           public void onItemClick(View v, int pos) {
 
+               //카테고리 눌렸을 경우
+
+
+           }
+       });
+       crecyclerView.setAdapter(categoryAdapter);
 
 
        //리사이클 뷰 기초세팅

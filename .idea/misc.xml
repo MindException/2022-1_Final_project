@@ -74,7 +74,9 @@
         <entry key="app/src/main/res/layout/activity_buy_page.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/activity_chatting.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/activity_chatting_home.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/activity_my_page.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_sell_page.xml" value="0.3333333333333333" />
+        <entry key="app/src/main/res/layout/category_item.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/chatting_home_itme.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/chatting_iitem_i.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/chatting_item_system.xml" value="0.17135416666666667" />
