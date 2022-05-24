@@ -146,7 +146,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                 for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){    //가져오고 1개 들어있다.
                                     userinfo = queryDocumentSnapshot.toObject(User.class);
                                     mykey = queryDocumentSnapshot.getId();
-                                    System.out.println(mykey);
                                 }
                                 try {
                                     userinfo.password = aes256.decrypt(userinfo.password);
@@ -214,7 +213,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         if(requestCode == REQ_SIGN_GOOGLE){     //결과를 가져온다.
 
             //여기까지는 잘 들어온다.
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);  //여기서 값을 못 받음(도훈)
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             //지금 여기서 값을 못 가져온다.
             if(result.isSuccess() == true){  //결과가 성공한 경우
@@ -251,7 +250,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(task.isSuccessful()){        //송수신 성공시
-                                        System.out.println("여기까지 들어옴");
                                         if(task.getResult().size() <= 0){       //아무것도 없어야 중복이 아니다.
                                             Intent signUp_intent = new Intent(Login.this, SignUp.class);
                                             signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -262,13 +260,33 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                             auth.signOut();
                                             FirebaseAuth.getInstance().signOut();
                                             AuthUI.getInstance().signOut(getApplicationContext());
-                                            System.exit(0);
+                                            finish();
+
                                         }else{
-                                            Toast.makeText(Login.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(Login.this, "구를 로그인 합니다.", Toast.LENGTH_SHORT).show();
                                             //이것을 해줘야 다음에 계정 생성을 할 때도 다시 계정선택이 가능하다.
                                             auth.signOut();
                                             FirebaseAuth.getInstance().signOut();
                                             AuthUI.getInstance().signOut(getApplicationContext());
+
+                                            //존재하는 정보를 가져온다.
+                                            for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){    //가져오고 1개 들어있다.
+                                                userinfo = queryDocumentSnapshot.toObject(User.class);
+                                                mykey = queryDocumentSnapshot.getId();
+                                            }
+
+                                            //이제 자동으로 로그인하기 위하여 넘어간다.
+                                            Intent login_intent = new Intent(Login.this, MainActivity.class);
+                                            login_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            login_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            login_intent.putExtra("email", userinfo.google_email);
+                                            login_intent.putExtra("mykey", mykey);
+                                            login_intent.putExtra("nickname", userinfo.nickname);
+                                            login_intent.putExtra("myUniv", userinfo.university);
+                                            login_intent.putExtra("myimg", userinfo.img);
+                                            startActivity(login_intent);
+                                            finish();
+
                                         }
                                     }else{
                                         System.out.println("송수신 실패");
