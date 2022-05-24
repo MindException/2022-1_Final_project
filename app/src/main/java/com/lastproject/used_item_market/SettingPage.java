@@ -247,8 +247,7 @@ public class SettingPage extends AppCompatActivity {
                 Query query = product_Ref.whereEqualTo("seller_key", mykey)
                         .orderBy("success_time", Query.Direction.ASCENDING)
                         .whereNotIn("success_time", Arrays.asList("000000000000","999999999999"))
-                        .orderBy("time", Query.Direction.DESCENDING)
-                        .limit(100);
+                        .orderBy("time", Query.Direction.DESCENDING);
 
                 query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
