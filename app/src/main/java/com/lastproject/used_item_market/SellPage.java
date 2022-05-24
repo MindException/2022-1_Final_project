@@ -93,6 +93,8 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);             //이렇게 하면 수평으로 생성
        crecyclerView.setLayoutManager(linearLayoutManager);
+       RecyclerDecoration decoration = new RecyclerDecoration(30);
+       crecyclerView.addItemDecoration(decoration);
        categoryAdapter = new RecyclerCategoryAdapter(category_list);
        categoryAdapter.setOnItemClickListener(new RecyclerCategoryAdapter.OnItemClickListener() {
            @Override
