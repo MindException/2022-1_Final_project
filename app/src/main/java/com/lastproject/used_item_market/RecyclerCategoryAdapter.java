@@ -16,6 +16,7 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerView.V
     ArrayList<String> categoryList = new ArrayList<>();
     OnItemClickListener listener = null;
 
+
     RecyclerCategoryAdapter(ArrayList<String> categoryList){
         this.categoryList = categoryList;
     }
@@ -27,13 +28,15 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     public interface OnItemClickListener            //아이템이 눌린
     {
-        void onItemClick(View v, int pos);
+        void onItemClick(View v, int pos, TextView textView);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false);
+
+
         return new RecyclerCategoryAdapter.ViewHolderCategory(view);
     }
 
@@ -45,6 +48,11 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public int getItemCount() {
         return categoryList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {      //리사이클뷰에 재활용을 막는다.
+        return position;
     }
 
     class ViewHolderCategory extends RecyclerView.ViewHolder{
@@ -63,7 +71,7 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerView.V
                     if (pos != RecyclerView.NO_POSITION)            //눌렸을 경우
                     {
                         // click event
-                        listener.onItemClick(v, pos);
+                        listener.onItemClick(v, pos, category);
                     }
 
                 }
@@ -72,7 +80,9 @@ public class RecyclerCategoryAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         public void onBind(String text){
+
             category.setText(text);
+
         }
     }
 

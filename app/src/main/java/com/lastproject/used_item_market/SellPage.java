@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -71,6 +72,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
     //카테고리 리사이클뷰
     RecyclerView crecyclerView;
     RecyclerCategoryAdapter categoryAdapter;
+    TextView check_category;
 
    @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,11 +100,26 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
        categoryAdapter = new RecyclerCategoryAdapter(category_list);
        categoryAdapter.setOnItemClickListener(new RecyclerCategoryAdapter.OnItemClickListener() {
            @Override
-           public void onItemClick(View v, int pos) {
+           public void onItemClick(View v, int pos, TextView textView) {
 
                //카테고리 눌렸을 경우
+               //categoryAdapter.textViewList.get(pos).setText("이거 눌림");
+               if((check_category != textView) && check_category != null) {      //카테고리가 같지 않은 경우
+                   //버튼에서 색없애기
+                   check_category.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                   //새로운 카테고리로 변경
+                   check_category = textView;
+                   check_category.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
+                   category = check_category.getText().toString();
+                   category_function();
 
-
+               }else{
+                   //카테고리로 새로 갱신
+                   check_category = textView;
+                   check_category.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
+                   category = check_category.getText().toString();
+                   category_function();
+               }
            }
        });
        crecyclerView.setAdapter(categoryAdapter);
@@ -485,9 +502,231 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
 
     void category_function(){   //카테고리가 눌려졌을 경우에 동작
 
+        //초기화
+        isScrolling = true;
+        isLastItemReached = false;
+        productList = new ArrayList<>();
+        productKeyList = new ArrayList<String>();
+        //어뎁터를 새로 설치해줘야 한다.
+        recycleSellAdapter = new RecycleSellAdapter(productList);
+        recycleSellAdapter.setOnItemClickListener(new RecycleSellAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int pos) {  //리사이클 뷰 가 눌렸을 경우 상세 페이지로 이동
+
+                Intent intent = new Intent(SellPage.this, DetailPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
+                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("wherefrom", "SellPage");
+                intent.putExtra("myimg", myimg);
+                startActivity(intent);
+                System.exit(0);
+
+            }
+        });
+        recyclerView.setAdapter(recycleSellAdapter);
+
+        if (category.equals("모두보기")){
+
+            //카테고리가 정해지지 않은 기본보기
+            productRef = firestore.collection("Product");
+            Query query =productRef.whereEqualTo("university", myUniv)
+                    .whereEqualTo("purpose", "판매")
+                    .whereEqualTo("success_time", "000000000000")
+                    .orderBy("time", Query.Direction.DESCENDING)
+                    .limit(limit);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){           //가져오는데 성공
+                        if (task.getResult().size() <= 0){          //물건이 없는 경우
+                            Toast.makeText(SellPage.this, "상품 없음", Toast.LENGTH_SHORT).show();
+                        }else{      //물건이 있다.
+                            for(DocumentSnapshot document : task.getResult()){
+                                Product product = document.toObject(Product.class);
+                                productList.add(product);
+                                productKeyList.add(document.getId());
+                            }
+                            //상품 추가했으니 어뎁터 갱신
+                            recycleSellAdapter.notifyDataSetChanged();
+                            lastVisible = task.getResult().getDocuments().get(task.getResult().size() - 1);
+
+                            //스크롤 리스너 추가
+                            onScrollListener = new RecyclerView.OnScrollListener() {
+                                @Override
+                                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                                    super.onScrollStateChanged(recyclerView, newState);
+                                    if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                                        isScrolling = true;
+                                    }
+                                }
+
+                                //스크롤이 limit만큼 내려갈 시 다음 데이터를 limit만큼 읽어서 출력
+                                @Override
+                                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                                    super.onScrolled(recyclerView, dx, dy);
+
+                                    //위치정보 가져오기
+                                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+
+                                    int firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
+                                    int visibleItemCount = linearLayoutManager.getChildCount();
+                                    int totalItemCount = linearLayoutManager.getItemCount();
+
+                                    //스크롤 조건 시작
+                                    if(isScrolling && (firstVisiblePosition + visibleItemCount == totalItemCount) && !isLastItemReached ){
+
+                                        isScrolling = false;
+                                        //추가 쿼리
+                                        Query nextQuery = productRef.whereEqualTo("university", myUniv)
+                                                .whereEqualTo("purpose", "판매")
+                                                .whereEqualTo("success_time", "000000000000")
+                                                .orderBy("time", Query.Direction.DESCENDING)
+                                                .startAfter(lastVisible).limit(limit);
+                                        nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> nextTask) {
+                                                if(nextTask.isSuccessful()){   //가져오는거 성공
+                                                    if(nextTask.getResult().size() > 0) {
+                                                        for(DocumentSnapshot nextDocument : nextTask.getResult()){
+                                                            Product product = nextDocument.toObject(Product.class);
+                                                            productList.add(product);
+                                                            productKeyList.add(nextDocument.getId());
+                                                        }
+                                                        //어뎁터 또 갱신
+                                                        recycleSellAdapter.notifyDataSetChanged();
+                                                        lastVisible = nextTask.getResult().getDocuments().get(nextTask.getResult().size() - 1);
+
+                                                        if(nextTask.getResult().size() < limit){      //더 이상 갱신할 필요가 없다.
+                                                            isLastItemReached = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                    }//스크롤 조건 끝
+
+                                }
+                            };
+                            //스크롤 리스너 끝
+
+                            //스크롤 리스너 추가
+                            recyclerView.addOnScrollListener(onScrollListener);
+
+                        }
+                    }else{  //수신 실패
+                        System.out.println("수신 실패");
+                    }
+                }
+            });//메인 쿼리
+
+            swipeRefreshLayout.setRefreshing(false);        //업데이트 끝
 
 
 
+        }else{      //카테고리가 선택이 되었을 경우
+
+            productRef = firestore.collection("Product");
+            Query query = productRef.whereEqualTo("university", myUniv)
+                    .whereEqualTo("purpose", "판매")
+                    .whereEqualTo("category", category)
+                    .whereEqualTo("success_time", "000000000000")
+                    .orderBy("time", Query.Direction.DESCENDING).limit(limit);
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){           //가져오는데 성공
+                        if (task.getResult().size() <= 0){          //물건이 없는 경우
+                            Toast.makeText(SellPage.this, "상품 없음", Toast.LENGTH_SHORT).show();
+                        }else{      //물건이 있다.
+                            for(DocumentSnapshot document : task.getResult()){
+                                Product product = document.toObject(Product.class);
+                                productList.add(product);
+                                productKeyList.add(document.getId());
+                            }
+                            //상품 추가했으니 어뎁터 갱신
+                            recycleSellAdapter.notifyDataSetChanged();
+                            lastVisible = task.getResult().getDocuments().get(task.getResult().size() - 1);
+
+                            //스크롤 리스너 추가
+                            onScrollListener = new RecyclerView.OnScrollListener() {
+                                @Override
+                                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                                    super.onScrollStateChanged(recyclerView, newState);
+                                    if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                                        isScrolling = true;
+                                    }
+                                }
+
+                                //스크롤이 limit만큼 내려갈 시 다음 데이터를 limit만큼 읽어서 출력
+                                @Override
+                                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                                    super.onScrolled(recyclerView, dx, dy);
+
+                                    //위치정보 가져오기
+                                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager)recyclerView.getLayoutManager();
+
+                                    int firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
+                                    int visibleItemCount = linearLayoutManager.getChildCount();
+                                    int totalItemCount = linearLayoutManager.getItemCount();
+
+                                    //스크롤 조건 시작
+                                    if(isScrolling && (firstVisiblePosition + visibleItemCount == totalItemCount) && !isLastItemReached ){
+
+                                        isScrolling = false;
+                                        //추가 쿼리
+                                        Query nextQuery = productRef.whereEqualTo("university", myUniv)
+                                                .whereEqualTo("purpose", "판매")
+                                                .whereEqualTo("category", category)
+                                                .whereEqualTo("success_time", "000000000000")
+                                                .orderBy("time", Query.Direction.DESCENDING)
+                                                .startAfter(lastVisible).limit(limit);
+                                        nextQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> nextTask) {
+                                                if(nextTask.isSuccessful()){   //가져오는거 성공
+                                                    if(nextTask.getResult().size() > 0) {
+                                                        for(DocumentSnapshot nextDocument : nextTask.getResult()){
+                                                            Product product = nextDocument.toObject(Product.class);
+                                                            productList.add(product);
+                                                            productKeyList.add(nextDocument.getId());
+                                                        }
+                                                        //어뎁터 또 갱신
+                                                        recycleSellAdapter.notifyDataSetChanged();
+                                                        lastVisible = nextTask.getResult().getDocuments().get(nextTask.getResult().size() - 1);
+
+                                                        if(nextTask.getResult().size() < limit){      //더 이상 갱신할 필요가 없다.
+                                                            isLastItemReached = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                                    }//스크롤 조건 끝
+
+                                }
+                            };
+                            //스크롤 리스너 끝
+
+                            //스크롤 리스너 추가
+                            recyclerView.addOnScrollListener(onScrollListener);
+
+                        }
+                    }else{  //수신 실패
+                        System.out.println("수신 실패");
+                    }
+                }
+            });//메인 쿼리
+
+            swipeRefreshLayout.setRefreshing(false);        //업데이트 끝
+
+        }//if문 끝
 
     }
 }
