@@ -66,18 +66,18 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if(key.equals("System")){
             //시스템 뷰 홀더
             View view = inflater.inflate(R.layout.chatting_item_system, parent, false);
-            RecyclerChatAdapter.ViewHolderSystem viewHolderSystem = new RecyclerChatAdapter.ViewHolderSystem(view);
+            ViewHolderSystem viewHolderSystem = new ViewHolderSystem(view);
             return viewHolderSystem;
         }else if(key.equals(mykey)){
             //본인 뷰 홀더
             View view = inflater.inflate(R.layout.chatting_iitem_i, parent, false);
-            RecyclerChatAdapter.ViewHolderMe viewHolderMe = new RecyclerChatAdapter.ViewHolderMe(view);
+            ViewHolderMe viewHolderMe = new ViewHolderMe(view);
             return viewHolderMe;
 
         }else{
             //상대 뷰 홀더
             View view = inflater.inflate(R.layout.chatting_item_you, parent, false);
-            RecyclerChatAdapter.ViewHolderNotMe viewHolderNotMe = new RecyclerChatAdapter.ViewHolderNotMe(view);
+            ViewHolderNotMe viewHolderNotMe = new ViewHolderNotMe(view);
             return viewHolderNotMe;
         }
     }
@@ -85,11 +85,11 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ViewHolderSystem){     //시스템
-            ((RecyclerChatAdapter.ViewHolderSystem)holder).onBind(chatting.get(position));
+            ((ViewHolderSystem)holder).onBind(chatting.get(position));
         }else if(holder instanceof ViewHolderMe){   //본인
-            ((RecyclerChatAdapter.ViewHolderMe)holder).onBind(chatting.get(position));
+            ((ViewHolderMe)holder).onBind(chatting.get(position));
         }else{  //상대방
-            ((RecyclerChatAdapter.ViewHolderNotMe)holder).onBind(chatting.get(position));
+            ((ViewHolderNotMe)holder).onBind(chatting.get(position));
         }
     }
 
@@ -185,6 +185,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
 
+
             //기본세팅
             nicknameView.setText(nickname);
             chatView.setText(text);
@@ -243,6 +244,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         Glide.with(itemView)
                                 .load(uri)
                                 .override(100, 100)
+                                .onlyRetrieveFromCache(true)
                                 .into(profile);
 
                     } catch (Exception e) {
