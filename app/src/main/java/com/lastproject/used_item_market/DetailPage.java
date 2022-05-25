@@ -113,6 +113,8 @@ public class DetailPage extends AppCompatActivity {
         text_view = (TextView)findViewById(R.id.detail_text);
         chat_btn = (TextView)findViewById(R.id.go_chatting);
         map_btn = (TextView) findViewById(R.id.go_transaction_map);
+        map_control = (LinearLayout) findViewById(R.id.map_control);
+        map_control.setVisibility(View.GONE);   //맵 기본 활성화 상태를 비활성화 시킴
 
         //이미지 관련 위젯
         recyclerView = (RecyclerView)findViewById(R.id.product_imges);
@@ -137,6 +139,8 @@ public class DetailPage extends AppCompatActivity {
                         product = document.toObject(Product.class);     //상품을 가져온다.
                         if(product.destination_latitude != null && product.destination_longtitude != null) {
                             SellPlace();
+                        }else{
+                            Toast.makeText(DetailPage.this, "거래 위치 없음", Toast.LENGTH_SHORT).show();
                         }
                         if(product.pictures != null){   //이미지가 있을 경우 세팅
 
@@ -177,6 +181,7 @@ public class DetailPage extends AppCompatActivity {
         back();
         detailSelect();
         mapVisibility();
+
 
     }
 
@@ -224,6 +229,7 @@ public class DetailPage extends AppCompatActivity {
                         startActivity(intent3);
                         System.exit(0);
                         break;
+
                     case "MyPage":
                         Intent intent4 = new Intent(DetailPage.this, SettingPage.class);
                         intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -235,7 +241,7 @@ public class DetailPage extends AppCompatActivity {
                         intent4.putExtra("myimg", myimg);
                         startActivity(intent4);
                         System.exit(0);
-                        break;
+                        break;    
 
                 }//switch문 끝
             }
@@ -247,21 +253,6 @@ public class DetailPage extends AppCompatActivity {
 
 
 
-    }
-
-    void mapVisibility(){
-        map_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("눌림");
-                if(map_control.getVisibility() == View.GONE){
-                    map_control.setVisibility(View.VISIBLE);
-                }
-                if(map_control.getVisibility() == View.VISIBLE){
-                    map_control.setVisibility(View.GONE);
-                }
-            }
-        });
     }
 
     void chatting(){        //채팅 방 이동
@@ -302,7 +293,7 @@ public class DetailPage extends AppCompatActivity {
                                     //시간 관련 세팅
                                     String nowTime = Time.nowNewTime();
                                     String lastmsg = "System" + "/%%/" + nickname + "님이 대화방에 참가하셨습니다."
-                                            + "/%%/" + nowTime + "/%%/";
+                                            + "/%%/" + nowTime;
 
                                     //채팅 정보를 가져온다.
                                     myRef.child("Chatting").child(product_key)
@@ -385,15 +376,29 @@ public class DetailPage extends AppCompatActivity {
 
     }
 
+    void mapVisibility(){
+        map_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(product.destination_latitude != null && product.destination_longtitude != null) {//제품에 위도 경도값이 존재할 경우
+                    if (map_control.getVisibility() == View.GONE) { //맵 레이아웃이 꺼져있을때
+                        map_control.setVisibility(View.VISIBLE);    //맵 레이아웃을 활성화
+                    } else if (map_control.getVisibility() == View.VISIBLE) {//맵 레이아웃이 활성화일때
+                        map_control.setVisibility(View.GONE);       //맵 레이아웃 비활성화
+                    }
+                }else{
+                    Toast.makeText(DetailPage.this, "거래 위치 없음", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     void SellPlace(){
 
         mapView = (TMapView) findViewById(R.id.map_reserve);
         mapView.setUserScrollZoomEnable(true);     //지도 고정
         TMapMarkerItem item = new TMapMarkerItem();
         System.out.println("맵 : " + mapView.getVisibility());
-
-        map_control = (LinearLayout) findViewById(R.id.map_control);
-        map_control.setVisibility(View.GONE);
 
         double lng = Double.parseDouble(product.destination_longtitude);    //파이어베이스에서 받아온 경도값
         double lat = Double.parseDouble(product.destination_latitude);    //파이어베이스에서 받아온 위도값
