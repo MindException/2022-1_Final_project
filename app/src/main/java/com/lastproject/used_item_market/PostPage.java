@@ -569,5 +569,10 @@ public class PostPage extends AppCompatActivity {
         return ret;
     }
 
+    @Override
+    public void onBackPressed(){
+        //뒤로가기 막기
+    }
+
 
 }

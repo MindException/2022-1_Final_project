@@ -28,4 +28,9 @@ public class SharePage extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed(){
+        //뒤로가기 막기
+    }
 }

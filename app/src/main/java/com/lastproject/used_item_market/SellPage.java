@@ -729,4 +729,9 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
         }//if문 끝
 
     }
+
+    @Override
+    public void onBackPressed(){
+        //뒤로가기 막기
+    }
 }

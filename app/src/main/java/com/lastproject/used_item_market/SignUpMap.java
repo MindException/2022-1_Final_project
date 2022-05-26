@@ -594,6 +594,11 @@ public class SignUpMap extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed(){
+        //뒤로가기 막기
+    }
+
 
 
 }

@@ -119,6 +119,7 @@ public class ChatPage extends AppCompatActivity {
         //리사이클뷰 레이아웃
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
 
         //서버 연동
         firestore = FirebaseFirestore.getInstance();

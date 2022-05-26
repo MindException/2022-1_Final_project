@@ -438,6 +438,9 @@ public class DetailPage extends AppCompatActivity {
         mapView.setMapType(TMapView.MAPTYPE_STANDARD); //Tmap Type설정
     }
 
-
+    @Override
+    public void onBackPressed(){
+        //뒤로가기 막기
+    }
 
 }

@@ -87,7 +87,10 @@ public class SellPlaceMap extends AppCompatActivity {
     }
 
     //나가기 버튼 추가 필요
-
+    @Override
+    public void onBackPressed(){
+        //뒤로가기 막기
+    }
 
 
 

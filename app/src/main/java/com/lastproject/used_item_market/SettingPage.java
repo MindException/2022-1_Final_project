@@ -445,7 +445,9 @@ public class SettingPage extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     try{
-                                        Glide.with(SettingPage.this).load(uri).into(imageView);
+                                        Glide.with(SettingPage.this)
+                                                .load(uri)
+                                                .into(imageView);
                                     }catch (Exception e){
 
                                     }
@@ -496,6 +498,9 @@ public class SettingPage extends AppCompatActivity {
     }
 
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ   이미지 끝 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
+    @Override
+    public void onBackPressed(){
+        //뒤로가기 막기
+    }
 
 }

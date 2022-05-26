@@ -309,4 +309,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    @Override
+    public void onBackPressed(){
+        //뒤로가기 막기
+    }
+
+
 }
