@@ -343,6 +343,7 @@ public class ChatPage extends AppCompatActivity {
                         Glide.with(profile)
                             .asBitmap()
                             .load(uri)
+                            .override(150, 150)
                             .into(new SimpleTarget<Bitmap>(){
                                 @Override
                                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
