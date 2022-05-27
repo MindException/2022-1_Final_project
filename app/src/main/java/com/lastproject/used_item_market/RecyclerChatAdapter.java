@@ -27,18 +27,21 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     ChattingRoomInfo chattingRoomInfo;
     String mykey;
     List<String> chatting = new ArrayList<>();
+    ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
     //이미지 DB
     private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
 
 
-    RecyclerChatAdapter(List<String> chatting, String mykey, ChattingRoomInfo chattingRoomInfo){
+    RecyclerChatAdapter(List<String> chatting, String mykey, ChattingRoomInfo chattingRoomInfo,
+                        ArrayList<Bitmap> bitmaps){
         this.mykey = mykey;
         this.chatting = chatting;
         this.chattingRoomInfo = chattingRoomInfo;
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+        this.bitmaps = bitmaps;
 
     }
 
@@ -161,7 +164,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }
 
-
+            /*
             //프로필 이미지 처리
             StorageReference sellerimgRef = storageRef.child("profiles")
                     .child(chattingRoomInfo.customer_images.get(index));
@@ -179,11 +182,10 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     } catch (Exception e) {
                         System.out.println("view holder binding 실패");
                     }
-
                 }
             }); //프로필 이미지 처리 끝
-
-
+            */
+            profile.setImageBitmap(bitmaps.get(index));
 
 
             //기본세팅
@@ -231,7 +233,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }
 
-
+            /*
             //프로필 이미지 처리
             StorageReference sellerimgRef = storageRef.child("profiles")
                     .child(chattingRoomInfo.customer_images.get(index));
@@ -253,6 +255,10 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 }
             }); //프로필 이미지 처리 끝
+
+             */
+
+            profile.setImageBitmap(bitmaps.get(index));
 
             //기본세팅
             nicknameView.setText(nickname);
