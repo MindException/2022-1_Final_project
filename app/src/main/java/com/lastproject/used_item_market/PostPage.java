@@ -99,8 +99,8 @@ public class PostPage extends AppCompatActivity {
     ArrayList<Uri> uriArrayList = new ArrayList<Uri>();
 
     //위젯 모음
-    TextView done_btn;                      //작성하기
-    TextView back_btn;                      //뒤로가기
+    ImageButton done_btn;                      //작성하기
+    ImageButton back_btn;                      //뒤로가기
     TextView map_btn;                       //맵 선택 버튼
     EditText et_title;                      //제목
     EditText et_cash;                       //가격
@@ -150,14 +150,15 @@ public class PostPage extends AppCompatActivity {
         img_countView = (TextView)findViewById(R.id.count_img);
 
         //위젯
-        back_btn = (TextView)findViewById(R.id.pg_xbtn);
-        done_btn = (TextView)findViewById(R.id.pg_done);
+        back_btn = (ImageButton)findViewById(R.id.pg_xbtn);
+        done_btn = (ImageButton)findViewById(R.id.pg_done);
         et_title = (EditText) findViewById(R.id.title_text);
         et_cash = (EditText) findViewById(R.id.et_cash);
         et_text = (EditText) findViewById(R.id.text);
         map_btn = (TextView)findViewById(R.id.tmap_btn);
-        checkiv = (ImageView)findViewById(R.id.check_mark);
+        //checkiv = (ImageView)findViewById(R.id.check_mark);
 
+        /*
         if(longtitude != null && latitude != null){     //위도 경도가 있을 경우
 
             checkiv.setImageResource(R.drawable.check);
@@ -167,6 +168,8 @@ public class PostPage extends AppCompatActivity {
             checkiv.setImageResource(R.drawable.uncheck);
 
         }
+
+         */
 
 
         back();
@@ -357,7 +360,7 @@ public class PostPage extends AppCompatActivity {
 
     void saveImage(){
 
-        ImageButton bt_saveimg = (ImageButton)findViewById(R.id.add_img_btn);
+        ImageView bt_saveimg = (ImageView)findViewById(R.id.add_img_btn);
         bt_saveimg.setOnClickListener(new View.OnClickListener() {      //사진 추가를 위해 이미지가 눌렸을 경우
             @Override
             public void onClick(View view) {
