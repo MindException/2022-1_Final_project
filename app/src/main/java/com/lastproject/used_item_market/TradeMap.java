@@ -34,6 +34,8 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 import com.skt.Tmap.address_info.TMapAddressInfo;
 
+import java.util.ArrayList;
+
 public class TradeMap extends AppCompatActivity {
 
     TMapView mapView;
@@ -55,6 +57,8 @@ public class TradeMap extends AppCompatActivity {
     private FirebaseFirestore firestore;
     private CollectionReference universityRef;
 
+    ArrayList<String> suriArrayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,7 @@ public class TradeMap extends AppCompatActivity {
         nickname = getIntent().getStringExtra("nickname");
         myUniv = getIntent().getStringExtra("myUniv");
         myimg = getIntent().getStringExtra("myimg");
+        suriArrayList = getIntent().getStringArrayListExtra("uriArrayList");
 
         Mapsetting();
 
@@ -278,6 +283,7 @@ public class TradeMap extends AppCompatActivity {
         PostPage_intent.putExtra("nickname", nickname);
         PostPage_intent.putExtra("myUniv", myUniv);
         PostPage_intent.putExtra("myimg", myimg);
+        PostPage_intent.putStringArrayListExtra("uriArrayList", suriArrayList);
         startActivity(PostPage_intent);
         finish();
 

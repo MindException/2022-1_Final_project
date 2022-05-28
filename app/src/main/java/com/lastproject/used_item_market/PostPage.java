@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -71,6 +72,7 @@ public class PostPage extends AppCompatActivity {
     String latitude;            //도착 위도 값
     String longtitude;          //도착 경도 값
     String myimg;
+    ArrayList<String> suriList;
 
     //스피너만 따로
     Spinner purposeSpinner;          //모집인원
@@ -96,7 +98,7 @@ public class PostPage extends AppCompatActivity {
     public RecyclePostAdapter adapter;
     TextView img_countView;                                //사진 개수
     //새 이미지 관련
-    ArrayList<Uri> uriArrayList = new ArrayList<Uri>();
+    ArrayList<Uri> uriArrayList = new ArrayList<>();
 
     //위젯 모음
     ImageButton done_btn;                      //작성하기
@@ -116,7 +118,6 @@ public class PostPage extends AppCompatActivity {
     ChatInfo chatInfo;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +133,7 @@ public class PostPage extends AppCompatActivity {
         //t-map 설정 후 다시 돌아왔을 때를 위함이다.
         latitude = getIntent().getStringExtra("latitude");                  //가져올때 키값 잘 보기
         longtitude = getIntent().getStringExtra("longtitude");
+        suriList = getIntent().getStringArrayListExtra("uriArrayList");
 
         //파이어베이스 데이터베이스 연동
         firestore = FirebaseFirestore.getInstance();
@@ -153,23 +155,25 @@ public class PostPage extends AppCompatActivity {
         back_btn = (ImageButton)findViewById(R.id.pg_xbtn);
         done_btn = (ImageButton)findViewById(R.id.pg_done);
         et_title = (EditText) findViewById(R.id.title_text);
-        et_cash = (EditText) findViewById(R.id.et_cash);
         et_text = (EditText) findViewById(R.id.text);
         map_btn = (TextView)findViewById(R.id.tmap_btn);
-        //checkiv = (ImageView)findViewById(R.id.check_mark);
+        et_cash = (EditText) findViewById(R.id.et_cash);
 
-        /*
-        if(longtitude != null && latitude != null){     //위도 경도가 있을 경우
+        if (suriList == null){      //사진이 없는 경우
+            uriArrayList = new ArrayList<>();
+        }else{      //사진이 있는 경우
+            //사진 ArrayList로 가져오기
+            for (int i = 0; i < suriList.size(); i++){
 
-            checkiv.setImageResource(R.drawable.check);
+                Uri uri = Uri.parse(suriList.get(i));
+                uriArrayList.add(uri);
 
-        }else{      //위도 경도가 없을 경우
-
-            checkiv.setImageResource(R.drawable.uncheck);
-
+            }
+            init();
         }
 
-         */
+
+
 
 
         back();
@@ -381,7 +385,6 @@ public class PostPage extends AppCompatActivity {
 
 
         if (resultCode == RESULT_OK) {
-            //uri.compareTo로 같은 사진이면 양수가 나오고, 다른 사진이면 음수가 나온다.
 
             //새로운 저장 방법(uri로) 다이렉트로 해버린다.
             Uri uri = data.getData();
@@ -397,75 +400,19 @@ public class PostPage extends AppCompatActivity {
                 }
 
                 if(trigger){
+                    //절대 경로가 같은게 없을 경우
+                    String test1 = uri.toString();
+                    Uri test2 = Uri.parse("dadas");
 
-                    //먼저 서버에 저장한다.
-                    String nowTime = mykey + Time.nowNewTime();         //이미지들을 전부 시간으로 저장한다.
-                    StorageReference imgRef = storageRef.child("images").
-                            child(nowTime);        //  경로: 이미지/사용자키/파일이름(현재시간-년일시분초)
-                    UploadTask uploadTask = (UploadTask)imgRef.putFile(uri)
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {       //서버에 저장 성공
-                                    uriArrayList.add(uri);                  //저장한 uri
-                                    productInfo.pictures.add(nowTime);      //이미지 키값들
-                                    img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
-                                    init();
-                                }
-                            });
-                }else{      //중복 사진 발생
-                    Toast.makeText(PostPage.this, "중복 사진입니다.", Toast.LENGTH_SHORT).show();
+                    uriArrayList.add(uri);
+                    img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
+                    init();
+
                 }
             }
 
-            /*
-            StorageReference imgRef = storageRef.child(mykey).child("test");
-            UploadTask uploadTask = imgRef.putFile(uri);
-
-            //DB에서 이미지 꺼내기기
-            try {
-                Thread.sleep(2000);
-            }catch (Exception e){}
-
-            StorageReference getRef = storageRef.child(mykey + "/" + "test");
-            try {
-                File localFile = File.createTempFile("images", "jpeg");
-                getRef.getFile(localFile).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("사진 가져오기 실패");
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        System.out.println("사진 가져오기 성공");
-                        FileInputStream inputStream = null;
-                        try {
-                            inputStream = new FileInputStream(localFile);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);        //비트맵으로 가져온다.
-                        ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.WEBP, 100, stream1);
-                        byte[] img1Byte = stream1.toByteArray();
-                        String img = ParseIMG.byteArrayToBinaryString(img1Byte); //(성공)
-                        if(imgarray.size() < 5){       //사진을 5개까지 받는다.
-                            //배열에 저장
-                            imgarray.add(img);
-                            //사진 개수 카운트
-                            img_countView.setText("사진 추가(" + imgarray.size() + "/5)");
-                            //여기서 리사이클 뷰 실행
-                            init();
-                        }
-                    }
-                });
 
 
-            } catch (IOException e) {
-                System.out.println("try catch");
-                e.printStackTrace();
-            }
-            */
         }//request code 끝
     }
 
@@ -542,7 +489,6 @@ public class PostPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {        //티맵 버튼이 눌렸을 경우
 
-
                 //저장되었으니 인탠트로 넘어간다.
                 Intent intent = new Intent(PostPage.this, TradeMap.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -551,13 +497,22 @@ public class PostPage extends AppCompatActivity {
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
+                //intent.putExtra("uriArrayList", uriArrayList);
+                //uri를 String 값으로 변환하여 인탠트 해줘야한다.
+                ArrayList<String> suriArrayList = new ArrayList<>();
+                for(int i = 0; i < uriArrayList.size(); i++){       //uri를 String 값으로 변환한다.
+                    String suri = uriArrayList.get(i).toString();
+                    suriArrayList.add(suri);
+                }
+                intent.putStringArrayListExtra("uriArrayList", suriArrayList);
                 startActivity(intent);
-
+                //finish();
 
             }
         });
 
     }
+
 
     @SuppressLint("Range")
     private String getRealPathFromURI(Uri uri) {     //절대경로를 불러온다.(이것으로 같은 사진인지 아닌지 비교한다.)
@@ -571,6 +526,7 @@ public class PostPage extends AppCompatActivity {
 
         return ret;
     }
+
 
     @Override
     public void onBackPressed(){

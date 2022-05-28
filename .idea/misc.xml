@@ -3,13 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/img_view_round_black.xml" value="0.3882051282051282" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_all_page.xml" value="0.32608695652173914" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_chat_page.xml" value="0.32608695652173914" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_chatting.xml" value="0.32608695652173914" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_chatting_home.xml" value="0.32608695652173914" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_my_page.xml" value="0.6228448275862069" />
-        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_post_page.xml" value="0.378125" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_sell_page.xml" value="0.2658514492753623" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/category_item.xml" value="0.5" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/chatting_iitem_i.xml" value="0.33" />
@@ -73,10 +71,12 @@
         <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/sign_up.xml" value="0.17617753623188406" />
         <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/sign_up_map.xml" value="0.2128623188405797" />
         <entry key="app/src/main/res/drawable-v24/bt_tumyeong_sty.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/img_postpageview_round.xml" value="0.1115" />
         <entry key="app/src/main/res/layout/activity_buy_page.xml" value="0.17135416666666667" />
         <entry key="app/src/main/res/layout/activity_chatting.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/activity_chatting_home.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/activity_my_page.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_post_page.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_sell_page.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/category_item.xml" value="0.3333333333333333" />
         <entry key="app/src/main/res/layout/chatting_home_itme.xml" value="0.17135416666666667" />

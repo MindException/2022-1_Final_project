@@ -339,24 +339,25 @@ public class ChatPage extends AppCompatActivity {
 
                     }
 
+                        bitmaps.add(null); //이 방식으로 하는게 로딩속도가 조금 더 빠르다.
                         //비트맵으로 저장한다.
                         Glide.with(profile)
                             .asBitmap()
                             .load(uri)
-                            .override(150, 150)
+                            .override(100, 100)
                             .into(new SimpleTarget<Bitmap>(){
                                 @Override
                                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
 
                                     Bitmap bitmap = resource;
-                                    bitmaps.add(bitmap);
+                                    bitmaps.set(bitmaps.size() - 1, bitmap);
                                     System.out.println(bitmap.toString());
                                     System.out.println("사이즈:" + bitmaps.size());
-                                    //다시 재귀한다.
-                                    setting(storageReference);
 
                                 }
                             });
+                        //다시 재귀한다.
+                        setting(storageReference);
 
                 }
             });

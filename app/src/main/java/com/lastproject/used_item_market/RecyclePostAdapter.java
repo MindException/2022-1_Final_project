@@ -92,6 +92,7 @@ public class RecyclePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
        public void onBind(Uri data){
 
             try {
+
                 Bitmap bmp = MediaStore.Images.Media.getBitmap(cr, data);
                 iv.setImageBitmap(bmp);
                 iv.setClipToOutline(true);              //모양에 맞게 사진 자르기
