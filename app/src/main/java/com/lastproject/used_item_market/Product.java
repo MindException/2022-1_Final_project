@@ -5,6 +5,7 @@ import java.util.List;
 //실제 서버에 저장되는 중고물품이다.
 public class Product {
 
+    public String key = "";             //상품 키
     public String seller = "";          //판매자 키
     public String seller_key = "";      //판매자 이름
     public String university = "";      //대학 이름

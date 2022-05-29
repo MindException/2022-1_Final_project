@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -51,6 +52,13 @@ public class TradeMap extends AppCompatActivity {
     String myUniv;
     String myimg;
 
+    //세팅값
+    String ret_title;
+    String ret_purpose;
+    String ret_category;
+    String ret_cash;
+    String ret_text;
+
     University university;
 
     //파이어베이스
@@ -68,6 +76,11 @@ public class TradeMap extends AppCompatActivity {
         myUniv = getIntent().getStringExtra("myUniv");
         myimg = getIntent().getStringExtra("myimg");
         suriArrayList = getIntent().getStringArrayListExtra("uriArrayList");
+        ret_title = getIntent().getStringExtra("title");
+        ret_purpose = getIntent().getStringExtra("purpose");
+        ret_category = getIntent().getStringExtra("category");
+        ret_cash = getIntent().getStringExtra("cash");
+        ret_text = getIntent().getStringExtra("text");
 
         Mapsetting();
 
@@ -165,24 +178,22 @@ public class TradeMap extends AppCompatActivity {
                             mapView.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback(){//풍선뷰 오른쪽 이미지 사용 이벤트 리스너
                                 @Override
                                 public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
-                                    AlertDialog.Builder dlg = new AlertDialog.Builder(TradeMap.this);
+                                    AlertDialog.Builder dlg = new AlertDialog.Builder(TradeMap.this, R.style.AlertDialogTheme);
                                     Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
 
                                     mHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             dlg.setTitle("해당 위치로 지정하시겠습니까?");
-                                            dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                                            dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
                                                 @Override
-                                                public void onClick(DialogInterface dialog, int which) {  // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
-                                                    //System.out.println("선택 : " + univ.get(selecteduniv[0]));
-                                                    nextInfo();
+                                                public void onClick(DialogInterface dialog, int which) {
 
                                                 }
-                                            }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                            }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-
+                                                public void onClick(DialogInterface dialogInterface, int i) { // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
+                                                    nextInfo();
                                                 }
                                             });
                                             dlg.show();
@@ -203,17 +214,6 @@ public class TradeMap extends AppCompatActivity {
                 }
             }
         });
-
-        /*
-        Query query = universityRef.whereEqualTo("university", myUniv);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                QuerySnapshot documentSnapshot = task.getResult();
-                university = (University) documentSnapshot.toObjects(University.class);
-            }
-        });
-*/
 
 
     }
@@ -274,8 +274,9 @@ public class TradeMap extends AppCompatActivity {
     void nextInfo(){        //다음으로 넘어갈 경우 줘야하는 정보
 
         Intent PostPage_intent = new Intent(TradeMap.this, PostPage.class);
-        PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //이거 인탠트 할 때 아래 행위 하지말아야한다 액티비티가 죽어버리면 같이 uri도 죽어버린다.
+        //PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PostPage_intent.putExtra("latitude", latitude);
         PostPage_intent.putExtra("longtitude", longtitude);
         PostPage_intent.putExtra("email", email);
@@ -284,9 +285,13 @@ public class TradeMap extends AppCompatActivity {
         PostPage_intent.putExtra("myUniv", myUniv);
         PostPage_intent.putExtra("myimg", myimg);
         PostPage_intent.putStringArrayListExtra("uriArrayList", suriArrayList);
+        PostPage_intent.putExtra("title", ret_title);
+        PostPage_intent.putExtra("purpose", ret_purpose);
+        PostPage_intent.putExtra("category", ret_category);
+        PostPage_intent.putExtra("cash", ret_cash);
+        PostPage_intent.putExtra("text", ret_text);
         startActivity(PostPage_intent);
         finish();
-
     }
 
     @Override

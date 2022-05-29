@@ -24,6 +24,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -57,7 +59,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 //마지막에 저장할 때 상품에서 이미지 키값 가지고 있으려면
 //애초에 이미지 가져올때부터 handler로 해야한다.
@@ -88,11 +92,10 @@ public class PostPage extends AppCompatActivity {
 
     //새DB
     private FirebaseFirestore firestore;        //DB
-    private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
+    private FirebaseStorage storage;            //이미지 저장소
 
     //이미지 관련
-    ArrayList<String> imgarray = new ArrayList<String>();       //이미지 이진화 모음
     int requestCode;
     private RecyclerView rv;
     public RecyclePostAdapter adapter;
@@ -107,16 +110,26 @@ public class PostPage extends AppCompatActivity {
     EditText et_title;                      //제목
     EditText et_cash;                       //가격
     EditText et_text;                       //내용
-    ImageView checkiv;                      //지도정보가 있나 없나 체크
+    private DecimalFormat decimalFormat = new DecimalFormat("#,###");
+    private String cash_result="";
 
     String beforeString = "";               //전 가격 내용
     boolean freeTrigger = false;            //무료인지 아닌지
 
-    String product_key = "";
     Product productInfo;
-    String chat_key;
     ChatInfo chatInfo;
 
+    //다시 되돌아오는 세팅 값
+    String ret_title;
+    String ret_purpose;
+    String ret_category;
+    String ret_cash;
+    String ret_text;
+
+    //이미지 값 저장
+    ArrayList<String> realPath = new ArrayList<>();
+
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,11 +147,18 @@ public class PostPage extends AppCompatActivity {
         latitude = getIntent().getStringExtra("latitude");                  //가져올때 키값 잘 보기
         longtitude = getIntent().getStringExtra("longtitude");
         suriList = getIntent().getStringArrayListExtra("uriArrayList");
+        //t-map 설정 후 다시 돌아왔을 때 상품 정보
+        ret_title = getIntent().getStringExtra("title");
+        ret_purpose = getIntent().getStringExtra("purpose");
+        ret_category = getIntent().getStringExtra("category");
+        ret_cash = getIntent().getStringExtra("cash");
+        ret_text = getIntent().getStringExtra("text");
 
         //파이어베이스 데이터베이스 연동
         firestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
+
         //파이어 베이스 리얼 타임 데이터베이스 연동
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -159,6 +179,33 @@ public class PostPage extends AppCompatActivity {
         map_btn = (TextView)findViewById(R.id.tmap_btn);
         et_cash = (EditText) findViewById(R.id.et_cash);
 
+        //999,999,999 값으로 값을 표현
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(charSequence.toString()) && !charSequence.toString().equals(cash_result)){
+                    cash_result = decimalFormat.format(Double.parseDouble(charSequence.toString()
+                            .replaceAll(",","")));
+                    et_cash.setText(cash_result);
+                    et_cash.setSelection(cash_result.length());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+
+        et_cash.addTextChangedListener(watcher);
+
+
+
         if (suriList == null){      //사진이 없는 경우
             uriArrayList = new ArrayList<>();
         }else{      //사진이 있는 경우
@@ -169,11 +216,9 @@ public class PostPage extends AppCompatActivity {
                 uriArrayList.add(uri);
 
             }
+            img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
             init();
         }
-
-
-
 
 
         back();
@@ -182,6 +227,21 @@ public class PostPage extends AppCompatActivity {
         setCategorySpinner();
         saveImage();
         saveMap();
+
+        //맵에서 다시 돌아온 경우를 위해 초기 설정
+        if(ret_title != null){  //제목
+            et_title.setText(ret_title);
+        }
+        if(ret_purpose != null){    //거래 목적
+            purposeSpinner.setSelection(getIndex(purposeSpinner, ret_purpose));
+        }
+        if(ret_category != null){   //카테고리
+            categorySpinner.setSelection(getIndex(categorySpinner, ret_category));
+        }
+        if(ret_text != null){   //글 내용
+            et_text.setText(ret_text);
+        }
+
     }
 
     public void back(){
@@ -212,6 +272,7 @@ public class PostPage extends AppCompatActivity {
                 String nowTime = Time.nowTime();        //작성 시간을 저장
                 String title = et_title.getText().toString();
                 String cash = et_cash.getText().toString();
+                cash = cashTonum(cash);
                 String text = et_text.getText().toString();
                 if(cash.equals("") && freeTrigger == true){     //freeTrigger 스피너 참조
                     cash = "0";     //무료이니까 0원이다.
@@ -221,6 +282,7 @@ public class PostPage extends AppCompatActivity {
 
                     try {       //여기서
 
+                        Toast.makeText(PostPage.this, "상품 등록 중", Toast.LENGTH_SHORT).show();
                         Long icash = Long.parseLong(cash);     //비용 변환 String -> Long
                         //나머지 상품정보 저장
                         productInfo.title = title;
@@ -230,82 +292,79 @@ public class PostPage extends AppCompatActivity {
                         productInfo.text = text;
                         productInfo.time = nowTime;
 
-                        if(longtitude != null && latitude != null){     //위도 경도가 있을 경우
+                        if (longtitude != null && latitude != null) {     //위도 경도가 있을 경우
 
                             productInfo.destination_longtitude = longtitude;
                             productInfo.destination_latitude = latitude;
 
                         }
+                        //여기서 서버 저장 product -> 이미지(폴더 방식) -> Realtime -> chatInfo 순으로 저장한다.
+                        for(int i = 0; i < uriArrayList.size(); i++){       //진짜 경로를 키값으로 이미지들을 저장한다.(성공)
 
-                        //서버에 저장
-                        //product를 한번 저장을 하고 키값을 저장한 후에 이미지를 가져와야 한다.
+                            realPath.add(lastName(getRealPathFromURI(uriArrayList.get(i))));
+                            productInfo.pictures.add(realPath.get(i));
+
+                        }
+                        count = 0;
                         firestore.collection("Product").add(productInfo)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
 
-                                    //채팅방을 생성하여서 넣어준다.
-                                    String product_key = documentReference.getId();
-                                    chatInfo = new ChatInfo(nickname);
-                                    //Realtime-Database에 채팅내용테이블을 생성한다.
-                                    myRef.child("Chatting").child(product_key)
-                                            .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {    //실시간 데이터베이스에 성공적으로 만들었을 경우
+                                        productInfo.key = documentReference.getId();
+                                        DocumentReference doc = firestore.collection("Product")
+                                                .document(productInfo.key);
+                                        doc.set(productInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
 
-                                            ChattingRoomInfo chattingRoomInfo = new ChattingRoomInfo(mykey, nickname, chatInfo.start_time, productInfo.title);
-                                            //모든 이미지 파일은 유저키로 할 것이다. profile/유저키
-                                            chattingRoomInfo.customer_images.add(mykey);        //사진을 넣어준다.
-                                            if(productInfo.pictures.size() != 0){
-                                                chattingRoomInfo.product_imgkey = productInfo.pictures.get(0);      //첫 번째 사진 저장
-                                            }
-                                            chattingRoomInfo.chat_key = product_key;
-                                            //초반 채팅방 설정
-                                            chattingRoomInfo.last_SEE.add(0);
-                                            chattingRoomInfo.last_index = 0;
-                                            chattingRoomInfo.out_customer_index.add(0);
-                                            firestore.collection("ChattingRoom").document(product_key).set(chattingRoomInfo)
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void unused) {
+                                                //상품 저장 성공공
+                                                chatInfo = new ChatInfo(nickname);
+                                                //Realtime-Database에 채팅내용테이블을 생성한다.
+                                                myRef.child("Chatting").child(productInfo.key)
+                                                        .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {    //실시간 데이터베이스에 성공적으로 만들었을 경우
 
-                                                            //저장되었으니 인탠트로 넘어간다.
-                                                            Intent intent = new Intent(PostPage.this, MainActivity.class);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                            intent.putExtra("email", email);
-                                                            intent.putExtra("mykey", mykey);
-                                                            intent.putExtra("nickname", nickname);
-                                                            intent.putExtra("myUniv", myUniv);
-                                                            intent.putExtra("myimg", myimg);
-                                                            startActivity(intent);
-                                                            finish();
-
+                                                        ChattingRoomInfo chattingRoomInfo = new ChattingRoomInfo(mykey, nickname, chatInfo.start_time, productInfo.title);
+                                                        //모든 이미지 파일은 유저키로 할 것이다. profile/유저키
+                                                        chattingRoomInfo.customer_images.add(mykey);        //사진을 넣어준다.
+                                                        if(productInfo.pictures.size() != 0){
+                                                            chattingRoomInfo.product_imgkey = productInfo.pictures.get(0);      //첫 번째 사진 저장
                                                         }
-                                                    });
-                                        }
-                                    });
+                                                        chattingRoomInfo.chat_key = productInfo.key;
+                                                        //초반 채팅방 설정
+                                                        chattingRoomInfo.last_SEE.add(0);
+                                                        chattingRoomInfo.last_index = 0;
+                                                        chattingRoomInfo.out_customer_index.add(0);
+                                                        firestore.collection("ChattingRoom").document(productInfo.key).set(chattingRoomInfo)
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void unused) {
 
-                                }
-                            })//성공 리스너
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    System.out.println("상품 초기 저장 실패함");
-                                }
-                            });//리스너 끝
+                                                                        StorageReference imgRef = storageRef.child("images");
+                                                                        uploadImg(imgRef);      //사진 저장
 
-                    }catch (Exception e){
+                                                                    }
+                                                                });
+                                                    }
+                                                });
 
-                        et_cash.setText("");
-                        et_cash.setHint("가격을 입력하세요.");
 
-                    }
+
+
+
+
+                                            }//key 값 저장 성공
+                                       });
+                                    }
+                                });
+
+                    }catch (Exception e){}
+
                 }else{
-
-                    Toast.makeText(PostPage.this, "상품 정보를 전부 입력하여주세요.", Toast.LENGTH_SHORT).show();
-
-                }//if문 끝
+                    Toast.makeText(PostPage.this, "전부 작성하여 주세요.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -337,6 +396,17 @@ public class PostPage extends AppCompatActivity {
                     beforeString = "";
                     et_cash.setText("");
                     et_cash.setHint("가격(원)을 입력하세요.");
+
+                    if(ret_cash != null){   //금액
+
+                        CharSequence charSequence = ret_cash;
+                        cash_result = decimalFormat.format(Double.parseDouble(charSequence.toString()
+                                .replaceAll(",","")));
+                        et_cash.setText(cash_result, TextView.BufferType.EDITABLE);
+                        et_cash.setSelection(cash_result.length());
+                        ret_cash = null;
+                    }
+
                 }
             }
             @Override
@@ -399,15 +469,14 @@ public class PostPage extends AppCompatActivity {
                     }
                 }
 
-                if(trigger){
+                if(trigger == true) {
                     //절대 경로가 같은게 없을 경우
-                    String test1 = uri.toString();
-                    Uri test2 = Uri.parse("dadas");
-
                     uriArrayList.add(uri);
                     img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
                     init();
 
+                }else{
+                    Toast.makeText(PostPage.this, "중복된 사진입니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -426,63 +495,38 @@ public class PostPage extends AppCompatActivity {
         adapter.setOnItemClickListener(new RecyclePostAdapter.OnItemClickListener() {       //사진을 클릭하여 삭제한다.
             @Override
             public void onItemClick(View v, int pos) {
-                System.out.println(pos + "번 클릭");       //시작이 0번이다.
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PostPage.this);
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PostPage.this, R.style.AlertDialogTheme);
                 alertBuilder.setTitle("안내");
                 alertBuilder.setMessage("선택하신 사진을 삭제하시겠습니까?");
-                alertBuilder.setPositiveButton("No",new DialogInterface.OnClickListener(){         //오른쪽버튼
+                alertBuilder.setPositiveButton("아니오",new DialogInterface.OnClickListener(){         //오른쪽버튼
                     public void onClick(DialogInterface dialog,int which){
                         //삭제하지 않음으로 그냥 둔다.
                     }
                 });
-                alertBuilder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {          //왼쪽버튼
+                alertBuilder.setNegativeButton("예", new DialogInterface.OnClickListener() {          //왼쪽버튼
                     @Override
                     public void onClick(DialogInterface dialog, int which) { //사진 삭제
 
-                        StorageReference deserRef = storageRef.child("images").
-                                child(productInfo.pictures.get(pos));      //리사이클뷰에서 위치 가져온다.
-
-                        deserRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {      //삭제에 성공한 경우
-                            @Override
-                            public void onSuccess(Void unused) {        //서버에서 삭제하였으니 클라이언트에서도 삭제
-
-                                int position = pos;
-                                productInfo.pictures.remove(position);
-                                uriArrayList.remove(pos);
-                                init();
-                                img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
-                                Toast.makeText(PostPage.this, "사진 삭제 성공", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(PostPage.this, "사진 삭제 실패", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        uriArrayList.remove(pos);
+                        init();
+                        img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
+                        Toast.makeText(PostPage.this, "사진 삭제 성공", Toast.LENGTH_SHORT).show();
 
                     }
                 });
                 AlertDialog alertDialog = alertBuilder.create();
-                alertDialog.setOnShowListener( new DialogInterface.OnShowListener() {
-                    @Override public void onShow(DialogInterface arg0) {
-                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.GREEN);
-                        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.GREEN);
-                    }
-                });
-
                 alertDialog.show();
             }
         });
         for(int i = 0; i < uriArrayList.size(); i++){
             adapter.addItem(uriArrayList.get(i));
         }
-        rv.addItemDecoration(new RecyclerDecoration(5));       //간격을 추가한다.
+        rv.addItemDecoration(new RecyclerDecoration(1));       //간격을 추가한다.
         rv.setAdapter(adapter);
 
     }
 
-    //맵을 여기다가 저장한다.
+    //맵을 여기다가 저장한다.(인탠트 액티비티 죽이면 uri가 초기화 된다.)
     void saveMap(){     //맵 결과값을 인탠트로 가져올 예정
 
         map_btn.setOnClickListener(new View.OnClickListener() {
@@ -491,13 +535,10 @@ public class PostPage extends AppCompatActivity {
 
                 //저장되었으니 인탠트로 넘어간다.
                 Intent intent = new Intent(PostPage.this, TradeMap.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
-                //intent.putExtra("uriArrayList", uriArrayList);
                 //uri를 String 값으로 변환하여 인탠트 해줘야한다.
                 ArrayList<String> suriArrayList = new ArrayList<>();
                 for(int i = 0; i < uriArrayList.size(); i++){       //uri를 String 값으로 변환한다.
@@ -505,8 +546,12 @@ public class PostPage extends AppCompatActivity {
                     suriArrayList.add(suri);
                 }
                 intent.putStringArrayListExtra("uriArrayList", suriArrayList);
+                intent.putExtra("title", et_title.getText().toString());
+                intent.putExtra("purpose", result_purpose);
+                intent.putExtra("category", result_category);
+                intent.putExtra("cash", cashTonum(et_cash.getText().toString()));       // ',' 제거하고 잘 들어간다.
+                intent.putExtra("text", et_text.getText().toString());
                 startActivity(intent);
-                //finish();
 
             }
         });
@@ -527,11 +572,85 @@ public class PostPage extends AppCompatActivity {
         return ret;
     }
 
-
     @Override
     public void onBackPressed(){
         //뒤로가기 막기
     }
+
+    //스피너 값을 통하여 위치 반환
+    private int getIndex(Spinner spinner, String value){
+        for (int i = 0; i < spinner.getCount(); i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(value)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    String cashTonum(String cash){
+
+        String ret = "";
+        StringTokenizer st = new StringTokenizer(cash,",");
+        while(st.hasMoreTokens()){
+            ret = ret + st.nextToken();
+        }
+        return ret;
+
+    }
+
+    String lastName(String cash){
+
+        String ret = "";
+        StringTokenizer st = new StringTokenizer(cash,"/");
+        while(st.hasMoreTokens()){
+            ret = st.nextToken();
+        }
+        return ret;
+
+    }
+
+    void uploadImg(StorageReference storageReference){
+
+        if(count == -1 || count >= realPath.size()){     //사진 전체 저장 후 다음
+
+            Toast.makeText(PostPage.this, "등록 성공", Toast.LENGTH_SHORT).show();
+            //저장되었으니 인탠트로 넘어간다.
+            Intent intent = new Intent(PostPage.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("email", email);
+            intent.putExtra("mykey", mykey);
+            intent.putExtra("nickname", nickname);
+            intent.putExtra("myUniv", myUniv);
+            intent.putExtra("myimg", myimg);
+            startActivity(intent);
+            finish();
+
+
+        }else{
+
+            StorageReference imgRef = storageReference.child(productInfo.key).child(productInfo.pictures.get(count));
+            UploadTask uploadTask = (UploadTask)imgRef.putFile(uriArrayList.get(count))
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            count++;
+                            uploadImg(storageReference);
+
+                        }
+                    });//성공
+        }
+
+
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        count = -1;
+    }
+
 
 
 }

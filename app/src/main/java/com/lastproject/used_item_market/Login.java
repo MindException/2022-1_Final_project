@@ -89,6 +89,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         google_button = (TextView)findViewById(R.id.bt_google);
         login_button = (TextView)findViewById(R.id.bt_login);
 
+
         //암호화 객체 생성
         aes256 = new AES256();
 
