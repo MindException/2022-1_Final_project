@@ -23,6 +23,14 @@ public class RecyclePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private ArrayList<Uri> productArrayList = new ArrayList<Uri>();
     private OnItemClickListener mListener = null;  //클릭 리스너 변수
 
+    public RecyclePostAdapter(){}
+
+    public RecyclePostAdapter(ArrayList<Uri> productArrayList){
+
+        this.productArrayList = productArrayList;
+
+    }
+
     public interface OnItemClickListener            //아이템이 눌린
     {
         void onItemClick(View v, int pos);

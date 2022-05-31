@@ -1,6 +1,7 @@
 package com.lastproject.used_item_market;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -17,10 +20,10 @@ public class RecycleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
     //이유는 맨 위에 큰 사진이 리사이클 뷰에서 터치할 때마다 바뀌어야 한다.
 
 
-    ArrayList<Bitmap> imgArrayList = new ArrayList<>();
+    ArrayList<Uri> imgArrayList = new ArrayList<>();
     private RecyclePostAdapter.OnItemClickListener mListener = null;  //클릭 리스너 변수
 
-    RecycleDetailAdapter(ArrayList<Bitmap> list){
+    RecycleDetailAdapter(ArrayList<Uri> list){
         this.imgArrayList = list;
     }
 
@@ -55,10 +58,13 @@ public class RecycleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     class ViewHolderDetailProduct extends RecyclerView.ViewHolder{
 
+        View itemview;
         ImageView iv;
 
         public ViewHolderDetailProduct(@NonNull View itemView) {
             super(itemView);
+            this.itemview = itemView;
+
             //아이템 연결
             iv = (ImageView) itemView.findViewById(R.id.img);
             itemView.setOnClickListener(new View.OnClickListener() {            //클릭은 여기다가 한다.
@@ -70,6 +76,7 @@ public class RecycleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
                     {
                         // click event
                         mListener.onItemClick(v, pos);
+
                     }
 
                 }
@@ -77,10 +84,12 @@ public class RecycleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         }
 
-        public void onBind(Bitmap bitmap){
+        public void onBind(Uri uri){
 
-            iv.setImageBitmap(bitmap);
-            iv.setClipToOutline(true);              //모양에 맞게 사진 자르기
+            Glide.with(itemview)
+                    .load(uri)
+                    .override(150, 150)
+                    .into(iv);
 
         }
 

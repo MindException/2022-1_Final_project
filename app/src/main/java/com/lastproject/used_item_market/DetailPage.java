@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StreamDownloadTask;
 import com.skt.Tmap.TMapMarkerItem;
@@ -43,6 +45,7 @@ import com.skt.Tmap.TMapView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class DetailPage extends AppCompatActivity {
@@ -79,8 +82,9 @@ public class DetailPage extends AppCompatActivity {
     //이미지 관련 위젯 및 어뎁터
     RecyclerView recyclerView;
     RecycleDetailAdapter recycleDetailAdapter;
-    ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+    //public RecyclePostAdapter adapter;
     ImageView mainImg;
+    ArrayList<Uri>imgUriList = new ArrayList<>();
 
     private Product product;
     private ChattingRoomInfo chattingRoomInfo;
@@ -89,6 +93,11 @@ public class DetailPage extends AppCompatActivity {
     TMapView mapView;
     Context context = this;
     LinearLayout map_control;
+
+    //첫 번째 사진 바꿈
+    boolean imgtrigger = true;
+
+    private DecimalFormat decimalFormat = new DecimalFormat("#,###");  //돈 형식
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +128,9 @@ public class DetailPage extends AppCompatActivity {
         //이미지 관련 위젯
         recyclerView = (RecyclerView)findViewById(R.id.product_imges);
         mainImg = (ImageView)findViewById(R.id.detail_page_main_img1);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         //파이어 베이스 리얼 타임 데이터베이스 연동
         database = FirebaseDatabase.getInstance();
@@ -142,34 +154,76 @@ public class DetailPage extends AppCompatActivity {
                         }else{
                             Toast.makeText(DetailPage.this, "거래 위치 없음", Toast.LENGTH_SHORT).show();
                         }
-                        if(product.pictures != null){   //이미지가 있을 경우 세팅
 
-                            for(int i = 0; i < product.pictures.size(); i++){       //이미지만큼 가져온다.
+                        //이미지 세팅
+                        if(product.pictures.size() != 0 && product.pictures != null){
 
-                                StorageReference storageReference = storageRef.child("images")
-                                        .child(product.pictures.get(i));
+                            String path = "images/" + product.key;
+                            storageRef = storage.getReference().child(path);
+                            storageRef.listAll()
+                                    .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                                        @Override
+                                        public void onSuccess(ListResult listResult) {
+                                            //여기서 리사이클뷰 어뎁터 적용
+                                            recycleDetailAdapter = new RecycleDetailAdapter(imgUriList);
+                                            recycleDetailAdapter.setOnItemClickListener(new RecyclePostAdapter.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(View v, int pos) {
 
-                                storageReference.getBytes(1024*1024)
-                                        .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                            @Override
-                                            public void onSuccess(byte[] bytes) {
+                                                    //여기서 사진 변경 됨
+                                                    Glide.with(context)
+                                                            .load(imgUriList.get(pos))
+                                                            .override(150,150)
+                                                            .into(mainImg);
 
-                                                Bitmap bitmap = BitmapFactory
-                                                        .decodeByteArray(bytes,0, bytes.length);
-                                                images.add(bitmap);
-                                                System.out.println("비트맵 사이즈" + images.size());
-                                                mainImg.setImageBitmap(bitmap);
-                                                mainImg.setClipToOutline(true);              //모양에 맞게 사진 자르기
-                                                init();
+
+                                                }
+                                            });
+                                            recyclerView.setAdapter(recycleDetailAdapter);
+
+                                            //여기서 uri를 가져온다.
+                                            for(StorageReference storageReference : listResult.getItems()){
+
+                                                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                    @Override
+                                                    public void onSuccess(Uri uri) {
+
+                                                        if(imgtrigger == true){
+
+                                                            Glide.with(context)
+                                                                    .load(uri)
+                                                                    .override(150, 150)
+                                                                    .into(mainImg);
+                                                            imgtrigger = false;
+
+                                                        }
+                                                        imgUriList.add(uri);
+                                                        //그리고 이제 여기서 데이터 체인지
+                                                        recycleDetailAdapter.notifyDataSetChanged();
+
+                                                    }
+                                                });
+
+
                                             }
-                                        });
+                                            //이미지 세팅 끝
 
-                            }//for문 끝
 
-                        }//if문끝
-
+                                        }
+                                    });
+                        }
                         //나머지 상품정보 세팅
                         chatting();     //여기서 돌려야 상품을 가져올 수 있다.
+                        //물품 세팅 시작
+                        title_view.setText(product.title);
+                        purpose_view.setText(product.purpose);
+                        category_view.setText(product.category);
+                        text_view.setText(product.text);
+                        CharSequence charSequence = Long.toString(product.cost);
+                        String scash = decimalFormat.format(Double.parseDouble(charSequence.toString()
+                                .replaceAll(",","")));
+                        scash = scash + "원";
+                        cost_view.setText(scash);
 
                     } else {        //문서를 가져오는데 실패
                         Toast.makeText(DetailPage.this, "상품 없음", Toast.LENGTH_SHORT).show();
@@ -355,26 +409,7 @@ public class DetailPage extends AppCompatActivity {
 
     }
 
-    void init(){
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);             //이렇게 하면 수평으로 생성
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recycleDetailAdapter = new RecycleDetailAdapter(images);
-        recycleDetailAdapter.setOnItemClickListener(new RecyclePostAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int pos) {
-
-                //사진 눌리면 메인 사진으로 변환
-
-            }
-        });
-        recyclerView.setAdapter(recycleDetailAdapter);
-        recyclerView.addItemDecoration(new RecyclerDecoration(5));       //간격을 추가한다.
-
-
-
-    }
 
     void mapVisibility(){
         map_btn.setOnClickListener(new View.OnClickListener() {
