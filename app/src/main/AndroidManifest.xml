@@ -24,45 +24,58 @@
         <activity
             android:name=".ChatPage"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".ChattingListPage"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".DetailPage"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".SettingPage"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".PostPage"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".AllPage"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".SharePage"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".SellPage"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".SetInFo"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".SignUpMap"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".TradeMap"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".SellPlaceMap"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".SignUp"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
         <activity
             android:name=".Login"
             android:exported="true">
@@ -74,7 +87,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/SplashTheme"/>
     </application>
 
 </manifest>
