@@ -243,10 +243,7 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
            }
        });//메인 쿼리
 
-
-
         Back();
-        category_function();
 
     }
 

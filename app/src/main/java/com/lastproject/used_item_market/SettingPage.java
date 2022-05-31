@@ -71,7 +71,6 @@ public class SettingPage extends AppCompatActivity {
     // 상품 관련
     List<User> userList = new ArrayList<User>();
     List<Product> productList = new ArrayList<Product>();  //여기에 모든 상품들이 들어간다.
-    ArrayList<String> productKeyList = new ArrayList<String>();
 
     //유저
     private User user;
@@ -157,7 +156,6 @@ public class SettingPage extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("판매 중 눌림");
                 productList = new ArrayList<>();
-                productKeyList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
                 free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
                 success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
@@ -177,7 +175,6 @@ public class SettingPage extends AppCompatActivity {
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
-                                productKeyList.add(document.getId());
 
                                 System.out.println("task :" + document.getId());
                                 System.out.println("plist :"+productList);
@@ -198,7 +195,6 @@ public class SettingPage extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("무료 나눔 눌림");
                 productList = new ArrayList<>();
-                productKeyList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
                 free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
                 success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
@@ -216,7 +212,6 @@ public class SettingPage extends AppCompatActivity {
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
-                                productKeyList.add(document.getId());
 
                                 System.out.println("task :" + document.getId());
                                 System.out.println("plist :"+productList);
@@ -237,7 +232,6 @@ public class SettingPage extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("거래완료 눌림");
                 productList = new ArrayList<>();
-                productKeyList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
                 free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
                 success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
@@ -258,15 +252,36 @@ public class SettingPage extends AppCompatActivity {
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
-                                productKeyList.add(document.getId());
 
                                 System.out.println("task :" + document.getId());
                                 System.out.println("plist :"+productList);
                             }
-                            //상품 추가했으니 어뎁터 갱신
-                            //리사이클러뷰 전체 업데이트 : notifyDataSetChanged
-                            //myPageAdapter1.notifyDataSetChanged();
-                            init_1();
+
+                            Query next_query = product_Ref.whereEqualTo("purchaser_key", mykey)
+                                    .orderBy("success_time", Query.Direction.ASCENDING)
+                                    .whereNotIn("success_time", Arrays.asList("000000000000","999999999999"))
+                                    .orderBy("time", Query.Direction.DESCENDING);
+
+                            //사용자가 구매자일 경우도 쿼리 날린다.
+                            next_query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        //DocumentSnapshot document = task.getResult();
+                                        //System.out.println("ddd:" + document);
+                                        for (DocumentSnapshot document : task.getResult()) {
+                                            Product product = document.toObject(Product.class);
+                                            productList.add(product);
+
+                                            System.out.println("task :" + document.getId());
+                                            System.out.println("plist :" + productList);
+                                        }
+
+                                        init_1();
+
+                                    }
+                                }
+                            });
                         }
 
                     }
@@ -303,7 +318,7 @@ public class SettingPage extends AppCompatActivity {
                         switch (item.getItemId()){
                             //수정
                             case R.id.product_detail:
-                                System.out.println("상품 키:" + productKeyList.get(pos));
+                                System.out.println("상품 키:" + productList.get(pos).key);
                                 String path = "MyPage";
                                 Intent intent = new Intent(SettingPage.this, DetailPage.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -312,7 +327,7 @@ public class SettingPage extends AppCompatActivity {
                                 intent.putExtra("mykey", mykey);
                                 intent.putExtra("nickname", nickname);
                                 intent.putExtra("myUniv", myUniv);
-                                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                                intent.putExtra("productkey", productList.get(pos).key);      //리사이클뷰 인덱스 가져옴
                                 intent.putExtra("wherefrom", path);
                                 intent.putExtra("myimg", myimg);
                                 startActivity(intent);
@@ -359,7 +374,6 @@ public class SettingPage extends AppCompatActivity {
                     for(DocumentSnapshot document : task.getResult()){
                         Product product = document.toObject(Product.class);
                         productList.add(product);
-                        productKeyList.add(document.getId());
 
                         System.out.println("task :" + document.getId());
                         System.out.println("plist :"+productList);
