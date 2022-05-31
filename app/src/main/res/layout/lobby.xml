@@ -31,19 +31,19 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1.5"
-                    android:src="@drawable/ic_post"
+                    android:src="@drawable/ic_post2"
                     android:scaleType="fitCenter"
                     android:layout_margin="5dp"
                     android:background="#00ff0000"></ImageButton>
-                <TextView
-                    android:layout_width="0dp"
+                <Spinner
+                    android:id="@+id/univ_spinner"
                     android:layout_height="match_parent"
+                    android:layout_width="0dp"
                     android:layout_weight="7"
-                    android:text="선문대학교"
-                    android:textSize="20dp"
-                    android:textColor="#ffffff"
+                    android:fontFamily="@font/font_5"
                     android:gravity="center"
-                    android:fontFamily="@font/font_5"></TextView>
+                    android:layout_gravity="center"
+                    android:spinnerMode="dropdown"></Spinner>
                 <ImageButton
                     android:id="@+id/setbtn"
                     android:layout_width="0dp"
@@ -98,7 +98,7 @@
                                             android:layout_height="match_parent"
                                             android:padding="0dp"
                                             android:scaleType="centerCrop"
-                                            android:src="@drawable/ic_setimg"
+                                            android:src="@raw/ic_lobby_all"
                                             android:background="@drawable/img_view_round"></ImageButton>
                                     </androidx.cardview.widget.CardView>
                                 </LinearLayout>
@@ -124,7 +124,7 @@
                                             android:layout_height="match_parent"
                                             android:scaleType="centerCrop"
                                             android:padding="0dp"
-                                            android:src="@drawable/ic_setimg"
+                                            android:src="@raw/ic_lobby_maket"
                                             android:background="@drawable/img_view_round"></ImageButton>
                                     </androidx.cardview.widget.CardView>
                                 </LinearLayout>
@@ -185,7 +185,7 @@
                                             android:layout_height="match_parent"
                                             android:padding="0dp"
                                             android:scaleType="centerCrop"
-                                            android:src="@drawable/ic_setimg"
+                                            android:src="@drawable/ic_lobby_free"
                                             android:background="@drawable/img_view_round"></ImageButton>
                                     </androidx.cardview.widget.CardView>
                                 </LinearLayout>
@@ -211,7 +211,7 @@
                                             android:layout_height="match_parent"
                                             android:scaleType="centerCrop"
                                             android:padding="0dp"
-                                            android:src="@drawable/ic_setimg"
+                                            android:src="@drawable/ic_lobby_chatting"
                                             android:background="@drawable/img_view_round"></ImageButton>
                                     </androidx.cardview.widget.CardView>
                                 </LinearLayout>
@@ -253,21 +253,6 @@
                             android:layout_marginRight="5dp"
                             android:layout_marginBottom="10dp"></View>
 
-                        <androidx.viewpager2.widget.ViewPager2
-                            android:id="@+id/advertising"
-                            android:layout_width="match_parent"
-                            android:layout_height="120dp"
-                            android:orientation="horizontal"
-                            android:scaleType="center"></androidx.viewpager2.widget.ViewPager2>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:background="#ffffff"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"></View>
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
@@ -280,7 +265,115 @@
                             android:id="@+id/lobby_recyclerHorizon"
                             android:layout_width="match_parent"
                             android:layout_height="135dp"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#ffffff"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="10dp"></View>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            android:text="가격 별 보기"
+                            android:textColor="#ffffff"
+                            android:textSize="15dp"
+                            android:layout_marginLeft="10dp"
+                            android:fontFamily="@font/font_3"></TextView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:weightSum="4">
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center">
+                                <TextView
+                                    android:id="@+id/oneover"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="1만원대"
+                                    android:textSize="15dp"
+                                    android:textColor="#ffffff"
+                                    android:gravity="center"
+                                    android:fontFamily="@font/font_5"
+                                    android:background="@drawable/mypage_chack_view_round"
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="15dp"></TextView>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center">
+                                <TextView
+                                    android:id="@+id/twoover"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="2만원대"
+                                    android:textSize="15dp"
+                                    android:textColor="#ffffff"
+                                    android:gravity="center"
+                                    android:fontFamily="@font/font_5"
+                                    android:background="@drawable/mypage_nochack_view_round"
+                                    android:paddingLeft="20dp"
+                                    android:paddingRight="20dp"></TextView>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center">
+                                <TextView
+                                    android:id="@+id/threeover"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="3만원대"
+                                    android:textSize="15dp"
+                                    android:textColor="#ffffff"
+                                    android:gravity="center"
+                                    android:fontFamily="@font/font_5"
+                                    android:background="@drawable/mypage_nochack_view_round"
+                                    android:paddingLeft="20dp"
+                                    android:paddingRight="20dp"></TextView>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center">
+                                <TextView
+                                    android:id="@+id/fiveover"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="5만원이상"
+                                    android:textSize="15dp"
+                                    android:textColor="#ffffff"
+                                    android:gravity="center"
+                                    android:fontFamily="@font/font_5"
+                                    android:background="@drawable/mypage_nochack_view_round"
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="15dp"></TextView>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp">
+                        </TextView>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/cost_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_weight="1" />
                     </LinearLayout>
 
 

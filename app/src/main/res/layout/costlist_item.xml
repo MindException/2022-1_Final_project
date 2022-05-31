@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="2dp"
+    android:orientation="vertical"
+    android:background="#00ff0000">
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/img_view_round">
+        <androidx.cardview.widget.CardView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp">
+            <ImageView
+                android:id="@+id/costlist_img"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_setimg"
+                android:padding="0dp"
+                android:background="@drawable/img_view_round">
+            </ImageView>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/costlist_title"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:text="품명"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="@font/font_3"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:background="#00ff0000"/>
+    <TextView
+        android:id="@+id/costlist_cost"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:gravity="center"
+        android:text="가격"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="@font/font_3"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:background="#00ff0000"/>
+</LinearLayout>
+
+
