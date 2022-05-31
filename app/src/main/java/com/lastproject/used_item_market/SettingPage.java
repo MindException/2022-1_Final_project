@@ -277,6 +277,7 @@ public class SettingPage extends AppCompatActivity {
                                             System.out.println("plist :" + productList);
                                         }
 
+                                        productList.sort(new CompareSuccessTime<>());
                                         init_1();
 
                                     }
