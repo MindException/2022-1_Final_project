@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -377,6 +378,7 @@ public class SettingPage extends AppCompatActivity {
 
                             //거래완료
                             case R.id.success:
+                                selected = "";
                                 DocumentReference chattingRef = firestore.collection("ChattingRoom").document(productList.get(pos).key);
                                 chattingRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
@@ -398,14 +400,18 @@ public class SettingPage extends AppCompatActivity {
                                             }else{
                                                 //ArrayList를 String[]으로 변환하여야 한다.
                                                 String[] array = new String[tradePeople.size()];
+                                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(SettingPage.this, android.R.layout.select_dialog_singlechoice);
+
                                                 for(int i = 0; i < tradePeople.size(); i++){
                                                     array[i] = tradePeople.get(i);
+                                                    adapter.add(tradePeople.get(i));
                                                 }
-                                                Log.d("alert", "dd" + array[0]);
+                                                Log.d("alert", "dd" + adapter.getItem(0));
                                                 //거래할 대상이 있는 경우
-                                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SettingPage.this, R.style.AlertDialogTheme);
-                                                alertBuilder.setTitle("안내");
-                                                alertBuilder.setMessage("구매자를 선택하여주세요.");
+                                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SettingPage.this);
+                                                alertBuilder.setTitle("구매자를 선택하여주세요.");
+                                                //alert는 리스트의 경우 메시지를 사용하면 안된다.
+                                                //alertBuilder.setMessage("구매자를 선택하여주세요.");
 
 
                                                 Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
@@ -413,11 +419,40 @@ public class SettingPage extends AppCompatActivity {
                                                     @Override
                                                     public void run() {
 
-                                                        alertBuilder.setSingleChoiceItems(array, 0, new DialogInterface.OnClickListener() {
+                                                        alertBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                                                selected = array[i];
+                                                                selected = adapter.getItem(i);
+                                                                Log.d("alert", "그냥 넘어감");
+                                                                AlertDialog.Builder alertBuilder2 = new AlertDialog.Builder(SettingPage.this);
+                                                                alertBuilder2.setTitle("안내");
+                                                                alertBuilder2.setMessage(selected+ "님과 " + "거래하시겠습니까?");
+
+                                                                alertBuilder2.setPositiveButton("취소",new DialogInterface.OnClickListener(){         //오른쪽버튼
+                                                                    public void onClick(DialogInterface dialog,int which){
+                                                                        //삭제하지 않음으로 그냥 둔다.
+                                                                    }
+                                                                });
+
+                                                                alertBuilder2.setNegativeButton("선택", new DialogInterface.OnClickListener() {          //왼쪽버튼
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialog, int which) { //사진 삭제
+
+                                                                        if(selected.equals("")){
+                                                                            Toast.makeText(SettingPage.this, selected + "선택하여 주세요.", Toast.LENGTH_SHORT).show();
+                                                                        }else{
+
+                                                                            successProduct(productList.get(pos), selected);
+
+                                                                        }
+                                                                    }
+                                                                });
+
+                                                                alertBuilder2.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
+
+                                                                AlertDialog alertDialog2 = alertBuilder2.create();
+                                                                alertDialog2.show();
 
                                                             }
                                                         });
@@ -428,15 +463,23 @@ public class SettingPage extends AppCompatActivity {
                                                                 //삭제하지 않음으로 그냥 둔다.
                                                             }
                                                         });
+                                                        /*
                                                         alertBuilder.setNegativeButton("선택", new DialogInterface.OnClickListener() {          //왼쪽버튼
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int which) { //사진 삭제
 
-                                                                Toast.makeText(SettingPage.this, selected + "선택 성공", Toast.LENGTH_SHORT).show();
+                                                                if(selected.equals("")){
+                                                                    Toast.makeText(SettingPage.this, selected + "선택하여 주세요.", Toast.LENGTH_SHORT).show();
+                                                                }else{
 
+                                                                    successProduct(productList.get(pos), selected);
+
+                                                                }
                                                             }
                                                         });
+                                                        */
 
+                                                        alertBuilder.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
                                                         AlertDialog alertDialog = alertBuilder.create();
                                                         alertDialog.show();
 
@@ -737,7 +780,7 @@ public class SettingPage extends AppCompatActivity {
                                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                         @Override
                                                                         public void onSuccess(Void unused) {
-
+                                                                            Toast.makeText(SettingPage.this, "삭제 완료", Toast.LENGTH_SHORT).show();
                                                                             if(where.equals("판매")){
                                                                                 selling.performClick();
                                                                             }else if(where.equals("무료나눔")){
@@ -764,13 +807,88 @@ public class SettingPage extends AppCompatActivity {
 
 
 
+    }
 
 
+    void successProduct(Product product, String nicks){
+        //시스템에서 버튼 클릭하기 .performClick()  <-이걸로 화면 갱신하기
+        //채팅방정보 -> 채팅 -> 물품등록(999999999999) ->  버튼 클릭 이벤트 발생
+        DocumentReference chattingRef = firestore.collection("ChattingRoom").document(product.key);
+        chattingRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    chattingRoomInfo = document.toObject(ChattingRoomInfo.class);
 
+                    //가져온 정보로 이제 저장
+                    String nowTime = Time.nowNewTime();
+                    String out_chat = "System" + "/%%/" + "상품의 거래가 완료되었습니다."
+                            + "/%%/" + nowTime + "/%%/";
+                    chattingRoomInfo.last_time = nowTime;
+                    chattingRoomInfo.last_text = out_chat;
+                    //1줄 추가
+                    //System/*!%@#!*/success/1team
+                    chattingRoomInfo.last_index = chattingRoomInfo.last_index + 1;
+                    chattingRoomInfo.customerList.add("System/*!%@#!*/success/1team");       //삭제 시그널 보냄
+                    chattingRoomInfo.customer_nicknames.add("System/*!%@#!*/success/1team");
+                    chattingRoomInfo.last_SEE.add(chattingRoomInfo.last_index + 1);
+                    chattingRoomInfo.out_customer_index.add(chattingRoomInfo.last_index + 1);
+                    firestore.collection("ChattingRoom").document(product.key)
+                            .set(chattingRoomInfo)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    //채팅방 저장을 성공하였으니 이제 실시간 DB도 추가
+                                    myRef.child("Chatting").child(product.key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                                            chatInfo = snapshot.getValue(ChatInfo.class);
+                                            chatInfo.chatList.add(out_chat);
+                                            myRef.child("Chatting").child(product.key).setValue(chatInfo)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
+                                                            //이제 상품 저장
+                                                            product.success_time = nowTime;
+                                                            product.purchaser = nicks;
+                                                            String purchaser_key = "";
+                                                            for(int i = 0; i < chattingRoomInfo.customer_nicknames.size(); i++){
+                                                                if (nicks.equals(chattingRoomInfo.customer_nicknames.get(i))){
+                                                                    purchaser_key = chattingRoomInfo.customerList.get(i);
+                                                                }
+                                                            }
+                                                            product.purchaser_key = purchaser_key;
+                                                            firestore.collection("Product").document(product.key)
+                                                                    .set(product)
+                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void unused) {
+                                                                            Toast.makeText(SettingPage.this, "거래 완료", Toast.LENGTH_SHORT).show();
+                                                                            if(where.equals("판매")){
+                                                                                selling.performClick();
+                                                                            }else if(where.equals("무료나눔")){
+                                                                                free_providing.performClick();
+                                                                            }else{
+                                                                                success_deal.performClick();
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+                                                    });
+                                        }
 
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
 
-
+                                        }
+                                    });
+                                }
+                            });
+                }
+            }
+        });
     }
 
 }
