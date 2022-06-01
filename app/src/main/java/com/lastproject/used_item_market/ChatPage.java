@@ -172,6 +172,7 @@ public class ChatPage extends AppCompatActivity {
                 Intent intent = new Intent(ChatPage.this, ChattingListPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -443,6 +444,7 @@ public class ChatPage extends AppCompatActivity {
                                     Intent intent = new Intent(ChatPage.this, DetailPage.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                     intent.putExtra("email", email);
                                     intent.putExtra("mykey", mykey);
                                     intent.putExtra("nickname", nickname);
@@ -582,6 +584,7 @@ public class ChatPage extends AppCompatActivity {
                                 Intent intent = new Intent(ChatPage.this, ChattingListPage.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                 intent.putExtra("email", email);
                                 intent.putExtra("mykey", mykey);
                                 intent.putExtra("nickname", nickname);
