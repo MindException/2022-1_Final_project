@@ -65,7 +65,7 @@
                 <ImageButton
                     android:id="@+id/mypage_list_set"
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:layout_weight="0.8"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="3dp"

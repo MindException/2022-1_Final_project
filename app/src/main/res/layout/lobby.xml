@@ -223,7 +223,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:orientation="horizontal"
-                            android:weightSum="2">
+                            android:weightSum="2"
+                            android:layout_marginBottom="5dp">
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -247,47 +248,55 @@
                         </LinearLayout>
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
+                            android:layout_height="1dp"
                             android:background="#ffffff"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginBottom="10dp"></View>
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:text="최신 글"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:gravity="center"
+                            android:text="최신글"
                             android:textColor="#ffffff"
                             android:textSize="15dp"
+                            android:fontFamily="@font/font_3"
                             android:layout_marginLeft="10dp"
-                            android:fontFamily="@font/font_3"></TextView>
+                            android:layout_marginBottom="5dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"></TextView>
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/lobby_recyclerHorizon"
                             android:layout_width="match_parent"
-                            android:layout_height="135dp"
+                            android:layout_height="115dp"
                             android:layout_weight="1" />
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
+                            android:layout_height="1dp"
                             android:background="#ffffff"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginBottom="10dp"></View>
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:gravity="center"
                             android:text="가격 별 보기"
                             android:textColor="#ffffff"
                             android:textSize="15dp"
+                            android:fontFamily="@font/font_3"
                             android:layout_marginLeft="10dp"
-                            android:fontFamily="@font/font_3"></TextView>
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"></TextView>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="25dp"
                             android:orientation="horizontal"
+                            android:layout_marginTop="5dp"
                             android:weightSum="4">
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -296,16 +305,16 @@
                                 android:gravity="center">
                                 <TextView
                                     android:id="@+id/oneover"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="1만원대"
-                                    android:textSize="15dp"
+                                    android:textSize="12dp"
                                     android:textColor="#ffffff"
                                     android:gravity="center"
                                     android:fontFamily="@font/font_5"
-                                    android:background="@drawable/mypage_chack_view_round"
-                                    android:paddingLeft="15dp"
-                                    android:paddingRight="15dp"></TextView>
+                                    android:background="@drawable/bt_bg_yellow"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="5dp"></TextView>
                             </LinearLayout>
 
                             <LinearLayout
@@ -315,16 +324,16 @@
                                 android:gravity="center">
                                 <TextView
                                     android:id="@+id/twoover"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="2만원대"
-                                    android:textSize="15dp"
+                                    android:textSize="12dp"
                                     android:textColor="#ffffff"
                                     android:gravity="center"
                                     android:fontFamily="@font/font_5"
-                                    android:background="@drawable/mypage_nochack_view_round"
-                                    android:paddingLeft="20dp"
-                                    android:paddingRight="20dp"></TextView>
+                                    android:background="@drawable/bt_bg_white"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"></TextView>
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -333,16 +342,16 @@
                                 android:gravity="center">
                                 <TextView
                                     android:id="@+id/threeover"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="3만원대"
-                                    android:textSize="15dp"
+                                    android:textSize="12dp"
                                     android:textColor="#ffffff"
                                     android:gravity="center"
                                     android:fontFamily="@font/font_5"
-                                    android:background="@drawable/mypage_nochack_view_round"
-                                    android:paddingLeft="20dp"
-                                    android:paddingRight="20dp"></TextView>
+                                    android:background="@drawable/bt_bg_white"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"></TextView>
                             </LinearLayout>
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -351,16 +360,16 @@
                                 android:gravity="center">
                                 <TextView
                                     android:id="@+id/fiveover"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:text="5만원이상"
-                                    android:textSize="15dp"
+                                    android:textSize="12dp"
                                     android:textColor="#ffffff"
                                     android:gravity="center"
                                     android:fontFamily="@font/font_5"
-                                    android:background="@drawable/mypage_nochack_view_round"
-                                    android:paddingLeft="15dp"
-                                    android:paddingRight="15dp"></TextView>
+                                    android:background="@drawable/bt_bg_white"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="10dp"></TextView>
                             </LinearLayout>
 
                         </LinearLayout>

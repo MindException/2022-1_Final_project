@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#745641"
+    android:background="#4A3424"
     android:orientation="vertical">
 
 
@@ -10,8 +10,8 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="45px"
-        android:background="#2A5237"
+        android:layout_margin="30px"
+        android:background="@drawable/img_view_chalk_defalt2"
         android:weightSum="5.4">
 
         <LinearLayout
