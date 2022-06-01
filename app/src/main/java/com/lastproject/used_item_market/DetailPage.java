@@ -99,6 +99,8 @@ public class DetailPage extends AppCompatActivity {
 
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");  //돈 형식
 
+    private int myindex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,7 +154,7 @@ public class DetailPage extends AppCompatActivity {
                         if(product.destination_latitude != null && product.destination_longtitude != null) {
                             SellPlace();
                         }else{
-                            Toast.makeText(DetailPage.this, "거래 위치 없음", Toast.LENGTH_SHORT).show();
+                            map_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_red));
                         }
 
                         //이미지 세팅
@@ -355,13 +357,34 @@ public class DetailPage extends AppCompatActivity {
                                 for (int i = 0; i < chattingRoomInfo.customerList.size(); i++){
                                     if (mykey.equals(chattingRoomInfo.customerList.get(i))){
                                         trigger = true;
+                                        myindex = i;
                                     }
                                 }
 
                                 if(trigger == true){        //채팅방에 이미 존재
-                                    //이거 나중에는 채팅방 이동으로 바꾸기
-                                    Toast.makeText(DetailPage.this, "이미 채팅방 존재(나중에 수정)", Toast.LENGTH_SHORT).show();
 
+                                    //채팅방에서 나간 경우는 다시 못들어가게 한다.
+                                    if(chattingRoomInfo.out_customer_index.get(myindex) == 0){      //채팅방에서 나가지 않은 경우
+
+                                        //이거 나중에는 채팅방 이동으로 바꾸기
+                                        Intent intent = new Intent(DetailPage.this, ChatPage.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.putExtra("email", email);
+                                        intent.putExtra("mykey", mykey);
+                                        intent.putExtra("nickname", nickname);
+                                        intent.putExtra("myUniv", myUniv);
+                                        intent.putExtra("myimg", myimg);
+                                        intent.putExtra("chatkey", product_key);
+                                        startActivity(intent);
+                                        finish();
+
+                                    }else{      //채팅방에서 나간 경우
+
+                                        //이거 나중에는 채팅방 이동으로 바꾸기
+                                        Toast.makeText(DetailPage.this, "다시 입장이 불가능합니다.", Toast.LENGTH_SHORT).show();
+
+                                    }
 
                                 }else{      //채팅방에 처음 입장
                                     chattingRoomInfo = document.toObject(ChattingRoomInfo.class);       //채팅방을 가져온다.
@@ -404,7 +427,7 @@ public class DetailPage extends AppCompatActivity {
                                                                 public void onSuccess(Void unused) {        //저장이 성공한 경우
 
                                                                     //이거 나중에는 채팅방 이동으로 바꾸기
-                                                                    Intent intent = new Intent(DetailPage.this, MainActivity.class);
+                                                                    Intent intent = new Intent(DetailPage.this, ChatPage.class);
                                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                                     intent.putExtra("email", email);
@@ -412,6 +435,7 @@ public class DetailPage extends AppCompatActivity {
                                                                     intent.putExtra("nickname", nickname);
                                                                     intent.putExtra("myUniv", myUniv);
                                                                     intent.putExtra("myimg", myimg);
+                                                                    intent.putExtra("chatkey", product_key);
                                                                     startActivity(intent);
                                                                     finish();
 

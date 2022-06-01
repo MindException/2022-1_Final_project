@@ -466,7 +466,7 @@ public class ChatPage extends AppCompatActivity {
                                     mHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            dlg.setTitle("채팅방을 나가시겠습니까?");
+                                            dlg.setTitle("채팅방을 나가시겠습니까? \n 재입장이 불가능합니다.");
                                             dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {

@@ -22,6 +22,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -151,7 +152,8 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
             //상품 이미지 처리
             if (chattingRoomInfo.product_imgkey != null) {       //상품에 사진이 있는 경우
 
-                StorageReference getRef = storageRef.child("images").child(chattingRoomInfo.product_imgkey);
+                StorageReference getRef = storageRef.child("images")
+                        .child(chattingRoomInfo.chat_key).child(chattingRoomInfo.product_imgkey);
                 getRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {     //사진을 가져온 경우
                     @Override
                     public void onSuccess(Uri uri) {
@@ -214,6 +216,21 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
             time.setText(Time.chatTime(chattingRoomInfo.last_time));
             //채팅 마지막 기록
             last_text.setText(chattingRoomInfo.last_text);
+
+            String last_chat = chattingRoomInfo.last_text;
+            StringTokenizer st = new StringTokenizer(last_chat, "/%%/");
+            String temp = st.nextToken();
+            if(temp.equals("System")){
+                //시스템이 말함
+                temp = st.nextToken();
+                last_text.setText(temp);
+            }else{
+                //사용자가 말함
+                temp = st.nextToken();
+                temp = st.nextToken();
+                last_text.setText(temp);
+            }
+
             //빨간 원 && 안 읽은 메시지
             if(chattingRoomInfo.last_SEE.get(myindex) != chattingRoomInfo.last_index){      //확인하지 않은 채팅이 있는 경우
 
