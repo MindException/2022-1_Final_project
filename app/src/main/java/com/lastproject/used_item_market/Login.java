@@ -157,6 +157,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                     Intent login_intent = new Intent(Login.this, MainActivity.class);
                                     login_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     login_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    login_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                     login_intent.putExtra("email", userinfo.google_email);
                                     login_intent.putExtra("mykey", mykey);
                                     login_intent.putExtra("nickname", userinfo.nickname);
@@ -255,6 +256,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                             Intent signUp_intent = new Intent(Login.this, SignUp.class);
                                             signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                             signUp_intent.putExtra("email", email);
                                             startActivity(signUp_intent);
                                             //이것을 해줘야 다음에 계정 생성을 할 때도 다시 계정선택이 가능하다.
@@ -280,6 +282,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                             Intent login_intent = new Intent(Login.this, MainActivity.class);
                                             login_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             login_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            login_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                             login_intent.putExtra("email", userinfo.google_email);
                                             login_intent.putExtra("mykey", mykey);
                                             login_intent.putExtra("nickname", userinfo.nickname);

@@ -156,9 +156,9 @@ public class SettingPage extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("판매 중 눌림");
                 productList = new ArrayList<>();
-                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
-                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
+                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("seller_key", mykey)
@@ -195,9 +195,9 @@ public class SettingPage extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("무료 나눔 눌림");
                 productList = new ArrayList<>();
-                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
-                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
+                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("seller_key", mykey)
@@ -232,9 +232,9 @@ public class SettingPage extends AppCompatActivity {
             public void onClick(View view) {
                 System.out.println("거래완료 눌림");
                 productList = new ArrayList<>();
-                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
+                selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                success_deal.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
                 product_Ref = firestore.collection("Product");
 
                 //제외 커리는 저렇게 orderBy를 해줘야 한다.

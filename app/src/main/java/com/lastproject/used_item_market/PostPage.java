@@ -179,6 +179,15 @@ public class PostPage extends AppCompatActivity {
         map_btn = (TextView)findViewById(R.id.tmap_btn);
         et_cash = (EditText) findViewById(R.id.et_cash);
 
+
+        if(longtitude != null){     //거래 장소가 있을 경우
+
+            map_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_blue));
+
+        }
+
+
+
         //999,999,999 값으로 값을 표현
         TextWatcher watcher = new TextWatcher() {
             @Override
@@ -252,6 +261,7 @@ public class PostPage extends AppCompatActivity {
                 Intent intent = new Intent(PostPage.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -278,92 +288,94 @@ public class PostPage extends AppCompatActivity {
                     cash = "0";     //무료이니까 0원이다.
                 }
 
-                if(!title.equals("") && !cash.equals("") && !text.equals("")){        //공백으로 받는게 없어야 한다.
+                if(uriArrayList.size() > 0) {
 
-                    try {       //여기서
+                    if (!title.equals("") && !cash.equals("") && !text.equals("")) {        //공백으로 받는게 없어야 한다.
 
-                        Toast.makeText(PostPage.this, "상품 등록 중", Toast.LENGTH_SHORT).show();
-                        Long icash = Long.parseLong(cash);     //비용 변환 String -> Long
-                        //나머지 상품정보 저장
-                        productInfo.title = title;
-                        productInfo.cost = icash;
-                        productInfo.purpose = result_purpose;
-                        productInfo.category = result_category;
-                        productInfo.text = text;
-                        productInfo.time = nowTime;
+                        try {       //여기서
 
-                        if (longtitude != null && latitude != null) {     //위도 경도가 있을 경우
+                            Toast.makeText(PostPage.this, "상품 등록 중", Toast.LENGTH_SHORT).show();
+                            Long icash = Long.parseLong(cash);     //비용 변환 String -> Long
+                            //나머지 상품정보 저장
+                            productInfo.title = title;
+                            productInfo.cost = icash;
+                            productInfo.purpose = result_purpose;
+                            productInfo.category = result_category;
+                            productInfo.text = text;
+                            productInfo.time = nowTime;
 
-                            productInfo.destination_longtitude = longtitude;
-                            productInfo.destination_latitude = latitude;
+                            if (longtitude != null && latitude != null) {     //위도 경도가 있을 경우
 
-                        }
-                        //여기서 서버 저장 product -> 이미지(폴더 방식) -> Realtime -> chatInfo 순으로 저장한다.
-                        for(int i = 0; i < uriArrayList.size(); i++){       //진짜 경로를 키값으로 이미지들을 저장한다.(성공)
+                                productInfo.destination_longtitude = longtitude;
+                                productInfo.destination_latitude = latitude;
 
-                            realPath.add(lastName(getRealPathFromURI(uriArrayList.get(i))));
-                            productInfo.pictures.add(realPath.get(i));
+                            }
+                            //여기서 서버 저장 product -> 이미지(폴더 방식) -> Realtime -> chatInfo 순으로 저장한다.
+                            for (int i = 0; i < uriArrayList.size(); i++) {       //진짜 경로를 키값으로 이미지들을 저장한다.(성공)
 
-                        }
-                        count = 0;
-                        firestore.collection("Product").add(productInfo)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
+                                realPath.add(lastName(getRealPathFromURI(uriArrayList.get(i))));
+                                productInfo.pictures.add(realPath.get(i));
 
-                                        productInfo.key = documentReference.getId();
-                                        DocumentReference doc = firestore.collection("Product")
-                                                .document(productInfo.key);
-                                        doc.set(productInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
+                            }
+                            count = 0;
+                            firestore.collection("Product").add(productInfo)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
 
-                                                //상품 저장 성공공
-                                                chatInfo = new ChatInfo(nickname);
-                                                //Realtime-Database에 채팅내용테이블을 생성한다.
-                                                myRef.child("Chatting").child(productInfo.key)
-                                                        .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void unused) {    //실시간 데이터베이스에 성공적으로 만들었을 경우
+                                            productInfo.key = documentReference.getId();
+                                            DocumentReference doc = firestore.collection("Product")
+                                                    .document(productInfo.key);
+                                            doc.set(productInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
 
-                                                        ChattingRoomInfo chattingRoomInfo = new ChattingRoomInfo(mykey, nickname, chatInfo.start_time, productInfo.title);
-                                                        //모든 이미지 파일은 유저키로 할 것이다. profile/유저키
-                                                        chattingRoomInfo.customer_images.add(mykey);        //사진을 넣어준다.
-                                                        if(productInfo.pictures.size() != 0){
-                                                            chattingRoomInfo.product_imgkey = productInfo.pictures.get(0);      //첫 번째 사진 저장
+                                                    //상품 저장 성공공
+                                                    chatInfo = new ChatInfo(nickname);
+                                                    //Realtime-Database에 채팅내용테이블을 생성한다.
+                                                    myRef.child("Chatting").child(productInfo.key)
+                                                            .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {    //실시간 데이터베이스에 성공적으로 만들었을 경우
+
+                                                            ChattingRoomInfo chattingRoomInfo = new ChattingRoomInfo(mykey, nickname, chatInfo.start_time, productInfo.title);
+                                                            //모든 이미지 파일은 유저키로 할 것이다. profile/유저키
+                                                            chattingRoomInfo.customer_images.add(mykey);        //사진을 넣어준다.
+                                                            if (productInfo.pictures.size() != 0) {
+                                                                chattingRoomInfo.product_imgkey = productInfo.pictures.get(0);      //첫 번째 사진 저장
+                                                            }
+                                                            chattingRoomInfo.chat_key = productInfo.key;
+                                                            //초반 채팅방 설정
+                                                            chattingRoomInfo.last_SEE.add(0);
+                                                            chattingRoomInfo.last_index = 0;
+                                                            chattingRoomInfo.out_customer_index.add(0);
+                                                            firestore.collection("ChattingRoom").document(productInfo.key).set(chattingRoomInfo)
+                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void unused) {
+
+                                                                            StorageReference imgRef = storageRef.child("images");
+                                                                            uploadImg(imgRef);      //사진 저장
+
+                                                                        }
+                                                                    });
                                                         }
-                                                        chattingRoomInfo.chat_key = productInfo.key;
-                                                        //초반 채팅방 설정
-                                                        chattingRoomInfo.last_SEE.add(0);
-                                                        chattingRoomInfo.last_index = 0;
-                                                        chattingRoomInfo.out_customer_index.add(0);
-                                                        firestore.collection("ChattingRoom").document(productInfo.key).set(chattingRoomInfo)
-                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void unused) {
-
-                                                                        StorageReference imgRef = storageRef.child("images");
-                                                                        uploadImg(imgRef);      //사진 저장
-
-                                                                    }
-                                                                });
-                                                    }
-                                                });
+                                                    });
 
 
+                                                }//key 값 저장 성공
+                                            });
+                                        }
+                                    });
 
+                        } catch (Exception e) {
+                        }
 
-
-
-                                            }//key 값 저장 성공
-                                       });
-                                    }
-                                });
-
-                    }catch (Exception e){}
-
+                    } else {
+                        Toast.makeText(PostPage.this, "전부 작성하여 주세요.", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(PostPage.this, "전부 작성하여 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostPage.this, "사진을 저장하여 주세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -398,13 +410,14 @@ public class PostPage extends AppCompatActivity {
                     et_cash.setHint("가격(원)을 입력하세요.");
 
                     if(ret_cash != null){   //금액
-
-                        CharSequence charSequence = ret_cash;
-                        cash_result = decimalFormat.format(Double.parseDouble(charSequence.toString()
-                                .replaceAll(",","")));
-                        et_cash.setText(cash_result, TextView.BufferType.EDITABLE);
-                        et_cash.setSelection(cash_result.length());
-                        ret_cash = null;
+                        if(!ret_cash.equals("")){
+                            CharSequence charSequence = ret_cash;
+                            cash_result = decimalFormat.format(Double.parseDouble(charSequence.toString()
+                                    .replaceAll(",","")));
+                            et_cash.setText(cash_result, TextView.BufferType.EDITABLE);
+                            et_cash.setSelection(cash_result.length());
+                            ret_cash = null;
+                        }
                     }
 
                 }
@@ -535,6 +548,7 @@ public class PostPage extends AppCompatActivity {
 
                 //저장되었으니 인탠트로 넘어간다.
                 Intent intent = new Intent(PostPage.this, TradeMap.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -618,6 +632,7 @@ public class PostPage extends AppCompatActivity {
             Intent intent = new Intent(PostPage.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.putExtra("email", email);
             intent.putExtra("mykey", mykey);
             intent.putExtra("nickname", nickname);

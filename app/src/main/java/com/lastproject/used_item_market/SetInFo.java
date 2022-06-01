@@ -93,6 +93,7 @@ public class SetInFo extends AppCompatActivity {
                Intent signUp_intent = new Intent(SetInFo.this, Login.class);
                signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                startActivity(signUp_intent);
                finish();
 

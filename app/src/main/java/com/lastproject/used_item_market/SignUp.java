@@ -130,6 +130,7 @@ public class SignUp extends AppCompatActivity {
                 Intent signUp_intent = new Intent(SignUp.this, Login.class);
                 signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(signUp_intent);
                 finish();
 
@@ -165,6 +166,7 @@ public class SignUp extends AppCompatActivity {
                                 Intent signUp_intent = new Intent(SignUp.this, SignUpMap.class);
                                 signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                 signUp_intent.putExtra("email", email);
                                 signUp_intent.putExtra("password",spassword1);
                                 signUp_intent.putExtra("nickname",sname);

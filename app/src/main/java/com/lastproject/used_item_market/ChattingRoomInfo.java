@@ -37,6 +37,13 @@ public class ChattingRoomInfo {
     //last_index - last_SEE 값으로 몇 개의 채팅을 안 읽었는지 계산한다
     //마지막 읽은 위치는 채팅방에서 나갈때 저장하도록 한다.
 
+    //상품이 삭제되거나 거래가 종료된 경우 key 값에 다른 것을 추가한다.
+    // 거래가 완료된 경우:    System/*!%@#!*/success/1team
+    // 삭제된 경우:          System/*!%@#!*/delete/1team
+
+
+
+
     public ChattingRoomInfo(){}
 
     public ChattingRoomInfo(String seller_key, String nickname, String time, String title){

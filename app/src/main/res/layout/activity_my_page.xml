@@ -151,7 +151,7 @@
                         android:textColor="#ffffff"
                         android:gravity="center"
                         android:fontFamily="@font/font_5"
-                        android:background="@drawable/mypage_chack_view_round"
+                        android:background="@drawable/bt_bg_yellow"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"></TextView>
                 </LinearLayout>
@@ -170,7 +170,7 @@
                         android:textColor="#ffffff"
                         android:gravity="center"
                         android:fontFamily="@font/font_5"
-                        android:background="@drawable/mypage_nochack_view_round"
+                        android:background="@drawable/bt_bg_white"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"></TextView>
                 </LinearLayout>
@@ -188,7 +188,7 @@
                         android:textColor="#ffffff"
                         android:gravity="center"
                         android:fontFamily="@font/font_5"
-                        android:background="@drawable/mypage_nochack_view_round"
+                        android:background="@drawable/bt_bg_white"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"></TextView>
                 </LinearLayout>

@@ -146,7 +146,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             title.setText(pdt.title);
             price.setText(Long.toString(pdt.cost) + "원");
-            date.setText(pdt.time);
+            date.setText(Time.productTime(pdt.time));
 
             //이미지 처리
             if(pdt.pictures.size() != 0){       //상품에 사진이 있는 경우

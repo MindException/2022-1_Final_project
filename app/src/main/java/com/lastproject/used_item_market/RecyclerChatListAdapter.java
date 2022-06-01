@@ -211,7 +211,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
             chattingRoom_counts.setText(Integer.toString(count));
             //채팅 마지막 시간
-            time.setText(chattingRoomInfo.last_time);
+            time.setText(Time.chatTime(chattingRoomInfo.last_time));
             //채팅 마지막 기록
             last_text.setText(chattingRoomInfo.last_text);
             //빨간 원 && 안 읽은 메시지

@@ -1,6 +1,7 @@
 package com.lastproject.used_item_market;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -77,6 +80,7 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
     //뷰홀더
     class MyPageViewHolder extends RecyclerView.ViewHolder {
 
+        View itemview;
         ImageView iv;
         TextView title;
         TextView price;
@@ -85,6 +89,8 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         public MyPageViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            this.itemview = itemView;
 
             //아이템 연결
             iv = (ImageView) itemView.findViewById(R.id.mypage_list_img);
@@ -113,7 +119,28 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void onBind(Product pdt){
             title.setText(pdt.title);
             price.setText(Long.toString(pdt.cost) + "원");
-            date.setText(pdt.time);
+            date.setText(Time.productTime(pdt.time));
+
+            String path = "images/"+pdt.key+"/"+pdt.pictures.get(0).toString();
+            StorageReference imgRef = storageRef.child(path);
+            imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+
+                    try {
+
+                        Glide.with(itemview)
+                                .load(uri)
+                                .override(150, 150)
+                                .into(iv);
+
+                    }catch (Exception e){
+                        System.out.println("view holder binding 실패");
+                    }
+
+
+                }
+            });
             
         }
 

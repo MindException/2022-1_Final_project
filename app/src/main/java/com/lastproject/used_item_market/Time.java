@@ -200,5 +200,58 @@ public class Time {                 //현재 시간을 구하여 주는 클래�
         return ret;
     }
 
+    static String productTime(String time){
+        //물품 리스트에 표시되는 시간
+
+        //2021 11 26 12  30
+        //0123 45 67 89 1011
+
+        String ret = "";
+        String nowTime = Time.nowTime();
+
+        String t1 = nowTime.substring(0,8);
+        String t2 = time.substring(0,8);
+
+        if(t1.equals(t2)){  //오늘
+            return "오늘";
+        }
+        long num = Long.parseLong(nowTime.substring(0,8));
+        num = num - 1;
+        t1 = Long.toString(num);
+        if(t1.equals(t2)){  //어제
+            return "어제";
+        }
+
+        t2 = time.substring(4,6) + "/" + time.substring(6,8);
+        return t2;
+    }
+
+
+    static String chatTime(String time){
+        //물품 리스트에 표시되는 시간
+
+        //2021 11 26 12  30
+        //0123 45 67 89 1011
+
+        String ret = "";
+        String nowTime = Time.nowTime();
+
+        String t1 = nowTime.substring(0,8);
+        String t2 = time.substring(0,8);
+
+        if(t1.equals(t2)){  //오늘
+            return "오늘 " + nowTime.substring(8,10) + ":" + nowTime.substring(10,12);
+        }
+        long num = Long.parseLong(nowTime.substring(0,8));
+        num = num - 1;
+        t1 = Long.toString(num);
+        if(t1.equals(t2)){  //어제
+            return "어제 " + nowTime.substring(8,10) + ":" + nowTime.substring(10,12);
+        }
+
+        t2 = time.substring(4,6) + "/" + time.substring(6,8);
+        return t2;
+    }
+
 
 }

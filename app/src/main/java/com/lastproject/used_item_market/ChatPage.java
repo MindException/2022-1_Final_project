@@ -6,15 +6,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +77,7 @@ public class ChatPage extends AppCompatActivity {
     ImageButton back_button;
     ImageButton insert_button;
     EditText chatView;
+    ImageButton chat_menu;
 
     //채팅방 정보
     ChattingRoomInfo chattingRoomInfo;
@@ -96,6 +106,9 @@ public class ChatPage extends AppCompatActivity {
 
     ArrayList<Bitmap> bitmaps = new ArrayList<>();
     ImageView profile;
+
+    boolean trigger_delete = false;     //삭제된 상품인지 확인
+    boolean trigge_success= false;     //거래가 끝난 상품인지 확인
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +152,6 @@ public class ChatPage extends AppCompatActivity {
 
                 //데이터의 정보가 변동이 있을 때마다 가져온다.
                 chattingRoomInfo = value.toObject(ChattingRoomInfo.class);
-                System.out.println("됨?");
                 setting(storageRef);    //세팅
 
             }//onEvent() 끝
@@ -173,52 +185,6 @@ public class ChatPage extends AppCompatActivity {
 
     }
 
-    //입력하기
-    void insert(){
-
-        insert_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String chat_text = chatView.getText().toString();
-                String nowTime = Time.nowNewTime();
-
-                if(!chat_text.equals("")) {      //채팅을 입력한 경우
-
-                    String chat = mykey + "/%%/" + nickname + "/%%/"
-                            + chat_text + "/%%/" + nowTime;
-
-                    chatInfo.chatList.add(chat);        //채팅 배열에 추가
-                    //실시간 데이터베이스에 채팅 먼저 저장
-                    myRef.child("Chatting").child(chatkey).setValue(chatInfo)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    //채팅 저장에 성공한 경우
-                                    chattingRoomInfo.last_time = nowTime;   //마지막 시간 저장
-                                    chattingRoomInfo.last_text = chat;      //마지막 채팅 저장
-                                    //채팅 추가되니 -1 하지 말아라
-                                    chattingRoomInfo.last_index = chatList.size() -1 ;
-                                    chattingRoomInfo.last_SEE.set(myindex, chatList.size() - 1);
-
-                                    DocumentReference setDocRef = chatRoomRef.document(chatkey);
-                                    setDocRef.set(chattingRoomInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {        //저장에 성공한 경우
-
-                                            chatView.setText("");       //성공했으니 채팅입력 창 초기화
-
-                                        }
-                                    });
-                                }
-                            });
-                }
-
-            }
-        });
-
-    }
-
     void setting(StorageReference storageReference){        //이미지를 먼저 가져와서 세팅해야 됨으로 재귀로 가야한다.
 
         if(bitmaps == null || bitmaps.size() >= chattingRoomInfo.customer_images.size()){
@@ -231,7 +197,7 @@ public class ChatPage extends AppCompatActivity {
                 trigger = true;
             }
 
-            if(myindex == 1000){        //인덱스 번호를 이미 찾은 경우
+            if(myindex == 1000){        //인덱스 번호를 못 찾은 경우
                 //인덱스 번호 찾기
                 for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
                     if(mykey.equals(chattingRoomInfo.customerList.get(i))){
@@ -239,6 +205,27 @@ public class ChatPage extends AppCompatActivity {
                         break;
                     }
                 }
+
+                // 거래가 완료된 경우:    System/*!%@#!*/success/1team
+                // 삭제된 경우:          System/*!%@#!*/delete/1team
+
+                //상품 삭제 찾기
+                for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
+                    if(chattingRoomInfo.customerList.get(i).equals("System/*!%@#!*/delete/1team")){
+                        trigger_delete = true;
+                        break;
+                    }
+                }
+
+                //거래 완료 찾기
+                for(int i = 0; i < chattingRoomInfo.customerList.size(); i++){
+                    if(chattingRoomInfo.customerList.get(i).equals("System/*!%@#!*/success/1team")){
+                        trigge_success = true;
+                        break;
+                    }
+                }
+
+                chatMenu();
                 readLastIndex = chattingRoomInfo.last_SEE.get(myindex);
             }
 
@@ -369,6 +356,237 @@ public class ChatPage extends AppCompatActivity {
         super.onStop();
         bitmaps.clear();
         bitmaps = null;
+    }
+
+    //입력하기
+    void insert(){
+
+        insert_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(trigger_delete == false){    //상품이 삭제되지 않은 경우만 검색할 수 있다.
+
+                    String chat_text = chatView.getText().toString();
+                    String nowTime = Time.nowNewTime();
+
+                    if(!chat_text.equals("")) {      //채팅을 입력한 경우
+
+                        String chat = mykey + "/%%/" + nickname + "/%%/"
+                                + chat_text + "/%%/" + nowTime;
+
+                        chatInfo.chatList.add(chat);        //채팅 배열에 추가
+                        //실시간 데이터베이스에 채팅 먼저 저장
+                        myRef.child("Chatting").child(chatkey).setValue(chatInfo)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        //채팅 저장에 성공한 경우
+                                        chattingRoomInfo.last_time = nowTime;   //마지막 시간 저장
+                                        chattingRoomInfo.last_text = chat;      //마지막 채팅 저장
+                                        //채팅 추가되니 -1 하지 말아라
+                                        chattingRoomInfo.last_index = chatList.size() -1 ;
+                                        chattingRoomInfo.last_SEE.set(myindex, chatList.size() - 1);
+
+                                        DocumentReference setDocRef = chatRoomRef.document(chatkey);
+                                        setDocRef.set(chattingRoomInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {        //저장에 성공한 경우
+
+                                                chatView.setText("");       //성공했으니 채팅입력 창 초기화
+
+                                            }
+                                        });
+                                    }
+                                });
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    void chatMenu(){
+
+        chat_menu = (ImageButton)findViewById(R.id.chat_menu);
+        chat_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                PopupMenu popupMenu = new PopupMenu(ChatPage.this, view);
+
+                //xml파일에 메뉴 정의한 것 가져오기
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                Menu menu = popupMenu.getMenu();
+                //실제 메뉴 정의
+                inflater.inflate(R.menu.chatpage_menu, menu);
+                //메뉴 클릭이벤트
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()){
+
+
+                            //상품을 보러 이동한다.(완)
+                            case R.id.chat_see_product:
+
+                                if (trigger_delete == false){
+                                    Intent intent = new Intent(ChatPage.this, DetailPage.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("email", email);
+                                    intent.putExtra("mykey", mykey);
+                                    intent.putExtra("nickname", nickname);
+                                    intent.putExtra("myUniv", myUniv);
+                                    intent.putExtra("myimg", myimg);
+                                    intent.putExtra("productkey", chatkey);
+                                    intent.putExtra("wherefrom", "Chat");
+                                    startActivity(intent);
+                                    System.exit(0);
+                                }
+                                break;
+
+                            //채팅방에서 나갈 경우
+                            case R.id.chat_out:
+
+                                //생각해야하는 것
+                                /*
+                                1.자기 자신이 아니고 이용자일 경우는 그냥 쉽게 나간다.
+                                2.
+                                3.
+                                 */
+
+                                if(myindex != 0){       //그냥 이용자일 경우
+
+                                    AlertDialog.Builder dlg = new AlertDialog.Builder(ChatPage.this, R.style.AlertDialogTheme);
+                                    Handler mHandler = new Handler(Looper.getMainLooper());
+
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dlg.setTitle("채팅방을 나가시겠습니까?");
+                                            dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) { // 채팅방 나감
+                                                    exitCustomer();
+                                                }
+                                            });
+                                            dlg.show();
+                                        }
+                                    }, 0);
+
+                                }else if(trigge_success == true){
+
+                                    AlertDialog.Builder dlg = new AlertDialog.Builder(ChatPage.this, R.style.AlertDialogTheme);
+                                    Handler mHandler = new Handler(Looper.getMainLooper());
+
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dlg.setTitle("채팅방을 나가시겠습니까?");
+                                            dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) { // 채팅방 나감
+                                                    exitCustomer();
+                                                }
+                                            });
+                                            dlg.show();
+                                        }
+                                    }, 0);
+
+
+
+                                }else if(trigger_delete == true){
+
+                                    AlertDialog.Builder dlg = new AlertDialog.Builder(ChatPage.this, R.style.AlertDialogTheme);
+                                    Handler mHandler = new Handler(Looper.getMainLooper());
+
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dlg.setTitle("채팅방을 나가시겠습니까?");
+                                            dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) { // 채팅방 나감
+                                                    exitCustomer();
+                                                }
+                                            });
+                                            dlg.show();
+                                        }
+                                    }, 0);
+
+
+                                }
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+
+
+            }
+        });
+    }
+
+    void exitCustomer(){
+        String nowTime = Time.nowNewTime();
+        String out_chat = "System" + "/%%/" + nickname + "님이 대화방에서 나가셨습니다."
+                + "/%%/" + nowTime + "/%%/";
+        chatInfo.chatList.add(out_chat);        //채팅 배열에 추가
+        myRef.child("Chatting").child(chatkey).setValue(chatInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                        //채팅 저장에 성공한 경우
+                        chattingRoomInfo.last_time = nowTime;   //마지막 시간 저장
+                        chattingRoomInfo.last_text = out_chat;      //마지막 채팅 저장
+                        //채팅 추가되니 -1 하지 말아라
+                        chattingRoomInfo.last_index = chatList.size() -1 ;
+                        chattingRoomInfo.last_SEE.set(myindex, chatList.size() - 1);
+
+                        //나간 부분 저장
+                        chattingRoomInfo.out_customer_index.set(myindex, chatList.size() -1);
+
+                        DocumentReference setDocRef = chatRoomRef.document(chatkey);
+                        setDocRef.set(chattingRoomInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {        //저장에 성공한 경우
+
+                                //나가면서 서버 세팅
+                                Intent intent = new Intent(ChatPage.this, ChattingListPage.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("email", email);
+                                intent.putExtra("mykey", mykey);
+                                intent.putExtra("nickname", nickname);
+                                intent.putExtra("myUniv", myUniv);
+                                intent.putExtra("myimg", myimg);
+                                startActivity(intent);
+                                System.exit(0);
+
+                            }
+                        });
+                    }
+                });
     }
 
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/chat_see_product"
+        android:title="상품 구경하기" />
+
+    <item
+        android:id="@+id/chat_out"
+        android:title="채팅방 나가기" />
+</menu>

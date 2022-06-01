@@ -225,7 +225,7 @@
                             android:gravity="center"
                             android:text="거래장소 선택"
                             android:fontFamily="@font/font_5"
-                            android:background="@drawable/img_view_round_black"></TextView>
+                            android:background="@drawable/bt_bg_red"></TextView>
 
                         <LinearLayout
                             android:layout_width="wrap_content"

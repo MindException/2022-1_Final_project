@@ -30,10 +30,16 @@
             android:textSize="28dp"
             android:textColor="#ffffff"
             android:gravity="center"></TextView>
-        <LinearLayout
+        <ImageButton
+            android:id="@+id/chat_menu"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.5"></LinearLayout>
+            android:layout_weight="1.5"
+            android:background="#00ff0000"
+            android:src="@drawable/menu"
+            android:scaleType="fitCenter"
+            android:layout_margin="5dp">
+        </ImageButton>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

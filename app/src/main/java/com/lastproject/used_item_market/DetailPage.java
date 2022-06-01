@@ -310,6 +310,20 @@ public class DetailPage extends AppCompatActivity {
                         System.exit(0);
                         break;
 
+                    case "Chat":
+                        Intent intent6 = new Intent(DetailPage.this, ChatPage.class);
+                        intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent6.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent6.putExtra("email", email);
+                        intent6.putExtra("mykey", mykey);
+                        intent6.putExtra("nickname", nickname);
+                        intent6.putExtra("myUniv", myUniv);
+                        intent6.putExtra("myimg", myimg);
+                        intent6.putExtra("chatkey", product_key);
+                        startActivity(intent6);
+                        System.exit(0);
+                        break;
+
                 }//switch문 끝
             }
         });

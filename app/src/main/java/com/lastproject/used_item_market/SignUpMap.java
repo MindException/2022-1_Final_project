@@ -413,6 +413,7 @@ public class SignUpMap extends AppCompatActivity {
         Intent signUp_intent = new Intent(SignUpMap.this, SetInFo.class);
         signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         signUp_intent.putExtra("email", email);
         signUp_intent.putExtra("password",password);
         signUp_intent.putExtra("nickname",nickname);

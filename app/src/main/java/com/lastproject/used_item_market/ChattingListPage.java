@@ -108,6 +108,9 @@ public class ChattingListPage extends AppCompatActivity{
 
                 for(DocumentChange dc : snapshots.getDocumentChanges()){     //신기하다
 
+                    //맨 처음은 전부 추가되지만
+                    //그 다음부터는 변동된 것만 추가된다.
+
                     boolean trigger = false;        //이미 추가하면 Arraylist에 추가안하게 한다.
 
                     ChattingRoomInfo chattingRoomInfo = dc.getDocument().toObject(ChattingRoomInfo.class);
@@ -121,7 +124,19 @@ public class ChattingListPage extends AppCompatActivity{
                     }
 
                     if (trigger != true){       //추가 못하였으니 추가한다.
-                        chattingRoomInfoArrayList.add(chattingRoomInfo);    //기존의 것이 없으면  추가
+
+                        //추가하기 전에 이미 나간 채팅방인지 확인한다.
+                        int index = 0;
+                        for(index = 0; index < chattingRoomInfo.customerList.size(); index++){
+                            if (mykey.equals(chattingRoomInfo.customerList.get(index))){
+                                break;
+                            }
+                        }
+
+                        //0번이어야 나가지 않은 사용자이다.
+                        if(chattingRoomInfo.out_customer_index.get(index) == 0){
+                            chattingRoomInfoArrayList.add(chattingRoomInfo);    //기존의 것이 없으면  추가
+                        }
                     }
                 }
                 //이거 정렬형태로 가야한다.

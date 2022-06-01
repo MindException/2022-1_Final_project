@@ -275,8 +275,7 @@ public class TradeMap extends AppCompatActivity {
 
         Intent PostPage_intent = new Intent(TradeMap.this, PostPage.class);
         //이거 인탠트 할 때 아래 행위 하지말아야한다 액티비티가 죽어버리면 같이 uri도 죽어버린다.
-        //PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        //PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PostPage_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         PostPage_intent.putExtra("latitude", latitude);
         PostPage_intent.putExtra("longtitude", longtitude);
         PostPage_intent.putExtra("email", email);
