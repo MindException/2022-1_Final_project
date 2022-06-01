@@ -382,7 +382,7 @@ public class DetailPage extends AppCompatActivity {
                                     }else{      //채팅방에서 나간 경우
 
                                         //이거 나중에는 채팅방 이동으로 바꾸기
-                                        Toast.makeText(DetailPage.this, "다시 입장이 불가능합니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(DetailPage.this, "재입장이 불가능합니다.", Toast.LENGTH_SHORT).show();
 
                                     }
 

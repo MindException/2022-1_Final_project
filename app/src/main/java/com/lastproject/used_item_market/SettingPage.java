@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -60,6 +63,10 @@ public class SettingPage extends AppCompatActivity {
     CollectionReference product_Ref;
     DocumentReference user_Ref;
 
+    //RealtimeDatbase
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+
     //이미지 DB
     private FirebaseStorage storage;            //이미지 저장소
     private StorageReference storageRef;        //정확한 위치에 파일 저장
@@ -81,6 +88,10 @@ public class SettingPage extends AppCompatActivity {
 
     ImageButton adapterImageButton;
     ImageButton profileImageButton;
+
+    //삭제 혹은 성공을 위한 정보
+    ChattingRoomInfo chattingRoomInfo;
+    ChatInfo chatInfo;
 
 
     @Override
@@ -115,6 +126,10 @@ public class SettingPage extends AppCompatActivity {
         storageRef = storage.getReference();
         user_Ref = firestore.collection("User").document(mykey);
         product_Ref = firestore.collection("Product");
+
+        //파이어 베이스 리얼 타임 데이터베이스 연동
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
         setting();
         mypage_1();
@@ -300,16 +315,17 @@ public class SettingPage extends AppCompatActivity {
         myPageAdapter1.setOnItemClickListener(new MyPageAdapter1.onItemClickEventListener() {
             @Override
             public void onItemClick(View v, int pos) {
+
+
+                Log.d("lala", "alal");
+
                 //팝업 메뉴 객체 생성
                 PopupMenu popupMenu = new PopupMenu(SettingPage.this, v);
-
                 //xml파일에 메뉴 정의한 것 가져오기
                 MenuInflater inflater = popupMenu.getMenuInflater();
                 Menu menu = popupMenu.getMenu();
-
                 //실제 메뉴 정의
                 inflater.inflate(R.menu.adapter_mypage_menu, menu);
-
 
                 //메뉴 클릭이벤트
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -317,7 +333,7 @@ public class SettingPage extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
 
                         switch (item.getItemId()){
-                            //수정
+                            //상품 보기
                             case R.id.product_detail:
                                 System.out.println("상품 키:" + productList.get(pos).key);
                                 String path = "MyPage";
@@ -335,10 +351,20 @@ public class SettingPage extends AppCompatActivity {
                                 finish();
                                 break;
 
+                            //거래완료
+                            case R.id.success:
+                                break;
+
                             //삭제
                             case R.id.delete:
                                 //신경써서 삭제해야할 것 2개
                                 //product 정보, 채팅에서 채팅 더 이상 못하게 막아 놓기
+                                //시스템에서 버튼 클릭하기 .performClick()  <-이걸로 화면 갱신하기
+                                //채팅방정보 -> 채팅 -> 물품등록(999999999999) ->  버튼 클릭 이벤트 발생
+
+
+
+
                                 break;
                         }
                         return false;

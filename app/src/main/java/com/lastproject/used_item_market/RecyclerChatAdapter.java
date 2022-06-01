@@ -233,37 +233,12 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }
 
-            /*
-            //프로필 이미지 처리
-            StorageReference sellerimgRef = storageRef.child("profiles")
-                    .child(chattingRoomInfo.customer_images.get(index));
-            sellerimgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-
-                    try {
-
-                        Glide.with(itemView)
-                                .load(uri)
-                                .override(100, 100)
-                                .onlyRetrieveFromCache(true)
-                                .into(profile);
-
-                    } catch (Exception e) {
-                        System.out.println("view holder binding 실패");
-                    }
-
-                }
-            }); //프로필 이미지 처리 끝
-
-             */
-
             profile.setImageBitmap(bitmaps.get(index));
 
             //기본세팅
             nicknameView.setText(nickname);
             chatView.setText(text);
-            time.setText(chat_time);
+            time.setText(Time.chatTime(chat_time));
 
         }
     }

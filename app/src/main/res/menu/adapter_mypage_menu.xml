@@ -4,6 +4,9 @@
         android:id="@+id/product_detail"
         android:title="상품보기" />
     <item
+        android:id="@+id/success"
+        android:title="거래완료" />
+    <item
         android:id="@+id/delete"
         android:title="삭제" />
 
