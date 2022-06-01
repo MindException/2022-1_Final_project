@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView mainImg;
 
     // 상품 관련
-    List<Product> productList = new ArrayList<Product>();  //여기에 모든 상품들이 들어간다.
+    List<Product> productList_recent = new ArrayList<Product>();  //여기에 모든 상품들이 들어간다.
+    List<Product> productList_cost = new ArrayList<Product>();  //여기에 모든 상품들이 들어간다.
     ArrayList<String> productKeyList = new ArrayList<String>();
     private int limit = 7;         //요청 상품 수
 
@@ -97,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
         //리사이클러 뷰 관련 위젯
         recyclerView = (RecyclerView)findViewById(R.id.lobby_recyclerHorizon);
         recyclerView2 = (RecyclerView)findViewById(R.id.cost_recycler);
+
+        //위젯
+        one = (TextView)findViewById(R.id.oneover);
+        two = (TextView)findViewById(R.id.twoover);
+        three = (TextView)findViewById(R.id.threeover);
+        five = (TextView)findViewById(R.id.fiveover);
 
         //먼저 대학으로 설정한다.
         univspinner = (Spinner)findViewById(R.id.univ_spinner);
@@ -193,7 +200,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AllPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
+                intent.putExtra("myimg", myimg);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -281,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("qqq : " + query);
                     for(DocumentSnapshot document : task.getResult()){
                         Product product = document.toObject(Product.class);
-                        productList.add(product);
+                        productList_recent.add(product);
                         productKeyList.add(document.getId());
 
                         System.out.println("www :" + document.getId()); // limit값인 7 개 잘 가져옴. 순서도 맞음
@@ -296,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        newProductAdapter = new NewProductAdapter(productList);
+        newProductAdapter = new NewProductAdapter(productList_recent);
         recyclerView.setAdapter(newProductAdapter);
 
         newProductAdapter.setOnItemClickListener(new NewProductAdapter.onItemClickEventListener() {
@@ -324,21 +340,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void costlist(){
-        one = (TextView)findViewById(R.id.oneover);
-        two = (TextView)findViewById(R.id.twoover);
-        three = (TextView)findViewById(R.id.threeover);
-        five = (TextView)findViewById(R.id.fiveover);
+
 
         one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productList = new ArrayList<>();
+                productList_cost = new ArrayList<>();
                 productKeyList = new ArrayList<>();
 
-                one.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
-                two.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                three.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                five.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                one.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
+                two.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                three.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                five.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
@@ -358,14 +371,14 @@ public class MainActivity extends AppCompatActivity {
                             }else {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Product product = document.toObject(Product.class);
-                                    productList.add(product);
+                                    productList_cost.add(product);
                                     productKeyList.add(document.getId());
 
                                     System.out.println("Product 키값 :" + document.getId());
-                                    System.out.println("plist :" + productList);
+                                    System.out.println("plist :" + productList_cost);
                                 }
                             }
-                            productList.sort(new CompareSuccessTime<Product>());
+                            productList_cost.sort(new CompareSuccessTime<Product>());
                             init_2();
                         }
                     }
@@ -373,16 +386,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        one.performClick();
+
         two.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productList = new ArrayList<>();
+                productList_cost = new ArrayList<>();
                 productKeyList = new ArrayList<>();
 
-                one.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                two.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
-                three.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                five.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                one.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                two.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
+                three.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                five.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
@@ -402,14 +417,14 @@ public class MainActivity extends AppCompatActivity {
                             }else {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Product product = document.toObject(Product.class);
-                                    productList.add(product);
+                                    productList_cost.add(product);
                                     productKeyList.add(document.getId());
 
                                     System.out.println("Product 키값 :" + document.getId());
-                                    System.out.println("plist :" + productList);
+                                    System.out.println("plist :" + productList_cost);
                                 }
                             }
-                            productList.sort(new CompareSuccessTime<Product>());
+                            productList_cost.sort(new CompareSuccessTime<Product>());
                             init_2();
                         }
                     }
@@ -420,13 +435,13 @@ public class MainActivity extends AppCompatActivity {
         three.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productList = new ArrayList<>();
+                productList_cost = new ArrayList<>();
                 productKeyList = new ArrayList<>();
 
-                one.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                two.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                three.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
-                five.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
+                one.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                two.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                three.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
+                five.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
@@ -446,14 +461,14 @@ public class MainActivity extends AppCompatActivity {
                             }else {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Product product = document.toObject(Product.class);
-                                    productList.add(product);
+                                    productList_cost.add(product);
                                     productKeyList.add(document.getId());
 
                                     System.out.println("Product 키값 :" + document.getId());
-                                    System.out.println("plist :" + productList);
+                                    System.out.println("plist :" + productList_cost);
                                 }
                             }
-                            productList.sort(new CompareSuccessTime<Product>());
+                            productList_cost.sort(new CompareSuccessTime<Product>());
                             init_2();
                         }
                     }
@@ -464,13 +479,13 @@ public class MainActivity extends AppCompatActivity {
         five.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productList = new ArrayList<>();
+                productList_cost = new ArrayList<>();
                 productKeyList = new ArrayList<>();
 
-                one.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                two.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                three.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_nochack_view_round));
-                five.setBackgroundDrawable(getResources().getDrawable(R.drawable.mypage_chack_view_round));
+                one.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                two.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                three.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
+                five.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
@@ -489,14 +504,14 @@ public class MainActivity extends AppCompatActivity {
                             }else {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Product product = document.toObject(Product.class);
-                                    productList.add(product);
+                                    productList_cost.add(product);
                                     productKeyList.add(document.getId());
 
                                     System.out.println("Product 키값 :" + document.getId());
-                                    System.out.println("plist :" + productList);
+                                    System.out.println("plist :" + productList_cost);
                                 }
                             }
-                            productList.sort(new CompareSuccessTime<Product>());
+                            productList_cost.sort(new CompareSuccessTime<Product>());
                             init_2();
                         }
                     }
@@ -509,7 +524,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView2.setLayoutManager(linearLayoutManager);
-        costListAdapter = new CostListAdapter(productList);
+        costListAdapter = new CostListAdapter(productList_cost);
         recyclerView2.setAdapter(costListAdapter);
 
         costListAdapter.setOnItemClickListener(new CostListAdapter.onItemClickEventListener() {

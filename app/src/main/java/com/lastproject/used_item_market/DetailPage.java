@@ -175,7 +175,7 @@ public class DetailPage extends AppCompatActivity {
                                                     //여기서 사진 변경 됨
                                                     Glide.with(context)
                                                             .load(imgUriList.get(pos))
-                                                            .override(150,150)
+                                                            .override(500,500)
                                                             .into(mainImg);
 
 

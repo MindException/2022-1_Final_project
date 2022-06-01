@@ -20,10 +20,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -81,6 +83,7 @@ public class SettingPage extends AppCompatActivity {
     //이미지 관련 위젯 및 어뎁터
     RecyclerView recyclerView;
     MyPageAdapter1 myPageAdapter1;
+    MyPageAdapter2 myPageAdapter2;
 
     // 상품 관련
     List<User> userList = new ArrayList<User>();
@@ -101,6 +104,7 @@ public class SettingPage extends AppCompatActivity {
     ChatInfo chatInfo;
 
     String where = "";
+    String selected = "";
 
 
     @Override
@@ -305,7 +309,7 @@ public class SettingPage extends AppCompatActivity {
                                         }
 
                                         productList.sort(new CompareSuccessTime<>());
-                                        init_1();
+                                        init_2();
 
                                     }
                                 }
@@ -347,6 +351,8 @@ public class SettingPage extends AppCompatActivity {
             }
         });
 
+
+
         //팝업 메뉴가 눌렸을 경우
         myPageAdapter1.setOnItemClickListener(new MyPageAdapter1.onItemClickEventListener() {
             @Override
@@ -371,6 +377,76 @@ public class SettingPage extends AppCompatActivity {
 
                             //거래완료
                             case R.id.success:
+                                DocumentReference chattingRef = firestore.collection("ChattingRoom").document(productList.get(pos).key);
+                                chattingRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if(task.isSuccessful()){        //송수신이 잘 되었을 경우
+                                            DocumentSnapshot document = task.getResult();
+                                            chattingRoomInfo = document.toObject(ChattingRoomInfo.class);
+                                            int count = 0;
+                                            ArrayList<String> tradePeople = new ArrayList<>();
+                                            for (count = 0; count < chattingRoomInfo.out_customer_index.size(); count++){
+
+                                                if (chattingRoomInfo.out_customer_index.get(count) == 0 && !(mykey.equals(chattingRoomInfo.customerList.get(count)))){
+                                                    //나가지 않은 사람들 중에서 자기 자신이 아닌 사람들
+                                                    tradePeople.add(chattingRoomInfo.customer_nicknames.get(count));
+                                                }
+                                            }//for문 끝
+                                            if(tradePeople.size() == 0){        //거래할 대상이 없다.
+                                                Toast.makeText(SettingPage.this, "거래할 상대가 없습니다.", Toast.LENGTH_SHORT).show();
+                                            }else{
+                                                //ArrayList를 String[]으로 변환하여야 한다.
+                                                String[] array = new String[tradePeople.size()];
+                                                for(int i = 0; i < tradePeople.size(); i++){
+                                                    array[i] = tradePeople.get(i);
+                                                }
+                                                Log.d("alert", "dd" + array[0]);
+                                                //거래할 대상이 있는 경우
+                                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SettingPage.this, R.style.AlertDialogTheme);
+                                                alertBuilder.setTitle("안내");
+                                                alertBuilder.setMessage("구매자를 선택하여주세요.");
+
+
+                                                Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
+                                                mHandler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+
+                                                        alertBuilder.setSingleChoiceItems(array, 0, new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                                selected = array[i];
+
+                                                            }
+                                                        });
+
+
+                                                        alertBuilder.setPositiveButton("취소",new DialogInterface.OnClickListener(){         //오른쪽버튼
+                                                            public void onClick(DialogInterface dialog,int which){
+                                                                //삭제하지 않음으로 그냥 둔다.
+                                                            }
+                                                        });
+                                                        alertBuilder.setNegativeButton("선택", new DialogInterface.OnClickListener() {          //왼쪽버튼
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) { //사진 삭제
+
+                                                                Toast.makeText(SettingPage.this, selected + "선택 성공", Toast.LENGTH_SHORT).show();
+
+                                                            }
+                                                        });
+
+                                                        AlertDialog alertDialog = alertBuilder.create();
+                                                        alertDialog.show();
+
+                                                    }
+                                                }, 1000);
+
+                                            }
+                                        }
+                                    }
+                                });
                                 break;
 
                             //삭제
@@ -415,6 +491,39 @@ public class SettingPage extends AppCompatActivity {
 
 
     }
+
+    void init_2(){
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        myPageAdapter2 = new MyPageAdapter2(productList);
+        recyclerView.setAdapter(myPageAdapter2);
+
+        //이미지가 눌렸을 경우
+        myPageAdapter2.setOnImgClickListener(new MyPageAdapter2.onImgEventListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+
+                System.out.println("상품 키:" + productList.get(pos).key);
+                String path = "MyPage";
+                Intent intent = new Intent(SettingPage.this, DetailPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
+                intent.putExtra("productkey", productList.get(pos).key);      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("wherefrom", path);
+                intent.putExtra("myimg", myimg);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+    }
+
 
     void setting(){
 
