@@ -53,6 +53,19 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.mItemClickListener = listener;
     }
 
+    //클릭 리스너
+    public interface onImgEventListener {
+        void onItemClick(View v, int pos);
+    }
+    private onImgEventListener mImgClickListener;
+
+    public void setOnImgClickListener(onImgEventListener listener){
+        this.mImgClickListener = listener;
+    }
+
+
+
+
     //오버라이딩
     @NonNull
     @Override
@@ -94,14 +107,23 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             //아이템 연결
             iv = (ImageView) itemView.findViewById(R.id.mypage_list_img);
-            iv.setImageDrawable(null);
+            iv.setOnClickListener(new View.OnClickListener() {     //팝업 메뉴 리스너
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if(pos != RecyclerView.NO_POSITION){
+                        if(mImgClickListener != null){
+                            mImgClickListener.onItemClick(v, pos);
+                        }
+                    }
+                }
+            });
             title = (TextView) itemView.findViewById(R.id.mypage_list_title);
             title.setSelected(true); // 긴 문장 흘러서 보여줌.
             price = (TextView) itemView.findViewById(R.id.mypage_list_price);
             date = (TextView) itemView.findViewById(R.id.mypage_list_date);
             imageButton = (ImageButton) itemView.findViewById(R.id.mypage_list_set);
-
-            imageButton.setOnClickListener(new View.OnClickListener() {
+            imageButton.setOnClickListener(new View.OnClickListener() {     //팝업 메뉴 리스너
                 @Override
                 public void onClick(View v) {
                     int pos = getAdapterPosition();

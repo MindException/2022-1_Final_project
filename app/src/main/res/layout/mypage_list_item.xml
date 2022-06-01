@@ -51,7 +51,7 @@
                     android:id="@+id/mypage_list_title"
                     android:layout_width="0dp"
                     android:layout_height="25dp"
-                    android:layout_weight="9"
+                    android:layout_weight="8"
                     android:text=""
                     android:fontFamily="@font/font_5"
                     android:textSize="16dp"
@@ -62,11 +62,16 @@
                     android:maxEms="15"
                     android:maxLines="1"
                     android:ellipsize="end"></TextView>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="0.8"></TextView>
+
                 <ImageButton
                     android:id="@+id/mypage_list_set"
                     android:layout_width="0dp"
                     android:layout_height="25dp"
-                    android:layout_weight="0.8"
+                    android:layout_weight="1.0"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="3dp"
                     android:scaleType="fitEnd"

@@ -157,7 +157,6 @@ public class ChatPage extends AppCompatActivity {
             }//onEvent() 끝
         });//리스너 끝
 
-        insert();
         back();
 
     }
@@ -225,6 +224,8 @@ public class ChatPage extends AppCompatActivity {
                     }
                 }
 
+                Log.d("alert", "결과:" + trigger_delete);
+                insert();
                 chatMenu();
                 readLastIndex = chattingRoomInfo.last_SEE.get(myindex);
             }
@@ -361,16 +362,17 @@ public class ChatPage extends AppCompatActivity {
     //입력하기
     void insert(){
 
-        insert_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if(trigger_delete == false) {
 
-                if(trigger_delete == false){    //상품이 삭제되지 않은 경우만 검색할 수 있다.
+            insert_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
 
                     String chat_text = chatView.getText().toString();
                     String nowTime = Time.nowNewTime();
 
-                    if(!chat_text.equals("")) {      //채팅을 입력한 경우
+                    if (!chat_text.equals("")) {      //채팅을 입력한 경우
 
                         String chat = mykey + "/%%/" + nickname + "/%%/"
                                 + chat_text + "/%%/" + nowTime;
@@ -385,7 +387,7 @@ public class ChatPage extends AppCompatActivity {
                                         chattingRoomInfo.last_time = nowTime;   //마지막 시간 저장
                                         chattingRoomInfo.last_text = chat;      //마지막 채팅 저장
                                         //채팅 추가되니 -1 하지 말아라
-                                        chattingRoomInfo.last_index = chatList.size() -1 ;
+                                        chattingRoomInfo.last_index = chatList.size() - 1;
                                         chattingRoomInfo.last_SEE.set(myindex, chatList.size() - 1);
 
                                         DocumentReference setDocRef = chatRoomRef.document(chatkey);
@@ -400,10 +402,15 @@ public class ChatPage extends AppCompatActivity {
                                     }
                                 });
                     }
-                }
 
-            }
-        });
+
+                }
+            });
+        }else{
+            chatView.setText("");
+            chatView.setEnabled(false);
+            chatView.setHint("더 이상 채팅이 불가능합니다.");
+        }
 
     }
 

@@ -217,18 +217,22 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
             //채팅 마지막 기록
             last_text.setText(chattingRoomInfo.last_text);
 
-            String last_chat = chattingRoomInfo.last_text;
-            StringTokenizer st = new StringTokenizer(last_chat, "/%%/");
-            String temp = st.nextToken();
-            if(temp.equals("System")){
-                //시스템이 말함
-                temp = st.nextToken();
-                last_text.setText(temp);
-            }else{
-                //사용자가 말함
-                temp = st.nextToken();
-                temp = st.nextToken();
-                last_text.setText(temp);
+            if(chattingRoomInfo.last_text != null){
+
+                String last_chat = chattingRoomInfo.last_text;
+                StringTokenizer st = new StringTokenizer(last_chat, "/%%/");
+                String temp = st.nextToken();
+                if(temp.equals("System")){
+                    //시스템이 말함
+                    temp = st.nextToken();
+                    last_text.setText(temp);
+                }else{
+                    //사용자가 말함
+                    temp = st.nextToken();
+                    temp = st.nextToken();
+                    last_text.setText(temp);
+                }
+
             }
 
             //빨간 원 && 안 읽은 메시지

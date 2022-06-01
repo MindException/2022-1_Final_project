@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +29,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -92,6 +99,8 @@ public class SettingPage extends AppCompatActivity {
     //삭제 혹은 성공을 위한 정보
     ChattingRoomInfo chattingRoomInfo;
     ChatInfo chatInfo;
+
+    String where = "";
 
 
     @Override
@@ -170,6 +179,7 @@ public class SettingPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("판매 중 눌림");
+                where = "판매";
                 productList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
                 free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
@@ -209,6 +219,7 @@ public class SettingPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("무료 나눔 눌림");
+                where = "무료나눔";
                 productList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
                 free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
@@ -246,6 +257,7 @@ public class SettingPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("거래완료 눌림");
+                where = "거래완료";
                 productList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
                 free_providing.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
@@ -312,12 +324,35 @@ public class SettingPage extends AppCompatActivity {
         myPageAdapter1 = new MyPageAdapter1(productList);
         recyclerView.setAdapter(myPageAdapter1);
 
+        //이미지가 눌렸을 경우
+        myPageAdapter1.setOnImgClickListener(new MyPageAdapter1.onImgEventListener() {
+            @Override
+            public void onItemClick(View v, int pos) {
+
+                System.out.println("상품 키:" + productList.get(pos).key);
+                String path = "MyPage";
+                Intent intent = new Intent(SettingPage.this, DetailPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("email", email);
+                intent.putExtra("mykey", mykey);
+                intent.putExtra("nickname", nickname);
+                intent.putExtra("myUniv", myUniv);
+                intent.putExtra("productkey", productList.get(pos).key);      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("wherefrom", path);
+                intent.putExtra("myimg", myimg);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+        //팝업 메뉴가 눌렸을 경우
         myPageAdapter1.setOnItemClickListener(new MyPageAdapter1.onItemClickEventListener() {
             @Override
             public void onItemClick(View v, int pos) {
 
 
-                Log.d("lala", "alal");
 
                 //팝업 메뉴 객체 생성
                 PopupMenu popupMenu = new PopupMenu(SettingPage.this, v);
@@ -333,23 +368,6 @@ public class SettingPage extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
 
                         switch (item.getItemId()){
-                            //상품 보기
-                            case R.id.product_detail:
-                                System.out.println("상품 키:" + productList.get(pos).key);
-                                String path = "MyPage";
-                                Intent intent = new Intent(SettingPage.this, DetailPage.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("email", email);
-                                intent.putExtra("mykey", mykey);
-                                intent.putExtra("nickname", nickname);
-                                intent.putExtra("myUniv", myUniv);
-                                intent.putExtra("productkey", productList.get(pos).key);      //리사이클뷰 인덱스 가져옴
-                                intent.putExtra("wherefrom", path);
-                                intent.putExtra("myimg", myimg);
-                                startActivity(intent);
-                                finish();
-                                break;
 
                             //거래완료
                             case R.id.success:
@@ -361,9 +379,27 @@ public class SettingPage extends AppCompatActivity {
                                 //product 정보, 채팅에서 채팅 더 이상 못하게 막아 놓기
                                 //시스템에서 버튼 클릭하기 .performClick()  <-이걸로 화면 갱신하기
                                 //채팅방정보 -> 채팅 -> 물품등록(999999999999) ->  버튼 클릭 이벤트 발생
+                                AlertDialog.Builder dlg = new AlertDialog.Builder(SettingPage.this, R.style.AlertDialogTheme);
+                                Handler mHandler = new Handler(Looper.getMainLooper());
 
+                                mHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dlg.setTitle("물품을 삭제하시겠습니까?");
+                                        dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
 
-
+                                            }
+                                        }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) { // 채팅방 나감
+                                                deleteProduct(productList.get(pos));
+                                            }
+                                        });
+                                        dlg.show();
+                                    }
+                                }, 0);
 
                                 break;
                         }
@@ -371,7 +407,6 @@ public class SettingPage extends AppCompatActivity {
                     }
                 });
                 popupMenu.show();
-
 
             }
 
@@ -385,6 +420,8 @@ public class SettingPage extends AppCompatActivity {
 
         emailText.setText(email);
         nicknameText.setText(nickname);
+
+        where = "판매";
 
         product_Ref = firestore.collection("Product");
         Query query = product_Ref.whereEqualTo("seller_key", mykey)
@@ -542,6 +579,89 @@ public class SettingPage extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         //뒤로가기 막기
+    }
+
+    void deleteProduct(Product product){
+        //시스템에서 버튼 클릭하기 .performClick()  <-이걸로 화면 갱신하기
+        //채팅방정보 -> 채팅 -> 물품등록(999999999999) ->  버튼 클릭 이벤트 발생
+        DocumentReference chattingRef = firestore.collection("ChattingRoom").document(product.key);
+        chattingRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    chattingRoomInfo = document.toObject(ChattingRoomInfo.class);
+
+                    //가져온 정보로 이제 저장
+                    String nowTime = Time.nowNewTime();
+                    String out_chat = "System" + "/%%/" + "상품이 삭제되었습니다."
+                            + "/%%/" + nowTime + "/%%/";
+                    chattingRoomInfo.last_time = nowTime;
+                    chattingRoomInfo.last_text = out_chat;
+                    //1줄 추가
+                    chattingRoomInfo.last_index = chattingRoomInfo.last_index + 1;
+                    chattingRoomInfo.customerList.add("System/*!%@#!*/delete/1team");       //삭제 시그널 보냄
+                    chattingRoomInfo.customer_nicknames.add("System/*!%@#!*/delete/1team");
+                    chattingRoomInfo.last_SEE.add(chattingRoomInfo.last_index + 1);
+                    chattingRoomInfo.out_customer_index.add(chattingRoomInfo.last_index + 1);
+
+                    firestore.collection("ChattingRoom").document(product.key)
+                            .set(chattingRoomInfo)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    //채팅방 저장을 성공하였으니 이제 실시간 DB도 추가
+                                    myRef.child("Chatting").child(product.key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                            chatInfo = snapshot.getValue(ChatInfo.class);
+                                            chatInfo.chatList.add(out_chat);
+                                            myRef.child("Chatting").child(product.key).setValue(chatInfo)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
+                                                            //실시간도 저장 성공 이제 마지막으로 상품에 등록
+                                                            product.success_time = "999999999999";
+                                                            firestore.collection("Product").document(product.key)
+                                                                    .set(product)
+                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void unused) {
+
+                                                                            if(where.equals("판매")){
+                                                                                selling.performClick();
+                                                                            }else if(where.equals("무료나눔")){
+                                                                                free_providing.performClick();
+                                                                            }else{
+                                                                                success_deal.performClick();
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+                                                    });
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                }
+                            });
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
     }
 
 }
