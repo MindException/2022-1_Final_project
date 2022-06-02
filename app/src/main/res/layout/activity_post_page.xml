@@ -123,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:weightSum="100"
-                        android:background="#E1B637"
+                        android:background="#CDAD4F"
                         android:layout_margin="10dp">
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -157,12 +157,16 @@
                                 android:layout_weight="1"></View>
                             <Spinner
                                 android:id="@+id/purpose"
-                                android:layout_width="130dp"
+                                android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:spinnerMode="dropdown"
                                 android:layout_gravity="center"
                                 android:gravity="right"
-                                android:fontFamily="@font/font_3">
+                                android:fontFamily="@font/font_3"
+                                android:background="@drawable/spinner_bg_postpage"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="1dp"
+                                android:layout_marginBottom="1dp">
                             </Spinner>
                         </LinearLayout>
                         <EditText
@@ -209,12 +213,14 @@
                                 android:gravity="center"></TextView>
                             <Spinner
                                 android:id="@+id/category"
-                                android:layout_width="200dp"
+                                android:layout_width="150dp"
                                 android:layout_height="match_parent"
                                 android:spinnerMode="dropdown"
                                 android:layout_gravity="center"
                                 android:gravity="right"
-                                android:fontFamily="@font/font_3"></Spinner>
+                                android:fontFamily="@font/font_3"
+                                android:background="@drawable/spinner_bg_postpage"
+                                android:layout_margin="1dp"></Spinner>
                         </LinearLayout>
 
                         <TextView
