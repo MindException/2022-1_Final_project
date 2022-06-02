@@ -89,6 +89,7 @@ public class RecycleDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
             Glide.with(itemview)
                     .load(uri)
                     .override(150, 150)
+                    .thumbnail(0.1f)
                     .into(iv);
 
         }

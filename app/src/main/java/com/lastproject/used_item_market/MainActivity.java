@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -155,7 +156,10 @@ public class MainActivity extends AppCompatActivity {
 
     void Sell(){ //판매 버튼 클릭 시 화면 이동
         ImageButton sell = (ImageButton)findViewById(R.id.Sell);
-        Glide.with(this).load(R.raw.ic_lobby_maket).into(sell);
+        Glide.with(this)
+                .load(R.raw.ic_lobby_maket)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(sell);
         sell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,7 +199,10 @@ public class MainActivity extends AppCompatActivity {
     }
     void All(){ //모두보기 버튼 클릭 시 화면 이동
         ImageButton all = (ImageButton)findViewById(R.id.Show);
-        Glide.with(this).load(R.raw.ic_lobby_all).into(all);
+        Glide.with(this)
+                .load(R.raw.ic_lobby_all)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(all);
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

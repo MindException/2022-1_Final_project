@@ -680,6 +680,8 @@ public class SettingPage extends AppCompatActivity {
                                     try{
                                         Glide.with(SettingPage.this)
                                                 .load(uri)
+                                                .override(300, 300)
+                                                .thumbnail(0.1f)
                                                 .into(imageView);
                                     }catch (Exception e){
 
