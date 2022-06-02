@@ -43,7 +43,9 @@
                     android:fontFamily="@font/font_5"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:spinnerMode="dropdown"></Spinner>
+                    android:textAlignment="center"
+                    android:spinnerMode="dropdown"
+                    android:background="@drawable/spinner_bg_school"></Spinner>
                 <ImageButton
                     android:id="@+id/setbtn"
                     android:layout_width="0dp"
