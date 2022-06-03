@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -370,7 +372,8 @@ public class SettingPage extends AppCompatActivity {
 
 
                 //팝업 메뉴 객체 생성
-                PopupMenu popupMenu = new PopupMenu(SettingPage.this, v);
+                Context wrapper = new ContextThemeWrapper(SettingPage.this, R.style.PopupMenuStyle);
+                PopupMenu popupMenu = new PopupMenu(wrapper, v);
                 //xml파일에 메뉴 정의한 것 가져오기
                 MenuInflater inflater = popupMenu.getMenuInflater();
                 Menu menu = popupMenu.getMenu();
@@ -547,11 +550,43 @@ public class SettingPage extends AppCompatActivity {
                                 //시스템에서 버튼 클릭하기 .performClick()  <-이걸로 화면 갱신하기
                                 //채팅방정보 -> 채팅 -> 물품등록(999999999999) ->  버튼 클릭 이벤트 발생
                                 AlertDialog.Builder dlg = new AlertDialog.Builder(SettingPage.this, R.style.AlertDialogTheme);
+                                View view = LayoutInflater.from(SettingPage.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
+
                                 Handler mHandler = new Handler(Looper.getMainLooper());
 
                                 mHandler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
+
+                                        dlg.setView(view);
+                                        ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
+                                        ((TextView)view.findViewById(R.id.textMessage)).setText("물품을 삭제하시겠습니까?");
+                                        ((Button)view.findViewById(R.id.btnOK)).setText("아니오");
+                                        ((Button)view.findViewById(R.id.btnNO)).setText("예");
+
+                                        AlertDialog alertDialog = dlg.create();
+
+                                        view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+                                        view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                deleteProduct(productList.get(pos));
+                                                alertDialog.dismiss();
+                                            }
+                                        });
+
+                                        //다이얼로그 형태 지우기
+                                        if(alertDialog.getWindow() != null){
+                                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                        }
+
+                                        alertDialog.show();
+                                        /*  기존 코드
                                         dlg.setTitle("물품을 삭제하시겠습니까?");
                                         dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
                                             @Override
@@ -565,6 +600,7 @@ public class SettingPage extends AppCompatActivity {
                                             }
                                         });
                                         dlg.show();
+                                        */
                                     }
                                 }, 0);
 
@@ -749,7 +785,8 @@ public class SettingPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //팝업 메뉴 객체 생성
-                PopupMenu popupMenu = new PopupMenu(SettingPage.this, v);
+                Context wrapper = new ContextThemeWrapper(SettingPage.this, R.style.PopupMenuStyle);
+                PopupMenu popupMenu = new PopupMenu(wrapper, v);
 
                 //xml파일에 메뉴 정의한 것 가져오기
                 MenuInflater inflater = popupMenu.getMenuInflater();
