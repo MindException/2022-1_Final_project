@@ -568,19 +568,19 @@ public class SignUpMap extends AppCompatActivity {
                             selecteduniv[0] = which;
 
                         }
-                    }).setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                    }).setPositiveButton("취소",new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which) {  // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
+
+                        }
+                    }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
                             school = university.get(selecteduniv[0]);
                             nospace_school = university.get(selecteduniv[0]);
                             latitude = Double.toString(universitypoint.get(selecteduniv[0]).getLatitude());
                             longtitude = Double.toString(universitypoint.get(selecteduniv[0]).getLongitude());
                             nextInfo();
-                        }
-                    }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
                         }
                     });
                     dlg.show();

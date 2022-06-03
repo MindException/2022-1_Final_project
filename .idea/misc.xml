@@ -16,6 +16,7 @@
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/chatting_item_you.xml" value="0.2671875" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/costlist_item.xml" value="0.31567028985507245" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/detail_page.xml" value="0.3052536231884058" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/dialog.xml" value="0.31145833333333334" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/horizon_rectcler_item.xml" value="0.31567028985507245" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/lobby.xml" value="0.31567028985507245" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/mypage_list_item.xml" value="0.32608695652173914" />
@@ -75,13 +76,6 @@
         <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/set_in_fo.xml" value="0.2128623188405797" />
         <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/sign_up.xml" value="0.17617753623188406" />
         <entry key="..\:/FinalProject/2022-1_Final_project/app/src/main/res/layout/sign_up_map.xml" value="0.2128623188405797" />
-        <entry key="..\:/finalproject/2022-1_Final_project/app/src/main/res/drawable-v24/background_splash.xml" value="0.2135" />
-        <entry key="..\:/finalproject/2022-1_Final_project/app/src/main/res/drawable/dialog_background.xml" value="0.2135" />
-        <entry key="..\:/finalproject/2022-1_Final_project/app/src/main/res/drawable/dialog_button_background.xml" value="0.2135" />
-        <entry key="..\:/finalproject/2022-1_Final_project/app/src/main/res/drawable/dialog_title_background.xml" value="0.2135" />
-        <entry key="..\:/finalproject/2022-1_Final_project/app/src/main/res/layout/dialog.xml" value="0.33" />
-        <entry key="..\:/finalproject/2022-1_Final_project/app/src/main/res/layout/lobby.xml" value="0.17806484295845998" />
-        <entry key="..\:/finalproject/2022-1_Final_project/app/src/main/res/menu/chatpage_menu.xml" value="0.36614583333333334" />
         <entry key="app/src/main/res/drawable-v24/background_splash.xml" value="0.2074074074074074" />
         <entry key="app/src/main/res/drawable-v24/bt_tumyeong_sty.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_photo_camera_24.xml" value="0.2074074074074074" />

@@ -196,8 +196,8 @@ public class TradeMap extends AppCompatActivity {
                                             dlg.setView(view);
                                             ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
                                             ((TextView)view.findViewById(R.id.textMessage)).setText("해당 위치로 지정하시겠습니까?");
-                                            ((Button)view.findViewById(R.id.btnOK)).setText("확인");
-                                            ((Button)view.findViewById(R.id.btnNO)).setText("취소");
+                                            ((Button)view.findViewById(R.id.btnOK)).setText("취소");
+                                            ((Button)view.findViewById(R.id.btnNO)).setText("확인");
 
                                             AlertDialog alertDialog = dlg.create();
 

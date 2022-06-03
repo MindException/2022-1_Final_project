@@ -520,8 +520,8 @@ public class PostPage extends AppCompatActivity {
                 alertBuilder.setView(view);
                 ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
                 ((TextView)view.findViewById(R.id.textMessage)).setText("선택하신 사진을 삭제하시겠습니까?");
-                ((Button)view.findViewById(R.id.btnOK)).setText("예");
-                ((Button)view.findViewById(R.id.btnNO)).setText("아니오");
+                ((Button)view.findViewById(R.id.btnOK)).setText("아니오");
+                ((Button)view.findViewById(R.id.btnNO)).setText("예");
 
                 AlertDialog alertDialog = alertBuilder.create();
 

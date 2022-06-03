@@ -439,28 +439,27 @@ public class SettingPage extends AppCompatActivity {
                                                                 custom_alertBuilder.setView(view);
                                                                 ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
                                                                 ((TextView)view.findViewById(R.id.textMessage)).setText(selected+ "님과 " + "거래하시겠습니까?");
-                                                                ((Button)view.findViewById(R.id.btnOK)).setText("선택");
-                                                                ((Button)view.findViewById(R.id.btnNO)).setText("취소");
+                                                                ((Button)view.findViewById(R.id.btnOK)).setText("취소");
+                                                                ((Button)view.findViewById(R.id.btnNO)).setText("확인");
 
                                                                 AlertDialog alertDialog = custom_alertBuilder.create();
 
                                                                 view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
                                                                     @Override
                                                                     public void onClick(View view) {
-                                                                        if(selected.equals("")){
-                                                                            Toast.makeText(SettingPage.this, selected + "선택하여 주세요.", Toast.LENGTH_SHORT).show();
-                                                                        }else{
-
-                                                                            successProduct(productList.get(pos), selected);
-                                                                            alertDialog.dismiss();
-
-                                                                        }
+                                                                        alertDialog.dismiss();
                                                                     }
                                                                 });
                                                                 view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
                                                                     @Override
                                                                     public void onClick(View view) {
                                                                         alertDialog.dismiss();
+                                                                        if(selected.equals("")){
+                                                                            Toast.makeText(SettingPage.this, selected + "선택하여 주세요.", Toast.LENGTH_SHORT).show();
+                                                                        }else{
+                                                                            successProduct(productList.get(pos), selected);
+                                                                            alertDialog.dismiss();
+                                                                        }
                                                                     }
                                                                 });
 
