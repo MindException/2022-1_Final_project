@@ -5,16 +5,23 @@ package com.lastproject.used_item_market;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,9 +39,10 @@ public class SetInFo extends AppCompatActivity {
 
     //새서버 관련
     private FirebaseFirestore firestore;
+    private FirebaseStorage storage;            //이미지 저장소
+    private StorageReference storageRef;        //정확한 위치에 파일 저장
 
     //이미지 관련
-
     public User userinfo;                  //서버에 저장될 사용자의 정보
     public Map<String, Object> universityinfo = new HashMap<>();
 
@@ -46,8 +54,11 @@ public class SetInFo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_in_fo);
 
+
        //서버 연결
        firestore = FirebaseFirestore.getInstance();
+       storage = FirebaseStorage.getInstance();
+       storageRef = storage.getReference();
 
        email = getIntent().getStringExtra("email");
        password = getIntent().getStringExtra("password");
@@ -89,15 +100,31 @@ public class SetInFo extends AppCompatActivity {
 
 
                //새저장
-               firestore.collection("User").add(userinfo);
                firestore.collection("University").document(university).set(universityinfo);
+               firestore.collection("User").add(userinfo).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                   @Override
+                   public void onSuccess(DocumentReference documentReference) {
 
-               Intent signUp_intent = new Intent(SetInFo.this, Login.class);
-               signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-               signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-               signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-               startActivity(signUp_intent);
-               finish();
+                       String key = documentReference.getId();
+                       Uri file = Uri.parse("android.resource://com.lastproject.used_item_market/" + R.drawable.ic_proile);
+                       StorageReference imgRef = storageRef.child("profiles").child(key);
+                       UploadTask uploadTask = (UploadTask)imgRef.putFile(file)
+                               .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                   @Override
+                                   public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                       Intent signUp_intent = new Intent(SetInFo.this, Login.class);
+                                       signUp_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                       signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                       signUp_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                       signUp_intent.putExtra("mykey", key);
+                                       startActivity(signUp_intent);
+                                       finish();
+
+                                   }
+                               });
+                   }
+               });
 
            }
        });

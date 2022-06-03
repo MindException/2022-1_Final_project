@@ -97,6 +97,8 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return position;
     }
 
+
+
     //뷰홀더
     class MyPageViewHolder extends RecyclerView.ViewHolder {
 

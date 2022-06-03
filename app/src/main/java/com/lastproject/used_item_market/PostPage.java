@@ -224,6 +224,7 @@ public class PostPage extends AppCompatActivity {
             for (int i = 0; i < suriList.size(); i++){
 
                 Uri uri = Uri.parse(suriList.get(i));
+                System.out.println(uri.toString());
                 uriArrayList.add(uri);
 
             }
