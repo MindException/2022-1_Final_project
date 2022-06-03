@@ -13,19 +13,23 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -429,17 +433,56 @@ public class SettingPage extends AppCompatActivity {
 
                                                                 selected = adapter.getItem(i);
                                                                 Log.d("alert", "그냥 넘어감");
-                                                                AlertDialog.Builder alertBuilder2 = new AlertDialog.Builder(SettingPage.this);
-                                                                alertBuilder2.setTitle("안내");
-                                                                alertBuilder2.setMessage(selected+ "님과 " + "거래하시겠습니까?");
+                                                                AlertDialog.Builder custom_alertBuilder = new AlertDialog.Builder(SettingPage.this,R.style.AlertDialogTheme);
+                                                                View view = LayoutInflater.from(SettingPage.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
 
-                                                                alertBuilder2.setPositiveButton("취소",new DialogInterface.OnClickListener(){         //오른쪽버튼
+                                                                custom_alertBuilder.setView(view);
+                                                                ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
+                                                                ((TextView)view.findViewById(R.id.textMessage)).setText(selected+ "님과 " + "거래하시겠습니까?");
+                                                                ((Button)view.findViewById(R.id.btnOK)).setText("선택");
+                                                                ((Button)view.findViewById(R.id.btnNO)).setText("취소");
+
+                                                                AlertDialog alertDialog = custom_alertBuilder.create();
+
+                                                                view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View view) {
+                                                                        if(selected.equals("")){
+                                                                            Toast.makeText(SettingPage.this, selected + "선택하여 주세요.", Toast.LENGTH_SHORT).show();
+                                                                        }else{
+
+                                                                            successProduct(productList.get(pos), selected);
+                                                                            alertDialog.dismiss();
+
+                                                                        }
+                                                                    }
+                                                                });
+                                                                view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View view) {
+                                                                        alertDialog.dismiss();
+                                                                    }
+                                                                });
+
+                                                                //다이얼로그 형태 지우기
+                                                                if(alertDialog.getWindow() != null){
+                                                                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                                                }
+
+                                                                alertDialog.show();
+                                                                custom_alertBuilder.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
+
+                                                                /*
+                                                                custom_alertBuilder.setTitle("안내");
+                                                                custom_alertBuilder.setMessage(selected+ "님과 " + "거래하시겠습니까?");
+
+                                                                custom_alertBuilder.setPositiveButton("취소",new DialogInterface.OnClickListener(){         //오른쪽버튼
                                                                     public void onClick(DialogInterface dialog,int which){
                                                                         //삭제하지 않음으로 그냥 둔다.
                                                                     }
                                                                 });
 
-                                                                alertBuilder2.setNegativeButton("선택", new DialogInterface.OnClickListener() {          //왼쪽버튼
+                                                                custom_alertBuilder.setNegativeButton("선택", new DialogInterface.OnClickListener() {          //왼쪽버튼
                                                                     @Override
                                                                     public void onClick(DialogInterface dialog, int which) { //사진 삭제
 
@@ -453,10 +496,12 @@ public class SettingPage extends AppCompatActivity {
                                                                     }
                                                                 });
 
-                                                                alertBuilder2.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
+                                                                custom_alertBuilder.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
 
-                                                                AlertDialog alertDialog2 = alertBuilder2.create();
+                                                                AlertDialog alertDialog2 = custom_alertBuilder.create();
                                                                 alertDialog2.show();
+
+                                                                 */
 
                                                             }
                                                         });

@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,12 +26,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -546,6 +550,8 @@ public class SignUpMap extends AppCompatActivity {
     }
     void dialog(ArrayList<String> university, ArrayList<TMapPoint> universitypoint){
         AlertDialog.Builder dlg = new AlertDialog.Builder(SignUpMap.this);
+        AlertDialog.Builder cusdlg = new AlertDialog.Builder(SignUpMap.this, R.style.AlertDialogTheme);
+        View view = LayoutInflater.from(SignUpMap.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
         final int[] selecteduniv = {0};
 
         Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
@@ -580,6 +586,27 @@ public class SignUpMap extends AppCompatActivity {
                     dlg.show();
                 }
                 if(university == null){
+                    cusdlg.setView(view);
+                    ((TextView)view.findViewById(R.id.textTitle)).setText("대학");
+                    ((TextView)view.findViewById(R.id.textMessage)).setText("주변에 대학이 존재하지 않습니다.");
+                    ((Button)view.findViewById(R.id.btnOK)).setText("확인");
+
+                    AlertDialog alertDialog = cusdlg.create();
+
+                    view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    //다이얼로그 형태 지우기
+                    if(alertDialog.getWindow() != null){
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+
+                    alertDialog.show();
+                    /*
                     dlg.setTitle("대학");
                     dlg.setMessage("주변에 대학이 존재하지 않습니다."); // 메시지
                     dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
@@ -589,6 +616,8 @@ public class SignUpMap extends AppCompatActivity {
                         }
                     });
                     dlg.show();
+
+                     */
                 }
             }
         }, 1000);
