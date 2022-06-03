@@ -20,7 +20,7 @@
         <item name="windowNoTitle">true</item>
     </style>
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="colorPrimary">#0000FF</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
     <!-- Splash theme. -->
     <style name="SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -11,13 +11,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -181,11 +186,41 @@ public class TradeMap extends AppCompatActivity {
                                 @Override
                                 public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
                                     AlertDialog.Builder dlg = new AlertDialog.Builder(TradeMap.this, R.style.AlertDialogTheme);
+                                    View view = LayoutInflater.from(TradeMap.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
                                     Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
+
 
                                     mHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
+                                            dlg.setView(view);
+                                            ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
+                                            ((TextView)view.findViewById(R.id.textMessage)).setText("해당 위치로 지정하시겠습니까?");
+                                            ((Button)view.findViewById(R.id.btnOK)).setText("확인");
+                                            ((Button)view.findViewById(R.id.btnNO)).setText("취소");
+
+                                            AlertDialog alertDialog = dlg.create();
+
+                                            view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    nextInfo();
+                                                }
+                                            });
+                                            view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    alertDialog.dismiss();
+                                                }
+                                            });
+
+                                            //다이얼로그 형태 지우기
+                                            if(alertDialog.getWindow() != null){
+                                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                            }
+
+                                            alertDialog.show();
+                                            /*
                                             dlg.setTitle("해당 위치로 지정하시겠습니까?");
                                             dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
                                                 @Override
@@ -199,8 +234,11 @@ public class TradeMap extends AppCompatActivity {
                                                 }
                                             });
                                             dlg.show();
+                                            */
                                         }
                                     }, 0);
+
+
                                 }
                             });
 

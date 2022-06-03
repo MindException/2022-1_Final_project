@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,9 +32,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -512,6 +515,41 @@ public class PostPage extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int pos) {
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(PostPage.this, R.style.AlertDialogTheme);
+                View view = LayoutInflater.from(PostPage.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
+
+                alertBuilder.setView(view);
+                ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
+                ((TextView)view.findViewById(R.id.textMessage)).setText("선택하신 사진을 삭제하시겠습니까?");
+                ((Button)view.findViewById(R.id.btnOK)).setText("예");
+                ((Button)view.findViewById(R.id.btnNO)).setText("아니오");
+
+                AlertDialog alertDialog = alertBuilder.create();
+
+                view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        uriArrayList.remove(pos);
+                        init();
+                        img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
+                        alertDialog.dismiss();
+                        Toast.makeText(PostPage.this, "사진 삭제 성공", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                //다이얼로그 형태 지우기
+                if(alertDialog.getWindow() != null){
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+
+                alertDialog.show();
+
+                /*
                 alertBuilder.setTitle("안내");
                 alertBuilder.setMessage("선택하신 사진을 삭제하시겠습니까?");
                 alertBuilder.setPositiveButton("아니오",new DialogInterface.OnClickListener(){         //오른쪽버튼
@@ -532,6 +570,8 @@ public class PostPage extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = alertBuilder.create();
                 alertDialog.show();
+
+                 */
             }
         });
         for(int i = 0; i < uriArrayList.size(); i++){
