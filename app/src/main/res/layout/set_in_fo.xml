@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 개발자: 최도원 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="30px"
-        android:background="@drawable/img_view_chalk_defalt2"
+        android:background="@drawable/img_view_chalk5"
         android:weightSum="5.4">
 
         <LinearLayout
@@ -120,7 +121,7 @@
                             android:textSize="22dp"
                             android:textStyle="bold"
                             android:textColor="#ffffff"
-                            android:background="@drawable/bt_tumyeong_sty"
+                            android:background="@drawable/bt_bg_blue"
                             android:gravity="center"
                             ></TextView>
                     </LinearLayout>

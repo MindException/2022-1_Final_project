@@ -1,3 +1,5 @@
+//개발: 이정빈, 김도훈
+
 package com.lastproject.used_item_market;
 
 import android.content.Context;

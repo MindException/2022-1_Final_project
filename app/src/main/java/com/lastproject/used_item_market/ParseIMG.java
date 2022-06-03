@@ -1,3 +1,5 @@
+//개발: 이승현
+
 package com.lastproject.used_item_market;
 
 public class ParseIMG {             //이미지를 이진바이트로 혹은 이진바이트를 이미지로 만들어주는 함수 모음이다.

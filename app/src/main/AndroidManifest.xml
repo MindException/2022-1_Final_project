@@ -69,10 +69,6 @@
             android:exported="true"
             android:theme="@style/SplashTheme" />
         <activity
-            android:name=".SellPlaceMap"
-            android:exported="true"
-            android:theme="@style/SplashTheme" />
-        <activity
             android:name=".SignUp"
             android:exported="true"
             android:theme="@style/SplashTheme" />

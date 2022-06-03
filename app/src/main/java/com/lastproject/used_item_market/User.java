@@ -1,3 +1,5 @@
+//개발: 이승현
+
 package com.lastproject.used_item_market;
 
 public class User {         //사용자 테이블이다.
