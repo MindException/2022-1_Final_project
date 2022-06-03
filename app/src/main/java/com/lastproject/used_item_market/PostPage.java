@@ -386,7 +386,7 @@ public class PostPage extends AppCompatActivity {
     void setPurposeSpinner(){
         purposeSpinner = (Spinner) findViewById(R.id.purpose);
         ArrayAdapter ppAdapter = ArrayAdapter.createFromResource(this,R.array.purpose, android.R.layout.simple_spinner_dropdown_item);
-        ppAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //선택목록이 나타날 때 사용할 레이아웃 지정
+        ppAdapter.setDropDownViewResource(R.layout.postpage_spinner_sell_item); //선택목록이 나타날 때 사용할 레이아웃 지정
         purposeSpinner.setAdapter(ppAdapter);  //스피너에 어댑터 적용
 
         purposeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -433,7 +433,7 @@ public class PostPage extends AppCompatActivity {
     void setCategorySpinner(){
         categorySpinner = (Spinner) findViewById(R.id.category);
         ArrayAdapter cgAdapter = ArrayAdapter.createFromResource(this,R.array.category, android.R.layout.simple_spinner_dropdown_item);
-        cgAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); //선택목록이 나타날 때 사용할 레이아웃 지정
+        cgAdapter.setDropDownViewResource(R.layout.postpage_spinner_sell_item); //선택목록이 나타날 때 사용할 레이아웃 지정
         categorySpinner.setAdapter(cgAdapter);  //스피너에 어댑터 적용
 
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -21,8 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -120,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
                             University university = document.toObject(University.class);
                             univNames.add(university.university);
                         }
-                        arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item,
-                                univNames);
+                        arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.lobby_spinne_item_out, univNames);
+                        arrayAdapter.setDropDownViewResource(R.layout.lobby_spinner_item);
                         univspinner.setAdapter(arrayAdapter);
 
                         //원래 자신의 대학교로 초기세팅을 해준다.
@@ -157,7 +156,10 @@ public class MainActivity extends AppCompatActivity {
 
     void Sell(){ //판매 버튼 클릭 시 화면 이동
         ImageButton sell = (ImageButton)findViewById(R.id.Sell);
-        Glide.with(this).load(R.raw.ic_lobby_maket).into(sell);
+        Glide.with(this)
+                .load(R.raw.ic_lobby_maket)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(sell);
         sell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,7 +199,10 @@ public class MainActivity extends AppCompatActivity {
     }
     void All(){ //모두보기 버튼 클릭 시 화면 이동
         ImageButton all = (ImageButton)findViewById(R.id.Show);
-        Glide.with(this).load(R.raw.ic_lobby_all).into(all);
+        Glide.with(this)
+                .load(R.raw.ic_lobby_all)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(all);
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

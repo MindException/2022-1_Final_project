@@ -135,6 +135,7 @@ public class CostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             Glide.with(itemview)
                                     .load(uri)
                                     .override(150, 150)
+                                    .thumbnail(0.1f)
                                     .into(iv);
 
                         }catch (Exception e){

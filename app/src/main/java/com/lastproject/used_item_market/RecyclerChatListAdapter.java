@@ -165,6 +165,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
                             Glide.with(itemview)
                                     .load(uri)
                                     .override(150, 150)
+                                    .thumbnail(0.1f)
                                     .into(product_img);
 
                         } catch (Exception e) {

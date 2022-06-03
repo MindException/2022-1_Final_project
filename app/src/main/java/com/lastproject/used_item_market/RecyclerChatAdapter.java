@@ -193,7 +193,7 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             //기본세팅
             nicknameView.setText(nickname);
             chatView.setText(text);
-            time.setText(chat_time);
+            time.setText(Time.chatTime(chat_time));
 
         }
     }

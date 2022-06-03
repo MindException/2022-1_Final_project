@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView android:layout_width="match_parent"
+    android:id="@+id/postpage_spinner_item"
+    android:layout_height="wrap_content"
+    android:textSize="25dp"
+    android:textColor="#FFFFFF"
+    android:fontFamily="@font/font_5"
+    android:gravity="center"
+    android:background="#00ff0000"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+</TextView>

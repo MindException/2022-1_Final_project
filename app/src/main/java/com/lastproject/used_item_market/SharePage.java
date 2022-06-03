@@ -138,6 +138,7 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                 Intent intent = new Intent(SharePage.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -257,6 +258,7 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                 Intent intent = new Intent(SharePage.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -283,6 +285,7 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                 Intent intent = new Intent(SharePage.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -513,6 +516,7 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                 Intent intent = new Intent(SharePage.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);

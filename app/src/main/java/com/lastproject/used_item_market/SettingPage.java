@@ -164,6 +164,7 @@ public class SettingPage extends AppCompatActivity {
                 Intent intent = new Intent(SettingPage.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -341,6 +342,7 @@ public class SettingPage extends AppCompatActivity {
                 Intent intent = new Intent(SettingPage.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -554,6 +556,7 @@ public class SettingPage extends AppCompatActivity {
                 Intent intent = new Intent(SettingPage.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 intent.putExtra("email", email);
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
@@ -679,6 +682,8 @@ public class SettingPage extends AppCompatActivity {
                                     try{
                                         Glide.with(SettingPage.this)
                                                 .load(uri)
+                                                .override(300, 300)
+                                                .thumbnail(0.1f)
                                                 .into(imageView);
                                     }catch (Exception e){
 

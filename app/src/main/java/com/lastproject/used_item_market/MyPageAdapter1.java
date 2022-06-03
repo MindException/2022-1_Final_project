@@ -161,6 +161,7 @@ public class MyPageAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         Glide.with(itemview)
                                 .load(uri)
                                 .override(150, 150)
+                                .thumbnail(0.1f)
                                 .into(iv);
 
                     }catch (Exception e){

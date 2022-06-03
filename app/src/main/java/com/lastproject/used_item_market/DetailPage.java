@@ -255,6 +255,7 @@ public class DetailPage extends AppCompatActivity {
                         Intent intent = new Intent(DetailPage.this, SellPage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         intent.putExtra("email", email);
                         intent.putExtra("mykey", mykey);
                         intent.putExtra("nickname", nickname);
@@ -267,6 +268,7 @@ public class DetailPage extends AppCompatActivity {
                         Intent intent2 = new Intent(DetailPage.this, SharePage.class);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         intent2.putExtra("email", email);
                         intent2.putExtra("mykey", mykey);
                         intent2.putExtra("nickname", nickname);
@@ -279,6 +281,7 @@ public class DetailPage extends AppCompatActivity {
                         Intent intent3 = new Intent(DetailPage.this, AllPage.class);
                         intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent3.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         intent3.putExtra("email", email);
                         intent3.putExtra("mykey", mykey);
                         intent3.putExtra("nickname", nickname);
@@ -292,6 +295,7 @@ public class DetailPage extends AppCompatActivity {
                         Intent intent4 = new Intent(DetailPage.this, SettingPage.class);
                         intent4.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent4.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent4.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         intent4.putExtra("email", email);
                         intent4.putExtra("mykey", mykey);
                         intent4.putExtra("nickname", nickname);
@@ -305,6 +309,7 @@ public class DetailPage extends AppCompatActivity {
                         Intent intent5 = new Intent(DetailPage.this, MainActivity.class);
                         intent5.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent5.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent5.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         intent5.putExtra("email", email);
                         intent5.putExtra("mykey", mykey);
                         intent5.putExtra("nickname", nickname);
@@ -318,6 +323,7 @@ public class DetailPage extends AppCompatActivity {
                         Intent intent6 = new Intent(DetailPage.this, ChatPage.class);
                         intent6.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent6.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent6.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         intent6.putExtra("email", email);
                         intent6.putExtra("mykey", mykey);
                         intent6.putExtra("nickname", nickname);
@@ -372,6 +378,7 @@ public class DetailPage extends AppCompatActivity {
                                         Intent intent = new Intent(DetailPage.this, ChatPage.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                         intent.putExtra("email", email);
                                         intent.putExtra("mykey", mykey);
                                         intent.putExtra("nickname", nickname);
@@ -432,6 +439,7 @@ public class DetailPage extends AppCompatActivity {
                                                                     Intent intent = new Intent(DetailPage.this, ChatPage.class);
                                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                                                     intent.putExtra("email", email);
                                                                     intent.putExtra("mykey", mykey);
                                                                     intent.putExtra("nickname", nickname);

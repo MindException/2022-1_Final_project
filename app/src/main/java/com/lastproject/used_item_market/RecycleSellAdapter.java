@@ -81,7 +81,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        ((ViewHolderSellProduct)holder).onBind(productArrayList.get(position));
+        ((ViewHolderSellProduct)holder).onBind(productArrayList.get(position), position);
     }
 
     @Override
@@ -101,6 +101,13 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemViewType(int position) {      //리사이클뷰에 재활용을 막는다.
         return position;
     }
+
+    //이미지 먼저 불러오기
+    void preload(Context context, Uri uri){     //이미지를 먼저 불러온다.
+
+
+    }
+
 
     //아이템 저장하는 클래스
     class ViewHolderSellProduct extends RecyclerView.ViewHolder{
@@ -144,7 +151,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         }
 
-        public void onBind(Product pdt){
+        public void onBind(Product pdt , int pos){
 
             title.setText(pdt.title);
             price.setText(Long.toString(pdt.cost) + "원");
@@ -165,6 +172,7 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             Glide.with(itemview)
                                     .load(uri)
                                     .override(150, 150)
+                                    .thumbnail(0.1f)
                                     .into(iv);
 
                         }catch (Exception e){
@@ -181,6 +189,14 @@ public class RecycleSellAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 });
             }//if문 끝
+
+
+
+
+
+
+
+
         }
     }
 
