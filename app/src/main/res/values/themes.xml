@@ -1,9 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Used_item_market" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- 팝업 메뉴 배경 및 글자. -->
-        <item name="android:itemBackground">@android:color/white</item>
-        <item name="android:textColor">#C8C8C8</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -36,5 +33,11 @@
         <item name="android:windowLightStatusBar">false</item>
         <!-- background -->
         <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+    <!-- PopupMenu theme -->
+    <style name="PopupMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <!-- 팝업 메뉴 배경 및 글자. -->
+        <item name="android:itemBackground">#A5D1E4</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>
