@@ -204,13 +204,13 @@ public class TradeMap extends AppCompatActivity {
                                             view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
-                                                    nextInfo();
+                                                    alertDialog.dismiss();
                                                 }
                                             });
                                             view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
-                                                    alertDialog.dismiss();
+                                                    nextInfo();
                                                 }
                                             });
 

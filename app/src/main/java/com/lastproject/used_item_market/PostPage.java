@@ -528,17 +528,18 @@ public class PostPage extends AppCompatActivity {
                 view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        uriArrayList.remove(pos);
-                        init();
-                        img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
                         alertDialog.dismiss();
-                        Toast.makeText(PostPage.this, "사진 삭제 성공", Toast.LENGTH_SHORT).show();
                     }
                 });
                 view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        uriArrayList.remove(pos);
+                        init();
+                        img_countView.setText("사진 추가(" + uriArrayList.size() + "/5)");
                         alertDialog.dismiss();
+                        Toast.makeText(PostPage.this, "사진 삭제 성공", Toast.LENGTH_SHORT).show();
                     }
                 });
 
