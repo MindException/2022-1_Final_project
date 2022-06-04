@@ -5,7 +5,27 @@
       <map>
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/background_splash.xml" value="0.31296296296296294" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/bt_tumyeong_sty.xml" value="0.3265625" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/ic_baseline_photo_camera_24.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/img_postpageview_round.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/img_view_round_black.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/popup_menu_bg.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable-v24/postimageshape.xml" value="0.32864583333333336" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/backbtn.xml" value="0.3265625" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/dialog_button_background.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/dialog_title_background.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/ic_launcher_background.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/ic_main_background.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/img_view_round.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/lobby_spinner_item_round.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/postadd.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/profile_round.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/setting.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/shape.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/shapepicture.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/spinner_bg_postpage.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/spinner_bg_school.xml" value="0.32864583333333336" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/drawable/spinner_item_round.xml" value="0.32864583333333336" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_all_page.xml" value="0.32608695652173914" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_chat_page.xml" value="0.32608695652173914" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/activity_chatting.xml" value="0.32608695652173914" />
@@ -23,6 +43,8 @@
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/horizon_rectcler_item.xml" value="0.31567028985507245" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/lobby.xml" value="0.31567028985507245" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/mypage_list_item.xml" value="0.32608695652173914" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/postpage_spinner_sell_item.xml" value="0.3125" />
+        <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/product_item_img.xml" value="0.17391304347826086" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/sell_place_map.xml" value="0.32608695652173914" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/sign_up_map.xml" value="0.17391304347826086" />
         <entry key="..\:/AndroidWorkspace/2022-1_Final_project/app/src/main/res/layout/trade_map.xml" value="0.17391304347826086" />
