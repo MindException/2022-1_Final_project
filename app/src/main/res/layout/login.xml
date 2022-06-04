@@ -163,7 +163,7 @@
                             android:textSize="18dp"
                             android:textStyle="bold"
                             android:textColor="#ffffff"
-                            android:background="@drawable/bt_bg_blue"
+                            android:background="@drawable/bt_bg_white"
                             android:layout_marginLeft="40dp"
                             android:layout_marginRight="40dp"
                             android:layout_marginBottom="5dp"

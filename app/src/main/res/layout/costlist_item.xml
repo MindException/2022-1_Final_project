@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 개발자: 이정빈 -->
+<!-- 개발자: 이정빈 ,최도원-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -9,49 +9,53 @@
     android:background="#00ff0000">
 
     <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_gravity="center"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/img_view_round">
         <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:cardCornerRadius="20dp"
-            app:cardElevation="5dp">
+            app:cardElevation="5dp"
+            android:layout_margin="1dp">
             <ImageView
                 android:id="@+id/costlist_img"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_setimg"
-                android:padding="0dp"
-                android:background="@drawable/img_view_round">
+                android:padding="0dp">
             </ImageView>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
     <TextView
         android:id="@+id/costlist_title"
-        android:layout_width="100dp"
+        android:layout_width="90dp"
         android:layout_height="20dp"
         android:gravity="center"
         android:text="품명"
         android:layout_marginLeft="5dp"
-        android:fontFamily="@font/font_3"
+        android:fontFamily="@font/font_5"
         android:textColor="#ffffff"
-        android:textSize="20dp"
+        android:textSize="12dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:background="#00ff0000"/>
     <TextView
         android:id="@+id/costlist_cost"
-        android:layout_width="100dp"
+        android:layout_width="90dp"
         android:layout_height="20dp"
         android:gravity="center"
         android:text="가격"
         android:layout_marginLeft="5dp"
-        android:fontFamily="@font/font_3"
+        android:fontFamily="@font/font_5"
         android:textColor="#ffffff"
-        android:textSize="20dp"
+        android:textSize="12dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:background="#00ff0000"/>
 </LinearLayout>
 
