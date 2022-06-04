@@ -19,6 +19,12 @@
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
+    <style name="AlertDialogTheme2" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:background">#FFFCDF</item>
+        <item name="android:fontFamily">@font/font_5</item>
+
+    </style>
     <!-- Splash theme. -->
     <style name="SplashTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->

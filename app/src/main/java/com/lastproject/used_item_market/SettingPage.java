@@ -420,7 +420,7 @@ public class SettingPage extends AppCompatActivity {
                                                 }
                                                 Log.d("alert", "dd" + adapter.getItem(0));
                                                 //거래할 대상이 있는 경우
-                                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SettingPage.this);
+                                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SettingPage.this, R.style.AlertDialogTheme2);
                                                 alertBuilder.setTitle("구매자를 선택하여주세요.");
                                                 //alert는 리스트의 경우 메시지를 사용하면 안된다.
                                                 //alertBuilder.setMessage("구매자를 선택하여주세요.");
@@ -509,12 +509,6 @@ public class SettingPage extends AppCompatActivity {
                                                             }
                                                         });
 
-
-                                                        alertBuilder.setPositiveButton("취소",new DialogInterface.OnClickListener(){         //오른쪽버튼
-                                                            public void onClick(DialogInterface dialog,int which){
-                                                                //삭제하지 않음으로 그냥 둔다.
-                                                            }
-                                                        });
                                                         /*
                                                         alertBuilder.setNegativeButton("선택", new DialogInterface.OnClickListener() {          //왼쪽버튼
                                                             @Override
