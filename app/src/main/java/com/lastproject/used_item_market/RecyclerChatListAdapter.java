@@ -242,6 +242,8 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
             if(chattingRoomInfo.last_SEE.get(myindex) != chattingRoomInfo.last_index){      //확인하지 않은 채팅이 있는 경우
 
                 int nonSEE = chattingRoomInfo.last_index - chattingRoomInfo.last_SEE.get(myindex);
+                //map_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_blue));
+                back_red_circle.setBackground(itemview.getContext().getResources().getDrawable(R.drawable.ci_chattimg_alarm));
                 alramnum.setText(Integer.toString(nonSEE));
 
             }else{      //다 읽은 경우

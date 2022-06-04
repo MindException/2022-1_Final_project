@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AdaptiveIconDrawable;
@@ -802,8 +803,19 @@ public class SettingPage extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
 
                         switch (item.getItemId()){
-                            //수정
+                            //로그아웃
                             case R.id.revise:
+                                Intent intent = new Intent(SettingPage.this, Login.class);
+                                SharedPreferences logininfo = getSharedPreferences("setting", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = logininfo.edit();
+                                editor.clear();
+                                editor.commit();
+                                Toast.makeText(SettingPage.this, "계정 로그아웃", Toast.LENGTH_SHORT).show();
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                startActivity(intent);
+                                finish();
                                 break;
 
                         }

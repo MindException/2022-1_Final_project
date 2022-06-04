@@ -42,12 +42,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
+    //기본 나의 정보
+    String email = "";
+    String mykey = "";
+    String nickname = "";
+    String myUniv = "";
+    String myimg = "";
+
     SharedPreferences logininfo;
     SharedPreferences.Editor editor;
 
     //자동 로그인
     private String autologin;    //String 값으로 true이면 자동으로 넘어간다.
-    private String email;
 
     //로그인 버튼들
    TextView google_button;
@@ -71,7 +77,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     //텍스트로 정보를 가져옴
     private String semail = "";
     private String spassword = "";
-    private String mykey = "";
 
     //비밀번호 암호화
     AES256 aes256;
@@ -95,18 +100,30 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         //암호화 객체 생성
         aes256 = new AES256();
 
+        //자동 로그인
         logininfo = getSharedPreferences("setting", MODE_PRIVATE);      //기본 저장 로그인 객체 생성
         editor = logininfo.edit();
         autologin = logininfo.getString("auto", "");                //자동로그인이 되어있느지 가져온다.(두번 째 인자는 실패시 반환값)
+        System.out.println("처음" + autologin);
         if(autologin.equals("True")){       //자동로그인으로 넘어간다.
 
+            mykey = logininfo.getString("mykey", "");
             email = logininfo.getString("email","");
+            nickname = logininfo.getString("nickname", "");
+            myUniv = logininfo.getString("myUniv", "");
+            myimg = logininfo.getString("myimg", "");
             Intent login_intent = new Intent(Login.this, MainActivity.class);
             login_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             login_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            login_intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             login_intent.putExtra("email", email);
+            login_intent.putExtra("mykey", mykey);
+            login_intent.putExtra("nickname", nickname);
+            login_intent.putExtra("myUniv", myUniv);
+            login_intent.putExtra("myimg", myimg);
             Toast.makeText(Login.this, "자동 로그인", Toast.LENGTH_SHORT).show();
             startActivity(login_intent);
+            finish();
 
         }
 
@@ -165,8 +182,15 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                     login_intent.putExtra("nickname", userinfo.nickname);
                                     login_intent.putExtra("myUniv", userinfo.university);
                                     login_intent.putExtra("myimg", userinfo.img);
+                                    editor.putString("auto", "True");
+                                    editor.putString("email", userinfo.google_email);
+                                    editor.putString("mykey", mykey);
+                                    editor.putString("nickname", userinfo.nickname);
+                                    editor.putString("myUniv", userinfo.university);
+                                    editor.putString("myimg", userinfo.img);
+                                    editor.commit();
                                     startActivity(login_intent);
-                                    System.exit(0);
+                                    finish();
                                 }else{  //비밀번호가 틀릴 경우
                                     spassword = "";
                                     et_password.setText("");
@@ -290,6 +314,13 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                             login_intent.putExtra("nickname", userinfo.nickname);
                                             login_intent.putExtra("myUniv", userinfo.university);
                                             login_intent.putExtra("myimg", userinfo.img);
+                                            editor.putString("auto", "True");
+                                            editor.putString("email", userinfo.google_email);
+                                            editor.putString("mykey", mykey);
+                                            editor.putString("nickname", userinfo.nickname);
+                                            editor.putString("myUniv", userinfo.university);
+                                            editor.putString("myimg", userinfo.img);
+                                            editor.commit();
                                             startActivity(login_intent);
                                             finish();
 
