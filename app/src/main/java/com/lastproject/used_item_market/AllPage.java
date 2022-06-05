@@ -41,7 +41,7 @@ public class AllPage extends AppCompatActivity implements SwipeRefreshLayout.OnR
     CollectionReference productRef;
 
     //상품관련
-    private int limit = 9;         //요청 상품 수
+    private int limit = 15;         //요청 상품 수
     private boolean isScrolling = false;
     private boolean isLastItemReached = false;
     private DocumentSnapshot lastVisible;       //마지막 스냅샷 커서 저장
