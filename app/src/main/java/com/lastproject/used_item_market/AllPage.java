@@ -153,8 +153,6 @@ public class AllPage extends AppCompatActivity implements SwipeRefreshLayout.OnR
         recyclerView.setAdapter(recycleSellAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        System.out.println( "대학" + myUniv);
-
         //쿼리 시작
         productRef = firestore.collection("Product");
         Query query = productRef.whereEqualTo("university", myUniv)
@@ -388,7 +386,6 @@ public class AllPage extends AppCompatActivity implements SwipeRefreshLayout.OnR
 
                         }
                     }else{  //수신 실패
-                        System.out.println("수신 실패");
                     }
                 }
             });//메인 쿼리
@@ -485,7 +482,6 @@ public class AllPage extends AppCompatActivity implements SwipeRefreshLayout.OnR
 
                         }
                     }else{  //수신 실패
-                        System.out.println("수신 실패");
                     }
                 }
             });//메인 쿼리
@@ -615,7 +611,6 @@ public class AllPage extends AppCompatActivity implements SwipeRefreshLayout.OnR
 
                         }
                     }else{  //수신 실패
-                        System.out.println("수신 실패");
                     }
                 }
             });//메인 쿼리
@@ -712,7 +707,6 @@ public class AllPage extends AppCompatActivity implements SwipeRefreshLayout.OnR
 
                         }
                     }else{  //수신 실패
-                        System.out.println("수신 실패");
                     }
                 }
             });//메인 쿼리

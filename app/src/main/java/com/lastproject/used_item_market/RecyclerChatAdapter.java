@@ -166,27 +166,6 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             }
 
-            /*
-            //프로필 이미지 처리
-            StorageReference sellerimgRef = storageRef.child("profiles")
-                    .child(chattingRoomInfo.customer_images.get(index));
-            sellerimgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-
-                    try {
-
-                        Glide.with(itemview)
-                                .load(uri)
-                                .override(100, 100)
-                                .into(profile);
-
-                    } catch (Exception e) {
-                        System.out.println("view holder binding 실패");
-                    }
-                }
-            }); //프로필 이미지 처리 끝
-            */
             profile.setImageBitmap(bitmaps.get(index));
 
 

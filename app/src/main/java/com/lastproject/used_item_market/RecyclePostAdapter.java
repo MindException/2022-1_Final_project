@@ -108,7 +108,6 @@ public class RecyclePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 iv.setClipToOutline(true);              //모양에 맞게 사진 자르기
 
             }catch (Exception e){
-                System.out.println("view holder binding 실패");
             }
 
         }

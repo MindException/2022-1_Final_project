@@ -153,7 +153,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
         recyclerView.setAdapter(recycleSellAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        System.out.println( "대학" + myUniv);
 
         //쿼리 시작
         productRef = firestore.collection("Product");
@@ -390,7 +389,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
 
                         }
                     }else{  //수신 실패
-                        System.out.println("수신 실패");
                     }
                 }
             });//메인 쿼리
@@ -489,7 +487,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
 
                         }
                     }else{  //수신 실패
-                        System.out.println("수신 실패");
                     }
                 }
             });//메인 쿼리
@@ -621,7 +618,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
 
                         }
                     }else{  //수신 실패
-                        System.out.println("수신 실패");
                     }
                 }
             });//메인 쿼리
@@ -720,7 +716,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
 
                         }
                     }else{  //수신 실패
-                        System.out.println("수신 실패");
                     }
                 }
             });//메인 쿼리

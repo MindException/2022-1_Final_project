@@ -193,7 +193,7 @@ public class SettingPage extends AppCompatActivity {
         selling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("판매 중 눌림");
+
                 where = "판매";
                 productList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
@@ -210,14 +210,11 @@ public class SettingPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            //DocumentSnapshot document = task.getResult();
-                            //System.out.println("ddd:" + document);
+
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
 
-                                System.out.println("task :" + document.getId());
-                                System.out.println("plist :"+productList);
                             }
                             //상품 추가했으니 어뎁터 갱신
                             //리사이클러뷰 전체 업데이트 : notifyDataSetChanged
@@ -233,7 +230,7 @@ public class SettingPage extends AppCompatActivity {
         free_providing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("무료 나눔 눌림");
+
                 where = "무료나눔";
                 productList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
@@ -254,8 +251,7 @@ public class SettingPage extends AppCompatActivity {
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
 
-                                System.out.println("task :" + document.getId());
-                                System.out.println("plist :"+productList);
+
                             }
                             //상품 추가했으니 어뎁터 갱신
                             //리사이클러뷰 전체 업데이트 : notifyDataSetChanged
@@ -271,7 +267,7 @@ public class SettingPage extends AppCompatActivity {
         success_deal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("거래완료 눌림");
+
                 where = "거래완료";
                 productList = new ArrayList<>();
                 selling.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
@@ -289,14 +285,12 @@ public class SettingPage extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            //DocumentSnapshot document = task.getResult();
-                            //System.out.println("ddd:" + document);
+
+
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
 
-                                System.out.println("task :" + document.getId());
-                                System.out.println("plist :"+productList);
                             }
 
                             Query next_query = product_Ref.whereEqualTo("purchaser_key", mykey)
@@ -309,14 +303,11 @@ public class SettingPage extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        //DocumentSnapshot document = task.getResult();
-                                        //System.out.println("ddd:" + document);
+
                                         for (DocumentSnapshot document : task.getResult()) {
                                             Product product = document.toObject(Product.class);
                                             productList.add(product);
 
-                                            System.out.println("task :" + document.getId());
-                                            System.out.println("plist :" + productList);
                                         }
 
                                         productList.sort(new CompareSuccessTime<>());
@@ -344,7 +335,6 @@ public class SettingPage extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int pos) {
 
-                System.out.println("상품 키:" + productList.get(pos).key);
                 String path = "MyPage";
                 Intent intent = new Intent(SettingPage.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -418,7 +408,7 @@ public class SettingPage extends AppCompatActivity {
                                                     array[i] = tradePeople.get(i);
                                                     adapter.add(tradePeople.get(i));
                                                 }
-                                                Log.d("alert", "dd" + adapter.getItem(0));
+
                                                 //거래할 대상이 있는 경우
                                                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(SettingPage.this, R.style.AlertDialogTheme2);
                                                 alertBuilder.setTitle("구매자를 선택하여주세요.");
@@ -436,7 +426,6 @@ public class SettingPage extends AppCompatActivity {
                                                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                                                 selected = adapter.getItem(i);
-                                                                Log.d("alert", "그냥 넘어감");
                                                                 AlertDialog.Builder custom_alertBuilder = new AlertDialog.Builder(SettingPage.this,R.style.AlertDialogTheme);
                                                                 View view = LayoutInflater.from(SettingPage.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
 
@@ -475,55 +464,11 @@ public class SettingPage extends AppCompatActivity {
                                                                 alertDialog.show();
                                                                 custom_alertBuilder.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
 
-                                                                /*
-                                                                custom_alertBuilder.setTitle("안내");
-                                                                custom_alertBuilder.setMessage(selected+ "님과 " + "거래하시겠습니까?");
 
-                                                                custom_alertBuilder.setPositiveButton("취소",new DialogInterface.OnClickListener(){         //오른쪽버튼
-                                                                    public void onClick(DialogInterface dialog,int which){
-                                                                        //삭제하지 않음으로 그냥 둔다.
-                                                                    }
-                                                                });
-
-                                                                custom_alertBuilder.setNegativeButton("선택", new DialogInterface.OnClickListener() {          //왼쪽버튼
-                                                                    @Override
-                                                                    public void onClick(DialogInterface dialog, int which) { //사진 삭제
-
-                                                                        if(selected.equals("")){
-                                                                            Toast.makeText(SettingPage.this, selected + "선택하여 주세요.", Toast.LENGTH_SHORT).show();
-                                                                        }else{
-
-                                                                            successProduct(productList.get(pos), selected);
-
-                                                                        }
-                                                                    }
-                                                                });
-
-                                                                custom_alertBuilder.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
-
-                                                                AlertDialog alertDialog2 = custom_alertBuilder.create();
-                                                                alertDialog2.show();
-
-                                                                 */
 
                                                             }
                                                         });
 
-                                                        /*
-                                                        alertBuilder.setNegativeButton("선택", new DialogInterface.OnClickListener() {          //왼쪽버튼
-                                                            @Override
-                                                            public void onClick(DialogInterface dialog, int which) { //사진 삭제
-
-                                                                if(selected.equals("")){
-                                                                    Toast.makeText(SettingPage.this, selected + "선택하여 주세요.", Toast.LENGTH_SHORT).show();
-                                                                }else{
-
-                                                                    successProduct(productList.get(pos), selected);
-
-                                                                }
-                                                            }
-                                                        });
-                                                        */
 
                                                         alertBuilder.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
                                                         AlertDialog alertDialog = alertBuilder.create();
@@ -581,21 +526,7 @@ public class SettingPage extends AppCompatActivity {
                                         }
 
                                         alertDialog.show();
-                                        /*  기존 코드
-                                        dlg.setTitle("물품을 삭제하시겠습니까?");
-                                        dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
 
-                                            }
-                                        }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) { // 채팅방 나감
-                                                deleteProduct(productList.get(pos));
-                                            }
-                                        });
-                                        dlg.show();
-                                        */
                                     }
                                 }, 0);
 
@@ -626,7 +557,6 @@ public class SettingPage extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int pos) {
 
-                System.out.println("상품 키:" + productList.get(pos).key);
                 String path = "MyPage";
                 Intent intent = new Intent(SettingPage.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -665,14 +595,11 @@ public class SettingPage extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    //DocumentSnapshot document = task.getResult();
-                    //System.out.println("ddd:" + document);
+
                     for(DocumentSnapshot document : task.getResult()){
                         Product product = document.toObject(Product.class);
                         productList.add(product);
 
-                        System.out.println("task :" + document.getId());
-                        System.out.println("plist :"+productList);
                     }
                     //상품 추가했으니 어뎁터 갱신
                     //리사이클러뷰 전체 업데이트 : notifyDataSetChanged
@@ -747,7 +674,7 @@ public class SettingPage extends AppCompatActivity {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()) {
                         user = documentSnapshot.toObject(User.class);
-                        System.out.println(user.img);
+
                         if(user.img != null){
                             StorageReference deserRef = storageRef.child("profiles").
                                     child(user.img);    //이미지 조회

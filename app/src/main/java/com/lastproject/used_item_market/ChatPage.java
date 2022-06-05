@@ -227,7 +227,6 @@ public class ChatPage extends AppCompatActivity {
                     }
                 }
 
-                Log.d("alert", "결과:" + trigger_delete);
                 insert();
                 chatMenu();
                 readLastIndex = chattingRoomInfo.last_SEE.get(myindex);
@@ -240,7 +239,6 @@ public class ChatPage extends AppCompatActivity {
 
                     //스크롤하면서 읽은 행(제일 마지막 기준)
                     nowReadIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                    System.out.println("현재 위치: " +  nowReadIndex);
                     if(chattingRoomInfo.last_SEE.get(myindex) < nowReadIndex){           //더 읽었기 때문에 기준을 표시한다.
                         //마지막 본 인덱스 변화
                         chattingRoomInfo.last_SEE.set(myindex, nowReadIndex);
@@ -251,7 +249,6 @@ public class ChatPage extends AppCompatActivity {
                         update_LastSEE.update("last_SEE", chattingRoomInfo.last_SEE).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                System.out.println("마지막 읽은 횟수 업데이트");
                             }
                         });
 
@@ -302,12 +299,9 @@ public class ChatPage extends AppCompatActivity {
 
             StorageReference imgRef = storageReference.child("profiles")
                     .child(chattingRoomInfo.customer_images.get(bitmaps.size()));
-            System.out.println(chattingRoomInfo.customer_images.get(bitmaps.size()));
             imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {        //재귀가 잘 동작한다.
-
-                    System.out.println(uri);
 
                     //인덱스 저장
                     int index = 0;
@@ -342,8 +336,6 @@ public class ChatPage extends AppCompatActivity {
 
                                     Bitmap bitmap = resource;
                                     bitmaps.set(bitmaps.size() - 1, bitmap);
-                                    System.out.println(bitmap.toString());
-                                    System.out.println("사이즈:" + bitmaps.size());
 
                                 }
                             });

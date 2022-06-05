@@ -27,8 +27,4 @@ public class User {         //사용자 테이블이다.
     }
 
 
-
-
-
-
 }

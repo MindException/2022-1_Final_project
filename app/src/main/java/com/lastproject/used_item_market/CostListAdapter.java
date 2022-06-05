@@ -139,16 +139,12 @@ public class CostListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                     .into(iv);
 
                         }catch (Exception e){
-                            System.out.println("view holder binding 실패");
                         }
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
-                        System.out.println("상품 사진 통신 실패");
-
                     }
                 });
             }//if문 끝

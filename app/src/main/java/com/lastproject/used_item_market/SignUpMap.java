@@ -220,18 +220,17 @@ public class SignUpMap extends AppCompatActivity {
                 start[0] = poi.item.getPOIName();
                 startX[0] = poi.item.getPOIPoint().getLatitude();
                 startY[0] = poi.item.getPOIPoint().getLongitude();
-                //System.out.println("대학 지역 : " + poi.item.getPOIName());
+
                 latitude = Double.toString(poi.item.getPOIPoint().getLatitude());
-                //System.out.println("대학 위도 : " + latitude);
+
                 longtitude = Double.toString(poi.item.getPOIPoint().getLongitude());
-                //System.out.println("대학 경도 : " + longtitude);
+
                 try {
                     school = poi.item.getPOIName().substring(0, start[0].indexOf(" "));
-                   //System.out.println("대학 스페이스 들어간 이름 : " + school);
+
 
                 }catch (Exception e){
                     nospace_school = poi.item.getPOIName();
-                    //System.out.println("대학 노스페이스 이름 : " + poi.item.getPOIName());
                 }
                 TMapMarkerItem item = new TMapMarkerItem();
                 tMapPoint[0] = new TMapPoint(poi.item.getPOIPoint().getLatitude(), poi.item.getPOIPoint().getLongitude());
@@ -380,8 +379,6 @@ public class SignUpMap extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //System.out.println(school + nospace_school);
-
 
                 if(!latitude.equals("") || !longtitude.equals("")){      //검색하였을 경우만 가능하다.
 
@@ -460,8 +457,6 @@ public class SignUpMap extends AppCompatActivity {
                             uvpoint.add(arrayList.get(i).getPOIPoint());
                         }
                     }
-                    //System.out.println("대학 확인 " + arrList);
-                    //System.out.println("위치 확인 " + uvpoint);
 
                     //공기계에서 접근권한 허용했는데 위치가 안변한다.(0401)
 

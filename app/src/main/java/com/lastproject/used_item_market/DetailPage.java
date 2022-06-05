@@ -262,7 +262,7 @@ public class DetailPage extends AppCompatActivity {
                         intent.putExtra("myUniv", myUniv);
                         intent.putExtra("myimg", myimg);
                         startActivity(intent);
-                        System.exit(0);
+                        finish();
                         break;
                     case "SharePage":
                         Intent intent2 = new Intent(DetailPage.this, SharePage.class);
@@ -275,7 +275,7 @@ public class DetailPage extends AppCompatActivity {
                         intent2.putExtra("myUniv", myUniv);
                         intent2.putExtra("myimg", myimg);
                         startActivity(intent2);
-                        System.exit(0);
+                        finish();
                         break;
                     case "AllPage":
                         Intent intent3 = new Intent(DetailPage.this, AllPage.class);
@@ -288,7 +288,7 @@ public class DetailPage extends AppCompatActivity {
                         intent3.putExtra("myUniv", myUniv);
                         intent3.putExtra("myimg", myimg);
                         startActivity(intent3);
-                        System.exit(0);
+                        finish();
                         break;
 
                     case "MyPage":
@@ -302,7 +302,7 @@ public class DetailPage extends AppCompatActivity {
                         intent4.putExtra("myUniv", myUniv);
                         intent4.putExtra("myimg", myimg);
                         startActivity(intent4);
-                        System.exit(0);
+                        finish();
                         break;
 
                     case "MainActivity":
@@ -316,7 +316,7 @@ public class DetailPage extends AppCompatActivity {
                         intent5.putExtra("myUniv", myUniv);
                         intent5.putExtra("myimg", myimg);
                         startActivity(intent5);
-                        System.exit(0);
+                        finish();
                         break;
 
                     case "Chat":
@@ -331,7 +331,7 @@ public class DetailPage extends AppCompatActivity {
                         intent6.putExtra("myimg", myimg);
                         intent6.putExtra("chatkey", product_key);
                         startActivity(intent6);
-                        System.exit(0);
+                        finish();
                         break;
 
                 }//switch문 끝
@@ -494,7 +494,6 @@ public class DetailPage extends AppCompatActivity {
         mapView = (TMapView) findViewById(R.id.map_reserve);
         mapView.setUserScrollZoomEnable(true);     //지도 고정
         TMapMarkerItem item = new TMapMarkerItem();
-        System.out.println("맵 : " + mapView.getVisibility());
 
         double lng = Double.parseDouble(product.destination_longtitude);    //파이어베이스에서 받아온 경도값
         double lat = Double.parseDouble(product.destination_latitude);    //파이어베이스에서 받아온 위도값

@@ -104,7 +104,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         logininfo = getSharedPreferences("setting", MODE_PRIVATE);      //기본 저장 로그인 객체 생성
         editor = logininfo.edit();
         autologin = logininfo.getString("auto", "");                //자동로그인이 되어있느지 가져온다.(두번 째 인자는 실패시 반환값)
-        System.out.println("처음" + autologin);
         if(autologin.equals("True")){       //자동로그인으로 넘어간다.
 
             mykey = logininfo.getString("mykey", "");
@@ -155,7 +154,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 semail = et_email.getText().toString();
                 spassword = et_password.getText().toString();
 
-                System.out.println(semail);
                 Query loginQuery = userDocument.whereEqualTo("google_email", semail);
                 loginQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -251,7 +249,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
 
             }else{
-                System.out.println("실패함");
             }
         }
 
@@ -266,9 +263,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     public void onComplete(@NonNull Task<AuthResult> task) {  //Task는 인증 결과이다.
 
                         if(task.isSuccessful()){      //로그인이 성공했으면
-                            System.out.println("이메일 : " + account.getEmail());
                             email = account.getEmail();         //이메일 저장
-                            System.out.println(email);
 
 
                             //먼저 구글 아이디가 존재하는지 확인한다.
@@ -326,7 +321,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
                                         }
                                     }else{
-                                        System.out.println("송수신 실패");
                                     }
                                 }
                             });

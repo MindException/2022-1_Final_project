@@ -301,13 +301,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    System.out.println("qqq : " + query);
                     for(DocumentSnapshot document : task.getResult()){
                         Product product = document.toObject(Product.class);
                         productList_recent.add(product);
                         productKeyList.add(document.getId());
 
-                        System.out.println("www :" + document.getId()); // limit값인 7 개 잘 가져옴. 순서도 맞음
                     }
                     init();
                 }
@@ -325,9 +323,7 @@ public class MainActivity extends AppCompatActivity {
         newProductAdapter.setOnItemClickListener(new NewProductAdapter.onItemClickEventListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                System.out.println(pos +"번째 아이템 눌림");
 
-                System.out.println("상품 키:" + productKeyList.get(pos));
                 String path = "MainActivity";
                 Intent intent = new Intent(MainActivity.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -372,7 +368,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            System.out.println("1만원대");
                             if (task.getResult().size() <= 0){          //물건이 없는 경우
                                 Toast.makeText(MainActivity.this, "1만원 대 상품 없음", Toast.LENGTH_SHORT).show();
                             }else {
@@ -381,8 +376,6 @@ public class MainActivity extends AppCompatActivity {
                                     productList_cost.add(product);
                                     productKeyList.add(document.getId());
 
-                                    System.out.println("Product 키값 :" + document.getId());
-                                    System.out.println("plist :" + productList_cost);
                                 }
                             }
                             productList_cost.sort(new CompareSuccessTime<Product>());
@@ -418,7 +411,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            System.out.println("2만원대");
                             if (task.getResult().size() <= 0){          //물건이 없는 경우
                                 Toast.makeText(MainActivity.this, "2만원 대 상품 없음", Toast.LENGTH_SHORT).show();
                             }else {
@@ -427,8 +419,6 @@ public class MainActivity extends AppCompatActivity {
                                     productList_cost.add(product);
                                     productKeyList.add(document.getId());
 
-                                    System.out.println("Product 키값 :" + document.getId());
-                                    System.out.println("plist :" + productList_cost);
                                 }
                             }
                             productList_cost.sort(new CompareSuccessTime<Product>());
@@ -462,7 +452,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            System.out.println("3만원대");
+
                             if (task.getResult().size() <= 0){          //물건이 없는 경우
                                 Toast.makeText(MainActivity.this, "3만원 대 상품 없음", Toast.LENGTH_SHORT).show();
                             }else {
@@ -471,8 +461,6 @@ public class MainActivity extends AppCompatActivity {
                                     productList_cost.add(product);
                                     productKeyList.add(document.getId());
 
-                                    System.out.println("Product 키값 :" + document.getId());
-                                    System.out.println("plist :" + productList_cost);
                                 }
                             }
                             productList_cost.sort(new CompareSuccessTime<Product>());
@@ -505,7 +493,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            System.out.println("5만원이상");
+
                             if (task.getResult().size() <= 0){          //물건이 없는 경우
                                 Toast.makeText(MainActivity.this, "5만원 이상 상품 없음", Toast.LENGTH_SHORT).show();
                             }else {
@@ -514,8 +502,6 @@ public class MainActivity extends AppCompatActivity {
                                     productList_cost.add(product);
                                     productKeyList.add(document.getId());
 
-                                    System.out.println("Product 키값 :" + document.getId());
-                                    System.out.println("plist :" + productList_cost);
                                 }
                             }
                             productList_cost.sort(new CompareSuccessTime<Product>());
@@ -537,9 +523,7 @@ public class MainActivity extends AppCompatActivity {
         costListAdapter.setOnItemClickListener(new CostListAdapter.onItemClickEventListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                System.out.println(pos +"번째 아이템 눌림");
 
-                System.out.println("상품 키:" + productList_cost.get(pos).key);
                 String path = "MainActivity";
                 Intent intent = new Intent(MainActivity.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

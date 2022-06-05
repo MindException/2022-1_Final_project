@@ -169,14 +169,12 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
                                     .into(product_img);
 
                         } catch (Exception e) {
-                            System.out.println("view holder binding 실패");
                         }
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("상품 사진 통신 실패");
                     }
                 });
             }//상품 이미지 처리 끝
@@ -197,7 +195,6 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 .into(profile);
 
                     } catch (Exception e) {
-                        System.out.println("view holder binding 실패");
                     }
 
                 }

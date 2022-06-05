@@ -125,7 +125,6 @@ public class MyPageAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 .into(iv);
 
                     }catch (Exception e){
-                        System.out.println("view holder binding 실패");
                     }
 
 
