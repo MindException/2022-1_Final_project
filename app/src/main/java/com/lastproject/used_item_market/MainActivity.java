@@ -539,7 +539,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(View v, int pos) {
                 System.out.println(pos +"번째 아이템 눌림");
 
-                System.out.println("상품 키:" + productKeyList.get(pos));
+                System.out.println("상품 키:" + productList_cost.get(pos).key);
                 String path = "MainActivity";
                 Intent intent = new Intent(MainActivity.this, DetailPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -549,7 +549,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
-                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("productkey", productList_cost.get(pos).key);      //리사이클뷰 인덱스 가져옴
                 intent.putExtra("wherefrom", path);
                 intent.putExtra("myimg", myimg);
                 startActivity(intent);

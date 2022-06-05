@@ -196,7 +196,7 @@ public class DetailPage extends AppCompatActivity {
 
                                                             Glide.with(context)
                                                                     .load(uri)
-                                                                    .override(150, 150)
+                                                                    .override(500, 500)
                                                                     .into(mainImg);
                                                             imgtrigger = false;
 

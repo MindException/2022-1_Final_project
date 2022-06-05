@@ -12,6 +12,6 @@ public class CompareSuccessTime <T extends Product> implements Comparator<T> {
         long l1 = Long.parseLong(o1.success_time);
         long l2 = Long.parseLong(o2.success_time);
 
-        return (l1 > l2 ? -1 : (l1 == l2) ? 0 : 1);
+        return (l1 < l2 ? -1 : (l1 == l2) ? 0 : 1);
     }
 }
