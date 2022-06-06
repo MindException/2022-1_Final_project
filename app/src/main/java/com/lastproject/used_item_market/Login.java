@@ -287,7 +287,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                                             finish();
 
                                         }else{
-                                            Toast.makeText(Login.this, "구를 로그인 합니다.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(Login.this, "Google login", Toast.LENGTH_SHORT).show();
                                             //이것을 해줘야 다음에 계정 생성을 할 때도 다시 계정선택이 가능하다.
                                             auth.signOut();
                                             FirebaseAuth.getInstance().signOut();
