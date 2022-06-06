@@ -1,0 +1,96 @@
+{
+  "project_info": {
+    "project_number": "846791184477",
+    "firebase_url": "https://used-goods-market-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "used-goods-market",
+    "storage_bucket": "used-goods-market.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846791184477:android:7fab918fcc27097acdbdb4",
+        "android_client_info": {
+          "package_name": "com.lastproject.used_item_market"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846791184477-56isjmhfnqh2612en0bcnr55a8od3d6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lastproject.used_item_market",
+            "certificate_hash": "3388efa9ad1202b759dcfc2a3502a9c26c9ede82"
+          }
+        },
+        {
+          "client_id": "846791184477-5sce2j0vm5923ga8c73nrtiimivd8mpv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lastproject.used_item_market",
+            "certificate_hash": "970a71117fd4ebea2276a177afffaca70285037f"
+          }
+        },
+        {
+          "client_id": "846791184477-62is9bp5ja1tlje67g7fjrg77aggpocu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lastproject.used_item_market",
+            "certificate_hash": "67b394985999ec40fa9bdf5dc8f22724da8a6c54"
+          }
+        },
+        {
+          "client_id": "846791184477-fr26nn3j4cjgr5ngrbag1opbrovqh3ci.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lastproject.used_item_market",
+            "certificate_hash": "82dd7d3081e60f2fed756ac68935e4791a47a0bd"
+          }
+        },
+        {
+          "client_id": "846791184477-j3ho1e1jjefudgc1r7n3va5dl88ob3kl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lastproject.used_item_market",
+            "certificate_hash": "a9429ba268abfad2993d928f8ca0edc2ecbe9575"
+          }
+        },
+        {
+          "client_id": "846791184477-p0rurvjd6un5ci2jhnjua451afohm2uh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lastproject.used_item_market",
+            "certificate_hash": "d16135ac87305d8502ff5effb22f1de25f4c3622"
+          }
+        },
+        {
+          "client_id": "846791184477-s9uodvigv19lvtrvuaenjppb99ktdmhm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lastproject.used_item_market",
+            "certificate_hash": "bc5b148ee9539aa93718f0110daf085668e0c5a1"
+          }
+        },
+        {
+          "client_id": "846791184477-9hbclrf7hhrp19v35s9vm0sn941q605u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNuDS3UoV7tii91Cw10lHxiUFeOWyzOiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846791184477-9hbclrf7hhrp19v35s9vm0sn941q605u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
