@@ -252,7 +252,6 @@ public class ChatPage extends AppCompatActivity {
                         }
                         //마지막 본 인덱스 변화
                         chattingRoomInfo.last_SEE.set(myindex, nowReadIndex);
-                        System.out.println("추가될 시: 사이즈:" + chattingRoomInfo.last_SEE.size());
 
                         //서버에 저장 - 자신이 마지막까지 읽은 부분을 저장(성공)
                         DocumentReference update_LastSEE = firestore.collection("ChattingRoom")
