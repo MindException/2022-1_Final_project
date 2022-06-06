@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -426,7 +428,8 @@ public class ChatPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                PopupMenu popupMenu = new PopupMenu(ChatPage.this, view);
+                Context wrapper = new ContextThemeWrapper(ChatPage.this, R.style.PopupMenuStyle);
+                PopupMenu popupMenu = new PopupMenu(wrapper, view);
 
                 //xml파일에 메뉴 정의한 것 가져오기
                 MenuInflater inflater = popupMenu.getMenuInflater();
@@ -483,7 +486,7 @@ public class ChatPage extends AppCompatActivity {
                                         public void run() {
                                             dlg.setView(view);
                                             ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
-                                            ((TextView)view.findViewById(R.id.textMessage)).setText("채팅방을 나가시겠습니까? \\n 재입장이 불가능합니다.");
+                                            ((TextView)view.findViewById(R.id.textMessage)).setText("채팅방을 나가시겠습니까? \n 재입장이 불가능합니다.");
                                             ((Button)view.findViewById(R.id.btnOK)).setText("취소");
                                             ((Button)view.findViewById(R.id.btnNO)).setText("확인");
 
@@ -517,24 +520,41 @@ public class ChatPage extends AppCompatActivity {
                                 }else if(trigge_success == true){
 
                                     AlertDialog.Builder dlg = new AlertDialog.Builder(ChatPage.this, R.style.AlertDialogTheme);
-                                    Handler mHandler = new Handler(Looper.getMainLooper());
+                                    View view = LayoutInflater.from(ChatPage.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
+                                    Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
+
 
                                     mHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            dlg.setTitle("채팅방을 나가시겠습니까?");
-                                            dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
+                                            dlg.setView(view);
+                                            ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
+                                            ((TextView)view.findViewById(R.id.textMessage)).setText("채팅방을 나가시겠습니까? \n 재입장이 불가능합니다.");
+                                            ((Button)view.findViewById(R.id.btnOK)).setText("취소");
+                                            ((Button)view.findViewById(R.id.btnNO)).setText("확인");
 
-                                                }
-                                            }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                                            AlertDialog alertDialog = dlg.create();
+
+                                            view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) { // 채팅방 나감
+                                                public void onClick(View view) {
+                                                    alertDialog.dismiss();
+                                                }
+                                            });
+                                            view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
                                                     exitCustomer();
                                                 }
                                             });
-                                            dlg.show();
+
+                                            //다이얼로그 형태 지우기
+                                            if(alertDialog.getWindow() != null){
+                                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                            }
+
+                                            alertDialog.show();
+
                                         }
                                     }, 0);
 
@@ -543,24 +563,41 @@ public class ChatPage extends AppCompatActivity {
                                 }else if(trigger_delete == true){
 
                                     AlertDialog.Builder dlg = new AlertDialog.Builder(ChatPage.this, R.style.AlertDialogTheme);
-                                    Handler mHandler = new Handler(Looper.getMainLooper());
+                                    View view = LayoutInflater.from(ChatPage.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
+                                    Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
+
 
                                     mHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            dlg.setTitle("채팅방을 나가시겠습니까?");
-                                            dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
+                                            dlg.setView(view);
+                                            ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
+                                            ((TextView)view.findViewById(R.id.textMessage)).setText("채팅방을 나가시겠습니까? \n 재입장이 불가능합니다.");
+                                            ((Button)view.findViewById(R.id.btnOK)).setText("취소");
+                                            ((Button)view.findViewById(R.id.btnNO)).setText("확인");
 
-                                                }
-                                            }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                                            AlertDialog alertDialog = dlg.create();
+
+                                            view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) { // 채팅방 나감
+                                                public void onClick(View view) {
+                                                    alertDialog.dismiss();
+                                                }
+                                            });
+                                            view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
                                                     exitCustomer();
                                                 }
                                             });
-                                            dlg.show();
+
+                                            //다이얼로그 형태 지우기
+                                            if(alertDialog.getWindow() != null){
+                                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                            }
+
+                                            alertDialog.show();
+
                                         }
                                     }, 0);
 
