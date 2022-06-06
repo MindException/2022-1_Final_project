@@ -118,12 +118,14 @@ public class ChatPage extends AppCompatActivity {
     boolean trigger_delete = false;     //삭제된 상품인지 확인
     boolean trigge_success= false;     //거래가 끝난 상품인지 확인
 
-    private Context context = getApplicationContext();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
+
+        context = getApplicationContext();
 
         //기본세팅
         email = getIntent().getStringExtra("email");
@@ -250,7 +252,7 @@ public class ChatPage extends AppCompatActivity {
                     nowReadIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                     if(chattingRoomInfo.last_SEE.get(myindex) < nowReadIndex){           //더 읽었기 때문에 기준을 표시한다.
 
-
+                        readLastIndex = nowReadIndex;
                         //마지막 본 인덱스 변화
                         chattingRoomInfo.last_SEE.set(myindex, nowReadIndex);
 
@@ -286,14 +288,19 @@ public class ChatPage extends AppCompatActivity {
                             adapter.notifyDataSetChanged();     //그 자리 그대로 있는다.
 
                             if(nowReadIndex == -1){     //맨 처음 위치 초기화
+                                Log.d("alert", "1");
                                 nowReadIndex = chattingRoomInfo.last_SEE.get(myindex);
                                 linearLayoutManager.scrollToPosition(nowReadIndex);
                             }
 
+                            linearLayoutManager.scrollToPosition(readLastIndex);
+
                             //자신이 읽은 부분 위치로 리사이클뷰 이동만하면 끝
-                            if(chatInfo.chatList.size() - 2 == nowReadIndex){       //마지막 채팅 보고 있는데 채팅이 추가된 경우
+                            if(chatInfo.chatList.size() - 1 == nowReadIndex){       //마지막 채팅 보고 있는데 채팅이 추가된 경우
+
                                 //위치
-                                linearLayoutManager.scrollToPosition(nowReadIndex + 1);     //새로운 채팅으로 리사이클뷰 내리기
+                                linearLayoutManager.scrollToPosition(nowReadIndex);     //새로운 채팅으로 리사이클뷰 내리기
+                                Log.d("alert", "2" + nowReadIndex);
                             }
 
                         }
