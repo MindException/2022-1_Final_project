@@ -118,12 +118,14 @@ public class ChatPage extends AppCompatActivity {
     boolean trigger_delete = false;     //삭제된 상품인지 확인
     boolean trigge_success= false;     //거래가 끝난 상품인지 확인
 
-    private Context context = getApplicationContext();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
+
+        context = getApplicationContext();
 
         //기본세팅
         email = getIntent().getStringExtra("email");
