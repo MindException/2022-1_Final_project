@@ -98,10 +98,9 @@ public class DetailPage extends AppCompatActivity {
 
     //첫 번째 사진 바꿈
     boolean imgtrigger = true;
-
     private DecimalFormat decimalFormat = new DecimalFormat("#,###");  //돈 형식
-
     private int myindex;
+    private ChatInfo chatInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -413,44 +412,41 @@ public class DetailPage extends AppCompatActivity {
                                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            ChatInfo chatInfo = null;
                                             chatInfo = snapshot.getValue(ChatInfo.class);
 
                                             chatInfo.chatList.add(lastmsg);         //채팅을 저장한다.
                                             int chatting_lastindex = chatInfo.chatList.size() - 1;
-                                            myRef.child("Chatting").child(product_key)
-                                                    .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {        //채팅을 저장한 후에 성공한 경우
+                                            //채팅 내용 저장에 성공하였으니 다시 채팅방 정보를 업데이트한다.
+                                            chattingRoomInfo.last_time = nowTime;
+                                            chattingRoomInfo.last_index = chatting_lastindex;
+                                            chattingRoomInfo.last_SEE.add(chatting_lastindex);
+                                            chattingRoomInfo.last_text = lastmsg;
+
+                                            firestore.collection("ChattingRoom").document(product_key)
+                                                    .set(chattingRoomInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
-                                                    //채팅 내용 저장에 성공하였으니 다시 채팅방 정보를 업데이트한다.
-                                                    chattingRoomInfo.last_time = nowTime;
-                                                    chattingRoomInfo.last_index = chatting_lastindex;
-                                                    chattingRoomInfo.last_SEE.add(chatting_lastindex);
-                                                    chattingRoomInfo.last_text = lastmsg;
 
-                                                    //이제 서버에 저장
-                                                    firestore.collection("ChattingRoom").document(product_key)
-                                                            .set(chattingRoomInfo)
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void unused) {        //저장이 성공한 경우
+                                                    myRef.child("Chatting").child(product_key)
+                                                            .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
 
-                                                                    //이거 나중에는 채팅방 이동으로 바꾸기
-                                                                    Intent intent = new Intent(DetailPage.this, ChatPage.class);
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                                                    intent.putExtra("email", email);
-                                                                    intent.putExtra("mykey", mykey);
-                                                                    intent.putExtra("nickname", nickname);
-                                                                    intent.putExtra("myUniv", myUniv);
-                                                                    intent.putExtra("myimg", myimg);
-                                                                    intent.putExtra("chatkey", product_key);
-                                                                    startActivity(intent);
-                                                                    finish();
+                                                            Intent intent = new Intent(DetailPage.this, ChatPage.class);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                                            intent.putExtra("email", email);
+                                                            intent.putExtra("mykey", mykey);
+                                                            intent.putExtra("nickname", nickname);
+                                                            intent.putExtra("myUniv", myUniv);
+                                                            intent.putExtra("myimg", myimg);
+                                                            intent.putExtra("chatkey", product_key);
+                                                            startActivity(intent);
+                                                            finish();
 
-                                                                }
-                                                            });
+                                                        }
+                                                    });
                                                 }
                                             });
                                         }

@@ -118,6 +118,8 @@ public class ChatPage extends AppCompatActivity {
     boolean trigger_delete = false;     //삭제된 상품인지 확인
     boolean trigge_success= false;     //거래가 끝난 상품인지 확인
 
+    private Context context = getApplicationContext();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,11 +147,6 @@ public class ChatPage extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
-        //리사이클뷰 레이아웃
-        linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
-
         //서버 연동
         firestore = FirebaseFirestore.getInstance();
         chatRoomRef = firestore.collection("ChattingRoom");
@@ -157,6 +154,12 @@ public class ChatPage extends AppCompatActivity {
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                //리사이클러뷰
+                recyclerView = (RecyclerView)findViewById(R.id.chatList);
+                linearLayoutManager = new LinearLayoutManager(context);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setNestedScrollingEnabled(false);
 
                 //데이터의 정보가 변동이 있을 때마다 가져온다.
                 chattingRoomInfo = value.toObject(ChattingRoomInfo.class);
@@ -247,11 +250,7 @@ public class ChatPage extends AppCompatActivity {
                     nowReadIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                     if(chattingRoomInfo.last_SEE.get(myindex) < nowReadIndex){           //더 읽었기 때문에 기준을 표시한다.
 
-                        try {
-                            Thread.sleep(1000);             //이거 안하면 서버처리가 꼬인다.
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+
                         //마지막 본 인덱스 변화
                         chattingRoomInfo.last_SEE.set(myindex, nowReadIndex);
 
