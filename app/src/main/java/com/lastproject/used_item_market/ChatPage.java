@@ -244,8 +244,15 @@ public class ChatPage extends AppCompatActivity {
                     //스크롤하면서 읽은 행(제일 마지막 기준)
                     nowReadIndex = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                     if(chattingRoomInfo.last_SEE.get(myindex) < nowReadIndex){           //더 읽었기 때문에 기준을 표시한다.
+
+                        try {
+                            Thread.sleep(1000);             //이거 안하면 서버처리가 꼬인다.
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         //마지막 본 인덱스 변화
                         chattingRoomInfo.last_SEE.set(myindex, nowReadIndex);
+                        System.out.println("추가될 시: 사이즈:" + chattingRoomInfo.last_SEE.size());
 
                         //서버에 저장 - 자신이 마지막까지 읽은 부분을 저장(성공)
                         DocumentReference update_LastSEE = firestore.collection("ChattingRoom")
