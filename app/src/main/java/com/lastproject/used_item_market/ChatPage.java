@@ -13,18 +13,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -464,26 +468,45 @@ public class ChatPage extends AppCompatActivity {
                                 if(myindex != 0){       //그냥 이용자일 경우
 
                                     AlertDialog.Builder dlg = new AlertDialog.Builder(ChatPage.this, R.style.AlertDialogTheme);
-                                    Handler mHandler = new Handler(Looper.getMainLooper());
+                                    View view = LayoutInflater.from(ChatPage.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
+                                    Handler mHandler = new Handler(Looper.getMainLooper());  //Thread 안에 Thread가 사용되기때문에 handler 사용
+
 
                                     mHandler.postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-                                            dlg.setTitle("채팅방을 나가시겠습니까? \n 재입장이 불가능합니다.");
-                                            dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
+                                            dlg.setView(view);
+                                            ((TextView)view.findViewById(R.id.textTitle)).setText("안내");
+                                            ((TextView)view.findViewById(R.id.textMessage)).setText("채팅방을 나가시겠습니까? \\n 재입장이 불가능합니다.");
+                                            ((Button)view.findViewById(R.id.btnOK)).setText("취소");
+                                            ((Button)view.findViewById(R.id.btnNO)).setText("확인");
 
-                                                }
-                                            }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                                            AlertDialog alertDialog = dlg.create();
+
+                                            view.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) { // 채팅방 나감
+                                                public void onClick(View view) {
+                                                    alertDialog.dismiss();
+                                                }
+                                            });
+                                            view.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
                                                     exitCustomer();
                                                 }
                                             });
-                                            dlg.show();
+
+                                            //다이얼로그 형태 지우기
+                                            if(alertDialog.getWindow() != null){
+                                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                            }
+
+                                            alertDialog.show();
+
                                         }
                                     }, 0);
+
+
 
                                 }else if(trigge_success == true){
 

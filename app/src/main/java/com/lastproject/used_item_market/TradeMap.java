@@ -220,21 +220,7 @@ public class TradeMap extends AppCompatActivity {
                                             }
 
                                             alertDialog.show();
-                                            /*
-                                            dlg.setTitle("해당 위치로 지정하시겠습니까?");
-                                            dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
 
-                                                }
-                                            }).setNegativeButton("확인", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) { // 대학 선택 후 확인버튼 누르면 해당 대학서버로 이동해야함
-                                                    nextInfo();
-                                                }
-                                            });
-                                            dlg.show();
-                                            */
                                         }
                                     }, 0);
 
