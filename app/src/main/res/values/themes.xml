@@ -23,6 +23,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:background">#FFFCDF</item>
         <item name="android:fontFamily">@font/font_5</item>
+        <item name="colorAccent">@android:color/black</item>
 
     </style>
     <!-- Splash theme. -->

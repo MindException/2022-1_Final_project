@@ -37,6 +37,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
@@ -182,16 +183,49 @@ public class SignUpMap extends AppCompatActivity {
                     }else{  //검색어에 대,대학,대학교가 포함되지 않는다면 다시 검색하라는 알림창 출력
                         listView.setVisibility(listView.INVISIBLE); //리스트 뷰 감추기
                         //다이얼로그
-                        AlertDialog.Builder dlg = new AlertDialog.Builder(SignUpMap.this);
-                        dlg.setTitle("대학교를 검색해주세요"); //제목
-                        dlg.setMessage("검색어에 '대', '대학', '대학교'가 포함된 검색어를 입력해주세요"); // 메시지
-                        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                        AlertDialog.Builder custom_alertBuilder = new AlertDialog.Builder(SignUpMap.this);
+                        View v = LayoutInflater.from(SignUpMap.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
+
+                        custom_alertBuilder.setView(v);
+                        ((TextView)v.findViewById(R.id.textTitle)).setText("안내");
+                        ((TextView)v.findViewById(R.id.textMessage)).setText("검색어에 '대', '대학', '대학교'가 포함된 검색어를 입력해주세요.");
+                        ((Button)v.findViewById(R.id.btnOK)).setText("아니오");
+                        ((Button)v.findViewById(R.id.btnNO)).setText("예");
+
+                        AlertDialog alertDialog = custom_alertBuilder.create();
+
+                        v.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        v.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                alertDialog.dismiss();
+                            }
+                        });
+
+                        //다이얼로그 형태 지우기
+                        if(alertDialog.getWindow() != null){
+                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                        }
+
+                        alertDialog.show();
+                        custom_alertBuilder.setCancelable(false);  //외부 창 클릭시 꺼짐 막기
+                        /*
+                        custom_alertBuilder.setTitle("대학교를 검색해주세요"); //제목
+                        custom_alertBuilder.setMessage("검색어에 '대', '대학', '대학교'가 포함된 검색어를 입력해주세요"); // 메시지
+                        custom_alertBuilder.setPositiveButton("확인",new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                             }
                         });
-                        dlg.show();
+                        custom_alertBuilder.show();
+                         */
 
                     }
                 }
@@ -544,7 +578,7 @@ public class SignUpMap extends AppCompatActivity {
 
     }
     void dialog(ArrayList<String> university, ArrayList<TMapPoint> universitypoint){
-        AlertDialog.Builder dlg = new AlertDialog.Builder(SignUpMap.this);
+        AlertDialog.Builder dlg = new AlertDialog.Builder(SignUpMap.this, R.style.AlertDialogTheme2);
         AlertDialog.Builder cusdlg = new AlertDialog.Builder(SignUpMap.this, R.style.AlertDialogTheme);
         View view = LayoutInflater.from(SignUpMap.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
         final int[] selecteduniv = {0};
