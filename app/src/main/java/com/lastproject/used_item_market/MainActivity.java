@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     //새DB
     private FirebaseFirestore firestore;        //DB
-    private CollectionReference UserRef;
-    DocumentReference documentReference;
     CollectionReference product_Ref;
     CollectionReference univRef;
 
@@ -74,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
     // 상품 관련
     List<Product> productList_recent = new ArrayList<Product>();  //여기에 모든 상품들이 들어간다.
     List<Product> productList_cost = new ArrayList<Product>();  //여기에 모든 상품들이 들어간다.
-    ArrayList<String> productKeyList = new ArrayList<String>();
     private int limit = 7;         //요청 상품 수
 
     //대학 저장
@@ -304,7 +301,6 @@ public class MainActivity extends AppCompatActivity {
                     for(DocumentSnapshot document : task.getResult()){
                         Product product = document.toObject(Product.class);
                         productList_recent.add(product);
-                        productKeyList.add(document.getId());
 
                     }
                     init();
@@ -333,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
-                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("productkey", productList_recent.get(pos).key);      //리사이클뷰 인덱스 가져옴
                 intent.putExtra("wherefrom", path);
                 intent.putExtra("myimg", myimg);
                 startActivity(intent);
@@ -348,8 +344,10 @@ public class MainActivity extends AppCompatActivity {
         one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (productList_cost != null){
+                    productList_cost.clear();
+                }
                 productList_cost = new ArrayList<>();
-                productKeyList = new ArrayList<>();
 
                 one.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
                 two.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
@@ -361,6 +359,7 @@ public class MainActivity extends AppCompatActivity {
                         .orderBy("cost", Query.Direction.ASCENDING)
                         .whereGreaterThanOrEqualTo("cost", 10000) // 1만원대 이므로 1만원이상이고
                         .whereLessThan("cost", 20000)
+                        .orderBy("time", Query.Direction.DESCENDING)
                         .limit(limit); // 2만원보다 작아야한다.
                 //.orderBy("time", Query.Direction.DESCENDING); // 최신순으로 정렬
 
@@ -374,11 +373,9 @@ public class MainActivity extends AppCompatActivity {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Product product = document.toObject(Product.class);
                                     productList_cost.add(product);
-                                    productKeyList.add(document.getId());
 
                                 }
                             }
-                            productList_cost.sort(new CompareSuccessTime<Product>());
                             init_2();
                         }
                     }
@@ -391,8 +388,10 @@ public class MainActivity extends AppCompatActivity {
         two.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (productList_cost != null){
+                    productList_cost.clear();
+                }
                 productList_cost = new ArrayList<>();
-                productKeyList = new ArrayList<>();
 
                 one.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
                 two.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_yellow));
@@ -404,6 +403,7 @@ public class MainActivity extends AppCompatActivity {
                         .orderBy("cost", Query.Direction.ASCENDING)
                         .whereGreaterThanOrEqualTo("cost", 20000) // 2만원대 이므로 2만원이상이고
                         .whereLessThan("cost", 30000)
+                        .orderBy("time", Query.Direction.DESCENDING)
                         .limit(limit); // 3만원보다 작아야한다.
                 //.orderBy("time", Query.Direction.DESCENDING); // 최신순으로 정렬
 
@@ -417,11 +417,9 @@ public class MainActivity extends AppCompatActivity {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Product product = document.toObject(Product.class);
                                     productList_cost.add(product);
-                                    productKeyList.add(document.getId());
 
                                 }
                             }
-                            productList_cost.sort(new CompareSuccessTime<Product>());
                             init_2();
                         }
                     }
@@ -432,8 +430,10 @@ public class MainActivity extends AppCompatActivity {
         three.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(productList_cost != null){
+                    productList_cost.clear();
+                }
                 productList_cost = new ArrayList<>();
-                productKeyList = new ArrayList<>();
 
                 one.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
                 two.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
@@ -445,6 +445,7 @@ public class MainActivity extends AppCompatActivity {
                         .orderBy("cost", Query.Direction.ASCENDING)
                         .whereGreaterThanOrEqualTo("cost", 30000) // 3만원대 이므로 3만원이상이고
                         .whereLessThan("cost", 40000)
+                        .orderBy("time", Query.Direction.DESCENDING)
                         .limit(limit); // 4만원보다 작아야한다.
                 //.orderBy("time", Query.Direction.DESCENDING); // 최신순으로 정렬
 
@@ -459,11 +460,9 @@ public class MainActivity extends AppCompatActivity {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Product product = document.toObject(Product.class);
                                     productList_cost.add(product);
-                                    productKeyList.add(document.getId());
 
                                 }
                             }
-                            productList_cost.sort(new CompareSuccessTime<Product>());
                             init_2();
                         }
                     }
@@ -474,8 +473,10 @@ public class MainActivity extends AppCompatActivity {
         five.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(productList_cost != null){
+                    productList_cost.clear();
+                }
                 productList_cost = new ArrayList<>();
-                productKeyList = new ArrayList<>();
 
                 one.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
                 two.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_white));
@@ -486,6 +487,7 @@ public class MainActivity extends AppCompatActivity {
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
                         .orderBy("cost", Query.Direction.ASCENDING)
                         .whereGreaterThanOrEqualTo("cost", 50000)// 5만원이상
+                        .orderBy("time", Query.Direction.DESCENDING)
                         .limit(limit);
                 //.orderBy("time", Query.Direction.DESCENDING); // 최신순으로 정렬
 
@@ -500,11 +502,9 @@ public class MainActivity extends AppCompatActivity {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Product product = document.toObject(Product.class);
                                     productList_cost.add(product);
-                                    productKeyList.add(document.getId());
 
                                 }
                             }
-                            productList_cost.sort(new CompareSuccessTime<Product>());
                             init_2();
                         }
                     }
