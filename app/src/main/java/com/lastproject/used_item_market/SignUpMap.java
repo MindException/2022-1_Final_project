@@ -184,24 +184,16 @@ public class SignUpMap extends AppCompatActivity {
                         listView.setVisibility(listView.INVISIBLE); //리스트 뷰 감추기
                         //다이얼로그
                         AlertDialog.Builder custom_alertBuilder = new AlertDialog.Builder(SignUpMap.this);
-                        View v = LayoutInflater.from(SignUpMap.this).inflate(R.layout.dialog, (LinearLayout)findViewById(R.id.layoutDialog));
+                        View v = LayoutInflater.from(SignUpMap.this).inflate(R.layout.dialog2, (LinearLayout)findViewById(R.id.layoutDialog2));
 
                         custom_alertBuilder.setView(v);
-                        ((TextView)v.findViewById(R.id.textTitle)).setText("안내");
-                        ((TextView)v.findViewById(R.id.textMessage)).setText("검색어에 '대', '대학', '대학교'가 포함된 검색어를 입력해주세요.");
-                        ((Button)v.findViewById(R.id.btnOK)).setText("아니오");
-                        ((Button)v.findViewById(R.id.btnNO)).setText("예");
+                        ((TextView)v.findViewById(R.id.textTitle2)).setText("안내");
+                        ((TextView)v.findViewById(R.id.textMessage2)).setText("검색어에 '대', '대학', '대학교'가 포함된 검색어를 입력해주세요.");
+                        ((Button)v.findViewById(R.id.btnOK2)).setText("예");
 
                         AlertDialog alertDialog = custom_alertBuilder.create();
 
-                        v.findViewById(R.id.btnOK).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                alertDialog.dismiss();
-                            }
-                        });
-
-                        v.findViewById(R.id.btnNO).setOnClickListener(new View.OnClickListener() {
+                        v.findViewById(R.id.btnOK2).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 alertDialog.dismiss();
