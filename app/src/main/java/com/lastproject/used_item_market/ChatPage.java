@@ -163,15 +163,6 @@ public class ChatPage extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                /*
-                //리사이클러뷰
-                recyclerView = (RecyclerView)findViewById(R.id.chatList);
-                linearLayoutManager = new LinearLayoutManager(context);
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setNestedScrollingEnabled(false);
-
-                 */
-
                 //데이터의 정보가 변동이 있을 때마다 가져온다.
                 chattingRoomInfo = value.toObject(ChattingRoomInfo.class);
                 setting(storageRef);    //세팅
@@ -284,11 +275,16 @@ public class ChatPage extends AppCompatActivity {
                     .addValueEventListener(new ValueEventListener() {    //실시간 채팅
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {//데이터 변화
-                            chatList = new ArrayList<>();
+                            if(chatList != null){       //메모리 정리
+                                chatList.clear();
+                            }
                             chatInfo = snapshot.getValue(ChatInfo.class);
                             chatList = chatInfo.chatList;       //채팅을 여기다가 저장
 
                             //어뎁터 정보 추가
+                            if(adapter.chatting != null){
+                                adapter.chatting.clear();
+                            }
                             adapter.chatting = chatList;
                             if(adapter.chattingRoomInfo != chattingRoomInfo){       //새로운 사용자가 입장하여 채팅방 정보를 갱신한 경우
                                 //이거 함수화
@@ -301,11 +297,6 @@ public class ChatPage extends AppCompatActivity {
                                 nowReadIndex = chattingRoomInfo.last_SEE.get(myindex);
                                 linearLayoutManager.scrollToPosition(nowReadIndex);
                             }
-
-                            //linearLayoutManager.scrollToPosition(readLastIndex);
-                            Log.d("alert", "now" +( chatInfo.chatList.size()));
-                            Log.d("alert", "server" + nowReadIndex);
-
 
                             //자신이 읽은 부분 위치로 리사이클뷰 이동만하면 끝
                             if(chatInfo.chatList.size() == nowReadIndex + 2){       //마지막 채팅 보고 있는데 채팅이 추가된 경우

@@ -55,12 +55,14 @@ public class ChattingListPage extends AppCompatActivity{
     RecyclerChatListAdapter recyclerChatListAdapter;
 
     //채팅방
-    ArrayList<ChattingRoomInfo> chattingRoomInfoArrayList = new ArrayList<ChattingRoomInfo>();
+    ArrayList<ChattingRoomInfo> chattingRoomInfoArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting_home);
+
+        chattingRoomInfoArrayList = new ArrayList<>();
 
         //기본세팅
         email = getIntent().getStringExtra("email");
