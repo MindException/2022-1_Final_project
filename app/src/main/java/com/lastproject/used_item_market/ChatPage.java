@@ -149,6 +149,12 @@ public class ChatPage extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
+        //리사이클러뷰
+        recyclerView = (RecyclerView)findViewById(R.id.chatList);
+        linearLayoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+
         //서버 연동
         firestore = FirebaseFirestore.getInstance();
         chatRoomRef = firestore.collection("ChattingRoom");
@@ -157,11 +163,14 @@ public class ChatPage extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
+                /*
                 //리사이클러뷰
                 recyclerView = (RecyclerView)findViewById(R.id.chatList);
                 linearLayoutManager = new LinearLayoutManager(context);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setNestedScrollingEnabled(false);
+
+                 */
 
                 //데이터의 정보가 변동이 있을 때마다 가져온다.
                 chattingRoomInfo = value.toObject(ChattingRoomInfo.class);
@@ -293,15 +302,18 @@ public class ChatPage extends AppCompatActivity {
                                 linearLayoutManager.scrollToPosition(nowReadIndex);
                             }
 
-                            linearLayoutManager.scrollToPosition(readLastIndex);
+                            //linearLayoutManager.scrollToPosition(readLastIndex);
+                            Log.d("alert", "now" +( chatInfo.chatList.size()));
+                            Log.d("alert", "server" + nowReadIndex);
+
 
                             //자신이 읽은 부분 위치로 리사이클뷰 이동만하면 끝
-                            if(chatInfo.chatList.size() - 1 == nowReadIndex){       //마지막 채팅 보고 있는데 채팅이 추가된 경우
+                            if(chatInfo.chatList.size() == nowReadIndex + 2){       //마지막 채팅 보고 있는데 채팅이 추가된 경우
+                                Log.d("alert", "la");
+                                linearLayoutManager.scrollToPosition(chatInfo.chatList.size() - 1);
 
-                                //위치
-                                linearLayoutManager.scrollToPosition(nowReadIndex);     //새로운 채팅으로 리사이클뷰 내리기
-                                Log.d("alert", "2" + nowReadIndex);
                             }
+
 
                         }
 
