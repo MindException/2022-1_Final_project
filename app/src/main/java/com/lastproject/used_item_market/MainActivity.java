@@ -356,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
+                        .whereEqualTo("success_time", "000000000000")
                         .orderBy("cost", Query.Direction.ASCENDING)
                         .whereGreaterThanOrEqualTo("cost", 10000) // 1만원대 이므로 1만원이상이고
                         .whereLessThan("cost", 20000)
@@ -400,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
+                        .whereEqualTo("success_time", "000000000000")
                         .orderBy("cost", Query.Direction.ASCENDING)
                         .whereGreaterThanOrEqualTo("cost", 20000) // 2만원대 이므로 2만원이상이고
                         .whereLessThan("cost", 30000)
@@ -442,6 +444,7 @@ public class MainActivity extends AppCompatActivity {
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
+                        .whereEqualTo("success_time", "000000000000")
                         .orderBy("cost", Query.Direction.ASCENDING)
                         .whereGreaterThanOrEqualTo("cost", 30000) // 3만원대 이므로 3만원이상이고
                         .whereLessThan("cost", 40000)
@@ -485,6 +488,7 @@ public class MainActivity extends AppCompatActivity {
 
                 product_Ref = firestore.collection("Product");
                 Query query = product_Ref.whereEqualTo("university", myUniv)  // 대학 물품이므로 대학이 같아야함
+                        .whereEqualTo("success_time", "000000000000")
                         .orderBy("cost", Query.Direction.ASCENDING)
                         .whereGreaterThanOrEqualTo("cost", 50000)// 5만원이상
                         .orderBy("time", Query.Direction.DESCENDING)

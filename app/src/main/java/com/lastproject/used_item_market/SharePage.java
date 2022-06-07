@@ -49,8 +49,7 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
     RecycleSellAdapter recycleSellAdapter;
     RecyclerView.OnScrollListener onScrollListener;
     SwipeRefreshLayout swipeRefreshLayout;
-    List<Product> productList = new ArrayList<Product>();      //여기에 모든 상품들이 들어간다.
-    ArrayList<String> productKeyList = new ArrayList<String>();
+    List<Product> productList;      //여기에 모든 상품들이 들어간다.
 
     //카테고리
     String category = "모두보기";       //기본값
@@ -80,6 +79,8 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_page);
+
+        productList = new ArrayList<>();
 
         //DB 생성
         firestore = FirebaseFirestore.getInstance();
@@ -143,7 +144,7 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
-                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("productkey", productList.get(pos).key);      //리사이클뷰 인덱스 가져옴
                 intent.putExtra("wherefrom", "SharePage");
                 startActivity(intent);
                 System.exit(0);
@@ -171,7 +172,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                         for(DocumentSnapshot document : task.getResult()){
                             Product product = document.toObject(Product.class);
                             productList.add(product);
-                            productKeyList.add(document.getId());
                         }
                         //상품 추가했으니 어뎁터 갱신
                         recycleSellAdapter.notifyDataSetChanged();
@@ -217,7 +217,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                                                     for(DocumentSnapshot nextDocument : nextTask.getResult()){
                                                         Product product = nextDocument.toObject(Product.class);
                                                         productList.add(product);
-                                                        productKeyList.add(nextDocument.getId());
                                                     }
                                                     //어뎁터 또 갱신
                                                     recycleSellAdapter.notifyDataSetChanged();
@@ -273,8 +272,10 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
         //초기화
         isScrolling = true;
         isLastItemReached = false;
+        if(productList != null){
+            productList.clear();
+        }
         productList = new ArrayList<>();
-        productKeyList = new ArrayList<String>();
         //어뎁터를 새로 설치해줘야 한다.
         recycleSellAdapter = new RecycleSellAdapter(productList);
         recycleSellAdapter.setOnItemClickListener(new RecycleSellAdapter.OnItemClickListener() {
@@ -289,7 +290,7 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
-                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("productkey", productList.get(pos).key);      //리사이클뷰 인덱스 가져옴
                 intent.putExtra("wherefrom", "SharePage");
                 intent.putExtra("myimg", myimg);
                 startActivity(intent);
@@ -318,7 +319,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
-                                productKeyList.add(document.getId());
                             }
                             //상품 추가했으니 어뎁터 갱신
                             recycleSellAdapter.notifyDataSetChanged();
@@ -364,7 +364,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                                                         for(DocumentSnapshot nextDocument : nextTask.getResult()){
                                                             Product product = nextDocument.toObject(Product.class);
                                                             productList.add(product);
-                                                            productKeyList.add(nextDocument.getId());
                                                         }
                                                         //어뎁터 또 갱신
                                                         recycleSellAdapter.notifyDataSetChanged();
@@ -415,7 +414,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
-                                productKeyList.add(document.getId());
                             }
                             //상품 추가했으니 어뎁터 갱신
                             recycleSellAdapter.notifyDataSetChanged();
@@ -462,7 +460,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                                                         for(DocumentSnapshot nextDocument : nextTask.getResult()){
                                                             Product product = nextDocument.toObject(Product.class);
                                                             productList.add(product);
-                                                            productKeyList.add(nextDocument.getId());
                                                         }
                                                         //어뎁터 또 갱신
                                                         recycleSellAdapter.notifyDataSetChanged();
@@ -502,8 +499,10 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
         //초기화
         isScrolling = true;
         isLastItemReached = false;
+        if(productList != null){
+            productList.clear();
+        }
         productList = new ArrayList<>();
-        productKeyList = new ArrayList<String>();
         //어뎁터를 새로 설치해줘야 한다.
         recycleSellAdapter = new RecycleSellAdapter(productList);
         recycleSellAdapter.setOnItemClickListener(new RecycleSellAdapter.OnItemClickListener() {
@@ -518,7 +517,7 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                 intent.putExtra("mykey", mykey);
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
-                intent.putExtra("productkey", productKeyList.get(pos));      //리사이클뷰 인덱스 가져옴
+                intent.putExtra("productkey", productList.get(pos).key);      //리사이클뷰 인덱스 가져옴
                 intent.putExtra("wherefrom", "SharePage");
                 intent.putExtra("myimg", myimg);
                 startActivity(intent);
@@ -547,7 +546,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
-                                productKeyList.add(document.getId());
                             }
                             //상품 추가했으니 어뎁터 갱신
                             recycleSellAdapter.notifyDataSetChanged();
@@ -593,7 +591,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                                                         for(DocumentSnapshot nextDocument : nextTask.getResult()){
                                                             Product product = nextDocument.toObject(Product.class);
                                                             productList.add(product);
-                                                            productKeyList.add(nextDocument.getId());
                                                         }
                                                         //어뎁터 또 갱신
                                                         recycleSellAdapter.notifyDataSetChanged();
@@ -644,7 +641,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                             for(DocumentSnapshot document : task.getResult()){
                                 Product product = document.toObject(Product.class);
                                 productList.add(product);
-                                productKeyList.add(document.getId());
                             }
                             //상품 추가했으니 어뎁터 갱신
                             recycleSellAdapter.notifyDataSetChanged();
@@ -691,7 +687,6 @@ public class SharePage extends AppCompatActivity implements SwipeRefreshLayout.O
                                                         for(DocumentSnapshot nextDocument : nextTask.getResult()){
                                                             Product product = nextDocument.toObject(Product.class);
                                                             productList.add(product);
-                                                            productKeyList.add(nextDocument.getId());
                                                         }
                                                         //어뎁터 또 갱신
                                                         recycleSellAdapter.notifyDataSetChanged();
