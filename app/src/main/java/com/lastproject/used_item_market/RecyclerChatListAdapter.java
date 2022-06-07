@@ -182,7 +182,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             //프로필 이미지 처리
             StorageReference sellerimgRef = storageRef.child("profiles")
-                    .child(chattingRoomInfo.customer_images.get(myindex));
+                    .child(chattingRoomInfo.customer_images.get(0));
             sellerimgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -192,6 +192,7 @@ public class RecyclerChatListAdapter extends RecyclerView.Adapter<RecyclerView.V
                         Glide.with(itemview)
                                 .load(uri)
                                 .override(150, 150)
+                                .thumbnail(0.1f)
                                 .into(profile);
 
                     } catch (Exception e) {

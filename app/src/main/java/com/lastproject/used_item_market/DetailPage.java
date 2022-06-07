@@ -86,7 +86,7 @@ public class DetailPage extends AppCompatActivity {
     RecycleDetailAdapter recycleDetailAdapter;
     //public RecyclePostAdapter adapter;
     ImageView mainImg;
-    ArrayList<Uri>imgUriList = new ArrayList<>();
+    ArrayList<Uri>imgUriList;
 
     private Product product;
     private ChattingRoomInfo chattingRoomInfo;
@@ -106,6 +106,8 @@ public class DetailPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_page);
+
+        imgUriList = new ArrayList<>();
 
         //기본세팅
         email = getIntent().getStringExtra("email");

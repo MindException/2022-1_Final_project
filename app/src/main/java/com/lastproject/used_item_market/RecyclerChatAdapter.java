@@ -28,8 +28,8 @@ public class RecyclerChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     ChattingRoomInfo chattingRoomInfo;
     String mykey;
-    List<String> chatting = new ArrayList<>();
-    ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    List<String> chatting;
+    ArrayList<Bitmap> bitmaps;
 
     //이미지 DB
     private FirebaseStorage storage;            //이미지 저장소
