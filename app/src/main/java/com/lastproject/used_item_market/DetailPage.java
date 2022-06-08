@@ -429,6 +429,13 @@ public class DetailPage extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void unused) {
 
+                                                    try {
+                                                        Toast.makeText(DetailPage.this, "채팅방 입장 중", Toast.LENGTH_SHORT).show();
+                                                        Thread.sleep(1000);
+                                                    } catch (InterruptedException e) {
+                                                        e.printStackTrace();
+                                                    }
+
                                                     myRef.child("Chatting").child(product_key)
                                                             .setValue(chatInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
