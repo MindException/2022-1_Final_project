@@ -256,7 +256,7 @@
                                 android:id="@+id/max_text"
                                 android:layout_width="50dp"
                                 android:layout_height="20dp"
-                                android:text="0/200"
+                                android:text=""
                                 android:textColor="#575757"
                                 android:fontFamily="@font/font_3"
                                 android:layout_gravity="center"

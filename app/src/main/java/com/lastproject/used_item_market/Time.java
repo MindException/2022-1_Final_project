@@ -242,13 +242,13 @@ public class Time {                 //현재 시간을 구하여 주는 클래�
         String t2 = time.substring(0,8);
 
         if(t1.equals(t2)){  //오늘
-            return "오늘 " + nowTime.substring(8,10) + ":" + nowTime.substring(10,12);
+            return "오늘 " + time.substring(8,10) + ":" + time.substring(10,12);
         }
         long num = Long.parseLong(nowTime.substring(0,8));
         num = num - 1;
         t1 = Long.toString(num);
         if(t1.equals(t2)){  //어제
-            return "어제 " + nowTime.substring(8,10) + ":" + nowTime.substring(10,12);
+            return "어제 " + time.substring(8,10) + ":" + time.substring(10,12);
         }
 
         t2 = time.substring(4,6) + "/" + time.substring(6,8);

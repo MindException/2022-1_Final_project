@@ -38,7 +38,6 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_setimg"
                         android:background="@drawable/img_view_round"></ImageView>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -61,7 +60,6 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_setimg"
                         android:background="@drawable/img_view_round"></ImageView>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
