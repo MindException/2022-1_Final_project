@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -56,6 +57,9 @@ public class ChattingListPage extends AppCompatActivity{
 
     //채팅방
     ArrayList<ChattingRoomInfo> chattingRoomInfoArrayList;
+
+    //종료 리스너
+    ListenerRegistration listenerRegistration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,15 +103,16 @@ public class ChattingListPage extends AppCompatActivity{
                 intent.putExtra("myUniv", myUniv);
                 intent.putExtra("myimg", myimg);
                 intent.putExtra("chatkey", chattingRoomInfoArrayList.get(pos).chat_key);
+                listenerRegistration.remove();
                 startActivity(intent);
-                System.exit(0);
+                finish();
             }
         });
         recyclerView.setAdapter(recyclerChatListAdapter);
 
         Query query = chatRoomRef.whereArrayContains("customerList", mykey)
                 .orderBy("last_time", Query.Direction.DESCENDING);
-        query.addSnapshotListener(new EventListener<QuerySnapshot>() {      //변동 실시간 수신
+        listenerRegistration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {      //변동 실시간 수신
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
 
@@ -169,8 +174,9 @@ public class ChattingListPage extends AppCompatActivity{
                 intent.putExtra("nickname", nickname);
                 intent.putExtra("myUniv", myUniv);
                 intent.putExtra("myimg", myimg);
+                listenerRegistration.remove();
                 startActivity(intent);
-                System.exit(0);
+                finish();
             }
         });
     }
@@ -178,6 +184,13 @@ public class ChattingListPage extends AppCompatActivity{
     @Override
     public void onBackPressed(){
         //뒤로가기 막기
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        listenerRegistration.remove();
+        finish();
     }
 
 }
