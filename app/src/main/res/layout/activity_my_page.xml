@@ -78,7 +78,6 @@
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_proile"
                                 android:padding="0dp"></ImageView>
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>

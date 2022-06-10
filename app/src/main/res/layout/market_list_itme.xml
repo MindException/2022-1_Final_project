@@ -32,7 +32,6 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_setimg"
                         android:padding="0dp"
                         android:background="@drawable/img_view_round"></ImageView>
                 </androidx.cardview.widget.CardView>

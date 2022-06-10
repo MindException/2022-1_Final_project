@@ -65,7 +65,7 @@
                         android:id="@+id/chattimg_item_you_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="나는 최도원 입니다 ㅎㅇㅎㅇ 개배고파요 \n그거 사고싶어요 내고 가능한가요?가나다라마바사 아자차카타파하 ㅎㅎ 개뀰잼 "
+                        android:text=""
                         android:textSize="24dp"
                         android:textColor="#ffffff"
                         android:fontFamily="@font/font_5"
