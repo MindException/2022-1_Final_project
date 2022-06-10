@@ -284,7 +284,7 @@ public class PostPage extends AppCompatActivity {
                 //StorageReference imgRef = storageRef.child("images").child(my).child("test");
                 //UploadTask uploadTask = imgRef.putFile(uri);
 
-                String nowTime = Time.nowTime();        //작성 시간을 저장
+                String nowTime = Time.nowNewTime();        //작성 시간을 저장
                 String title = et_title.getText().toString();
                 String cash = et_cash.getText().toString();
                 cash = cashTonum(cash);
