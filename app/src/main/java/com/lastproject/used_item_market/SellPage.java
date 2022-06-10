@@ -60,7 +60,6 @@ public class SellPage extends AppCompatActivity implements SwipeRefreshLayout.On
         add("컴퓨터");
         add("도서");
         add("가전제품");
-        add("상품권/티켓/쿠폰");
         add("미용");
         add("가구");
         add("악세서리");
