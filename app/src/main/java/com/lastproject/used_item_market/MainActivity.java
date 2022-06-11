@@ -288,6 +288,14 @@ public class MainActivity extends AppCompatActivity {
     void product(){
         new_title = (TextView)findViewById(R.id.textImg);
 
+        if(productList_recent != null){
+            productList_recent.clear();
+        }
+        productList_recent = new ArrayList<>();
+        if(newProductAdapter != null){
+            newProductAdapter.notifyDataSetChanged();
+        }
+
         product_Ref = firestore.collection("Product");
         Query query = product_Ref.whereEqualTo("university", myUniv)
                 .whereEqualTo("success_time", "000000000000")
