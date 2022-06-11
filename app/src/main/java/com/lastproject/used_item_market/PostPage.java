@@ -184,14 +184,14 @@ public class PostPage extends AppCompatActivity {
         map_btn = (TextView)findViewById(R.id.tmap_btn);
         et_cash = (EditText) findViewById(R.id.et_cash);
 
-
-        if(longtitude != null){     //거래 장소가 있을 경우
-
-            map_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_blue));
-
+        if(longtitude != null){
+            if (longtitude.equals("")){
+                longtitude = null;
+                latitude = null;
+            }else{
+                map_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.bt_bg_blue));
+            }
         }
-
-
 
         //999,999,999 값으로 값을 표현
         TextWatcher watcher = new TextWatcher() {
